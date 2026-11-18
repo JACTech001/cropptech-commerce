@@ -439,3 +439,27 @@ h1, h2, h3, p { margin-top: 0; }
   .info-footer { padding: 25px 7%; align-items: flex-start; flex-direction: column; }
   .info-footer nav { gap: 13px 17px; }
 }
+
+
+/* Editorial Pexels linen moodboard */
+.linen-moodboard { padding-top: 105px; padding-bottom: 110px; }
+.moodboard-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 25px; margin-bottom: 30px; }
+.moodboard-heading .eyebrow { color: var(--red); margin-bottom: 14px; }
+.moodboard-heading h2 { font-size: clamp(42px, 5vw, 62px); line-height: 1.02; font-weight: 500; letter-spacing: -2px; margin: 0; }
+.moodboard-heading h2 em { font-family: 'Playfair Display', serif; font-weight: 500; }
+.moodboard-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: 240px 240px; gap: 14px; }
+.moodboard-tile { position: relative; display: block; min-width: 0; overflow: hidden; background: var(--cream); }
+.moodboard-tile-tall { grid-row: span 2; }
+.moodboard-tile img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+.moodboard-tile:hover img { transform: scale(1.04); }
+.moodboard-tile::after { content: ""; position: absolute; inset: 45% 0 0; background: linear-gradient(transparent, rgba(0,0,0,.5)); }
+.moodboard-tile span { position: absolute; z-index: 1; left: 17px; bottom: 17px; color: white; font-size: 8px; letter-spacing: 1.2px; }
+.moodboard-note { margin: 17px 0 0; color: #938b83; font-size: 9px; line-height: 1.7; }
+@media (max-width: 640px) {
+  .linen-moodboard { padding-top: 72px; padding-bottom: 75px; }
+  .moodboard-heading { display: block; }
+  .moodboard-heading .text-link { margin-top: 22px; }
+  .moodboard-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 270px 190px 190px; gap: 10px; }
+  .moodboard-tile-tall { grid-column: 1 / -1; grid-row: auto; }
+  .moodboard-tile span { left: 11px; bottom: 12px; font-size: 7px; }
+}
