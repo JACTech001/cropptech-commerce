@@ -25,7 +25,7 @@ const products = [
 
 const audiences = ["All", "Men", "Women", "Linen"];
 const categories = ["All categories", "Shirts", "T-Shirts", "Trousers", "Shorts", "Sets", "Dresses", "Skirts", "Jackets"];
-const sizes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];
+const sizes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];\nconst productSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 export default function ShopPage() {
   const [audience, setAudience] = useState("All");
@@ -102,7 +102,7 @@ export default function ShopPage() {
                 <span className="shop-product-view">{product.audience.toUpperCase()} / {product.category.toUpperCase()} <ArrowUpRight size={14} /></span>
               </div>
               <div className="shop-product-info">
-                <div><p>{product.audience} / {product.category}</p><h3>{product.name}</h3><span>{product.tone} colour direction</span></div>
+                <div><p>{product.audience} / {product.category}</p><h3><Link href={`/shop/${productSlug(product.name)}`}>{product.name}</Link></h3><span>{product.tone} colour direction</span></div>
                 <span className="product-price-note">Price to be added</span>
               </div>
               <div className="product-size-picker">
