@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -77,8 +76,9 @@ export default function HomePage() {
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        <a href="/" className="brand-logo" aria-label="CroppTech Commerce Store home">
-          <Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce Store logo" width={120} height={120} priority className="brand-logo-image" />
+        <a href="/" className="brand-wordmark" aria-label="CroppTech Commerce Store home">
+          <span className="wordmark-main">CROPP<span>TECH</span></span>
+          <span className="wordmark-sub">COMMERCE STORE</span>
         </a>
 
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"}>
@@ -219,8 +219,9 @@ export default function HomePage() {
 
       <footer className="site-footer">
         <div className="footer-top">
-          <a href="/" className="footer-brand-logo" aria-label="CroppTech Commerce Store home">
-            <Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce Store logo" width={120} height={120} className="footer-brand-logo-image" />
+          <a href="/" className="footer-brand-wordmark" aria-label="CroppTech Commerce Store home">
+            <span className="wordmark-main">CROPP<span>TECH</span></span>
+            <span className="wordmark-sub">COMMERCE STORE</span>
           </a>
           <p>BUSINESS MOVES WITH COMMERCE.</p>
           <div className="social-links">
