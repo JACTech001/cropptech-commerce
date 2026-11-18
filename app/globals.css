@@ -547,3 +547,19 @@ h1, h2, h3, p { margin-top: 0; }
  .cart-remove { width:30px; height:30px; }
  .cart-summary { padding:20px; }
 }
+
+
+/* Official contact channels */
+.contact-channel-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; max-width:900px; }
+.contact-channel-card { padding:30px; background:var(--cream); min-width:0; }
+.contact-channel-icon { width:44px; height:44px; display:grid; place-items:center; margin-bottom:24px; background:var(--red); color:#fff; border-radius:50%; }
+.contact-channel-card .eyebrow { color:var(--red); margin-bottom:12px; }
+.contact-channel-card h2 { font-size:clamp(24px,3vw,34px); font-weight:500; letter-spacing:-.8px; margin:0 0 13px; }
+.contact-channel-card > p:not(.eyebrow) { color:var(--muted); font-size:12px; line-height:1.85; min-height:66px; }
+.contact-channel-link { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:17px; margin-top:18px; border-top:1px solid var(--line); color:var(--red); font-size:11px; font-weight:700; overflow-wrap:anywhere; }
+.contact-selection { max-width:900px; margin-top:28px; padding:25px 30px; border:1px solid var(--line); }
+.contact-selection .eyebrow { display:flex; align-items:center; gap:8px; color:var(--red); }
+.contact-selection > p:not(.eyebrow) { font-size:12px; line-height:1.8; overflow-wrap:anywhere; }
+.contact-selection-note { color:var(--muted); }
+.contact-back-row { margin-top:35px; }
+@media(max-width:640px) { .contact-channel-grid { grid-template-columns:1fr; gap:14px; } .contact-channel-card { padding:24px; } .contact-channel-card > p:not(.eyebrow) { min-height:0; } .contact-selection { padding:22px; } }
