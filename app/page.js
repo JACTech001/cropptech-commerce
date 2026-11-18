@@ -205,6 +205,29 @@ export default function HomePage() {
         </div>
       </section>
 
+      
+      <section className="home-featured-section section-pad" id="featured">
+        <div className="section-heading">
+          <div><p className="eyebrow">SHOP THE EDIT</p><h2>Pieces to<br /><em>make yours.</em></h2></div>
+          <p className="section-aside">Choose your size and add a favourite directly to your cart, without leaving the home page.</p>
+        </div>
+        <div className="home-featured-grid">
+          {[
+            { id: 1, name: "Relaxed Linen Shirt", category: "Shirts", audience: "Men", tone: "Natural", image: "https://images.pexels.com/photos/32825460/pexels-photo-32825460/free-photo-of-stylish-male-model-in-beige-linen-outfit-outdoors.jpeg?auto=compress&cs=tinysrgb&w=1000", tag: "THE LINEN EDIT", isLinen: true },
+            { id: 3, name: "Linen Co-ord Set", category: "Sets", audience: "Women", tone: "Cream", image: "https://images.pexels.com/photos/5393448/pexels-photo-5393448.jpeg?auto=compress&cs=tinysrgb&w=1000", tag: "THE LINEN EDIT", isLinen: true },
+            { id: 5, name: "Button-Front Linen Blouse", category: "Shirts", audience: "Women", tone: "Ivory", image: "https://images.pexels.com/photos/15764812/pexels-photo-15764812.jpeg?auto=compress&cs=tinysrgb&w=1000", tag: "WOMEN'S EDIT", isLinen: true }
+          ].map((product) => {
+            const slug = product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+            return <article className="home-featured-card" key={product.id}>
+              <a href={"/shop/" + slug} className="home-featured-image"><img src={product.image} alt={product.name} /><span>{product.tag}</span></a>
+              <div className="home-featured-meta"><div><p>{product.audience} / {product.category}</p><h3><a href={"/shop/" + slug}>{product.name}</a></h3><span>{product.tone} colour direction</span></div><small>Price to be added</small></div>
+              <ProductAddButton product={{ ...product, slug }} />
+            </article>;
+          })}
+        </div>
+        <div className="home-featured-footer"><a href="/shop" className="text-link">VIEW ALL COLLECTIONS <ArrowUpRight size={16} /></a></div>
+      </section>
+
       <section className="brand-note">
         <p className="eyebrow">THE CROPPTECH POINT OF VIEW</p>
         <h2>Less noise.<br /><em>More feeling.</em></h2>
