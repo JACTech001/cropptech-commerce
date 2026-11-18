@@ -1,5 +1,6 @@
 import StorePageShell from "../../components/StorePageShell";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export const metadata = { title: "Our Story | CroppTech Commerce Store" };
 
