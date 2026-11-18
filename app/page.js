@@ -9,24 +9,24 @@ import {
 const edits = [
   {
     number: "01",
-    title: "For Him",
-    description: "Easy layers. Clean lines. Everyday comfort.",
+    title: "Men’s Linen Shirts",
+    description: "Relaxed linen shirts for easy everyday dressing.",
     image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=1200&q=85",
     position: "center 28%",
   },
   {
     number: "02",
-    title: "For Her",
-    description: "Relaxed silhouettes with room to move.",
+    title: "Women’s Linen Shirts",
+    description: "Light, versatile linen styles for everyday wear.",
     image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=85",
     position: "center 28%",
   },
 ];
 
 const highlights = [
-  { number: "01", title: "Linen shirts", note: "The everyday essential", image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&q=85" },
-  { number: "02", title: "Linen sets", note: "A complete, easy look", image: "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?auto=format&fit=crop&w=900&q=85" },
-  { number: "03", title: "More to discover", note: "Build your everyday edit", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=900&q=85" },
+  { number: "01", title: "Linen Shirts", note: "The centre of our collection", image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&q=85" },
+  { number: "02", title: "Women’s Linen Styles", note: "Explore the women’s linen edit", image: "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?auto=format&fit=crop&w=900&q=85" },
+  { number: "03", title: "Linen for Him", note: "Explore the men’s linen edit", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=900&q=85" },
 ];
 
 export default function HomePage() {
@@ -64,8 +64,8 @@ export default function HomePage() {
       <section className="c-hero">
         <div className="c-hero-copy">
           <p className="c-kicker"><span /> CROPPTECH COMMERCE STORE</p>
-          <h1>Good days<br />start with<br /><em>good basics.</em></h1>
-          <p className="c-hero-description">Meet the linen shirt edit: breathable, versatile styles for men and women, made to move with your everyday.</p>
+          <h1>Linen shirts<br />for every<br /><em>day.</em></h1>
+          <p className="c-hero-description">Discover CroppTech’s linen clothing collection for men and women. Start with an easy-to-wear linen shirt and build a look that feels naturally yours.</p>
           <div className="c-hero-actions">
             <a href="/shop" className="c-primary-button">SHOP LINEN SHIRTS <ArrowUpRight size={16} /></a>
             <a href="/shop" className="c-secondary-link">EXPLORE ALL <ArrowRight size={16} /></a>
@@ -74,7 +74,7 @@ export default function HomePage() {
         </div>
         <div className="c-hero-visual">
           <div className="c-hero-photo" role="img" aria-label="Fashion editorial showing relaxed everyday style" />
-          <div className="c-photo-label"><span>THE NEW EVERYDAY</span><strong>LINEN<br />COLLECTION</strong><a href="/shop">DISCOVER <ArrowUpRight size={14} /></a></div>
+          <div className="c-photo-label"><span>THE LINEN EDIT</span><strong>LINEN<br />SHIRTS</strong><a href="/shop">DISCOVER <ArrowUpRight size={14} /></a></div>
           <div className="c-round-stamp"><span>MADE FOR</span><strong>YOUR<br />EVERYDAY</strong><span>CROPPTECH</span></div>
         </div>
       </section>
@@ -89,7 +89,7 @@ export default function HomePage() {
 
       <section className="c-edits" id="collections">
         <div className="c-section-heading">
-          <div><p className="c-kicker"><span /> FIND YOUR FIT</p><h2>Made for <em>everybody.</em></h2></div>
+          <div><p className="c-kicker"><span /> FIND YOUR FIT</p><h2>The linen shirt <em>edit.</em></h2></div>
           <a href="/shop" className="c-secondary-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></a>
         </div>
         <div className="c-edit-grid">
@@ -108,8 +108,8 @@ export default function HomePage() {
         <div className="c-linen-image" role="img" aria-label="Linen clothing editorial" />
         <div className="c-linen-copy">
           <p className="c-kicker"><span /> THE SIGNATURE EDIT</p>
-          <h2>Light on you.<br /><em>Easy on the day.</em></h2>
-          <p>Linen brings together breathable comfort and an effortless look. Start with a shirt, make it your own, and wear it your way.</p>
+          <h2>A better way<br /><em>to wear linen.</em></h2>
+          <p>Explore linen shirts and relaxed linen styles selected for everyday comfort. Find the pieces that fit your style, whether you are shopping for him or for her.</p>
           <a href="/shop" className="c-primary-button">SHOP THE LINEN EDIT <ArrowUpRight size={16} /></a>
           <span className="c-linen-index">CROPPTECH COMMERCE / COLLECTION 001</span>
         </div>
@@ -117,8 +117,8 @@ export default function HomePage() {
 
       <section className="c-highlights">
         <div className="c-section-heading">
-          <div><p className="c-kicker"><span /> THE CROPPTECH EDIT</p><h2>Find your <em>everyday.</em></h2></div>
-          <p className="c-heading-note">A considered selection of pieces to make getting dressed feel simple.</p>
+          <div><p className="c-kicker"><span /> THE CROPPTECH EDIT</p><h2>More ways to <em>wear linen.</em></h2></div>
+          <p className="c-heading-note">Explore linen shirts and coordinated linen looks for men and women.</p>
         </div>
         <div className="c-highlight-grid">
           {highlights.map((item) => (
