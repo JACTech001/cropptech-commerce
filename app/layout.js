@@ -5,7 +5,7 @@ export const metadata = {
   description:
     "Discover considered everyday fashion for men and women, led by the CroppTech linen collection.",
   applicationName: "CroppTech Commerce Store",
-  icons: { icon: "/favicon.ico" }
+  icons: { icon: "/brand/cropplogotextcommerce.jpg" }
 };
 
 export default function RootLayout({ children }) {
