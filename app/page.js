@@ -12,6 +12,8 @@ import {
   Instagram,
   Facebook,
 } from "lucide-react";
+import ProductAddButton from "../components/ProductAddButton";
+import { CartLink } from "../components/CartProvider";
 
 const collections = [
   {
@@ -95,10 +97,7 @@ export default function HomePage() {
           <button className="icon-button" aria-label="Search">
             <Search size={19} strokeWidth={1.6} />
           </button>
-          <button className="icon-button bag-button" aria-label="Shopping bag">
-            <ShoppingBag size={19} strokeWidth={1.6} />
-            <span className="bag-count">0</span>
-          </button>
+          <CartLink className="home-cart-link" />
         </div>
       </header>
 
