@@ -20,7 +20,7 @@ const collections = [
     description: "Relaxed essentials. Thoughtful details. Everyday ease.",
     image:
       "https://media.mango.com/is/image/punto/37091483-07-001?fit=crop&hei=2867&wid=2048",
-    href: "/shop"
+    href: "/shop?collection=men"
   },
   {
     number: "02",
@@ -28,7 +28,7 @@ const collections = [
     description: "Effortless silhouettes, made to move with you.",
     image:
       "https://saphed.com/cdn/shop/files/DSC_4416.jpg?v=1751714966&width=1800",
-    href: "/shop"
+    href: "/shop?collection=women"
   }
 ];
 
@@ -37,19 +37,22 @@ const categories = [
     name: "Linen Wear",
     detail: "Light layers, all day",
     image:
-      "https://stenstroms.com/pub_docs/files/ss26_men_linne-1-1.jpg"
+      "https://stenstroms.com/pub_docs/files/ss26_men_linne-1-1.jpg",
+    href: "/shop?collection=linen"
   },
   {
     name: "Linen Sets",
     detail: "A considered matching look",
     image:
-      "https://artclubandfriends.com/cdn/shop/files/4_51eccb70-9f0b-4cd4-9c66-0ba0e611e1b8.jpg?v=1763917917"
+      "https://artclubandfriends.com/cdn/shop/files/4_51eccb70-9f0b-4cd4-9c66-0ba0e611e1b8.jpg?v=1763917917",
+    href: "/shop?collection=linen&category=Sets"
   },
   {
     name: "Dresses & More",
     detail: "Easy, expressive pieces",
     image:
-      "https://klarra.com/cdn/shop/files/KLARRAJune220926.jpg?v=1756175516&width=2800"
+      "https://klarra.com/cdn/shop/files/KLARRAJune220926.jpg?v=1756175516&width=2800",
+    href: "/shop?collection=women&category=Dresses"
   }
 ];
 
@@ -82,9 +85,9 @@ export default function HomePage() {
         </a>
 
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"}>
-          <a href="/shop" onClick={closeMenu}>MEN</a>
-          <a href="/shop" onClick={closeMenu}>WOMEN</a>
-          <a href="/shop" onClick={closeMenu}>LINEN WEAR</a>
+          <a href="/shop?collection=men" onClick={closeMenu}>MEN</a>
+          <a href="/shop?collection=women" onClick={closeMenu}>WOMEN</a>
+          <a href="/shop?collection=linen" onClick={closeMenu}>LINEN WEAR</a>
           <a href="#story" onClick={closeMenu}>OUR STORY</a>
         </nav>
 
@@ -108,7 +111,7 @@ export default function HomePage() {
           <p className="hero-copy">
             Discover breathable linen wear for men and women, alongside other clothing styles and everyday wardrobe essentials. Find easy pieces for every look.
           </p>
-          <a className="light-button" href="/shop">
+          <a className="light-button" href="/shop?collection=linen">
             SHOP LINEN WEAR <ArrowUpRight size={16} />
           </a>
         </div>
@@ -160,7 +163,7 @@ export default function HomePage() {
             Start with the essential: linen wear designed for breathable comfort,
             relaxed movement and easy styling, season after season.
           </p>
-          <a href="/shop" className="text-link">SHOP LINEN WEAR <ArrowUpRight size={16} /></a>
+          <a href="/shop?collection=linen" className="text-link">SHOP LINEN WEAR <ArrowUpRight size={16} /></a>
           <span className="linen-caption">TEXTURE · MOVEMENT · SIMPLICITY</span>
         </div>
       </section>
@@ -171,11 +174,11 @@ export default function HomePage() {
             <p className="eyebrow">BEYOND THE LINEN SHIRT</p>
             <h2>More to<br /><em>make it yours.</em></h2>
           </div>
-          <a href="#linen" className="text-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></a>
+          <a href="/shop" className="text-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></a>
         </div>
         <div className="category-grid">
           {categories.map((category, index) => (
-            <a href="#linen" className="category-card" key={category.name}>
+            <a href={category.href} className="category-card" key={category.name}>
               <div className="category-image" style={{ backgroundImage: `url("${category.image}")` }}>
                 <span>0{index + 1}</span>
               </div>
@@ -230,7 +233,7 @@ export default function HomePage() {
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE. ALL RIGHTS RESERVED.</span>
-          <div><a href="#story">ABOUT</a><a href="#story">CONTACT</a><a href="#story">DELIVERY & RETURNS</a></div>
+          <div><a href="/about">ABOUT</a><a href="/contact">CONTACT</a><a href="/delivery-returns">DELIVERY & RETURNS</a><a href="/faq">FAQS</a><a href="/privacy">PRIVACY</a><a href="/terms">TERMS</a></div>
           <span>MADE TO MOVE WITH YOU.</span>
         </div>
       </footer>
