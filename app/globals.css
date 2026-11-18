@@ -392,3 +392,12 @@ h1, h2, h3, p { margin-top: 0; }
   .site-header .brand-lockup { justify-self: center; }
   .footer-brand-wordmark .brand-text-logo { width: 145px; }
 }
+
+
+/* Increase the original transparent brand wordmark size */
+.brand-text-logo { width: 210px; }
+.footer-brand-wordmark .brand-text-logo { width: 190px; }
+@media (max-width: 640px) {
+  .brand-text-logo { width: 165px; }
+  .footer-brand-wordmark .brand-text-logo { width: 175px; }
+}
