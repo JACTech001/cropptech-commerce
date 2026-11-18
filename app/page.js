@@ -78,8 +78,7 @@ export default function HomePage() {
         </button>
 
         <a href="/" className="brand-logo" aria-label="CroppTech Commerce home">
-          <Image src="/brand/cropplogotextcommerce.jpg" alt="CroppTech Commerce" width={520} height={150} priority className="brand-logo-full" />
-          <Image src="/brand/cropplogo.jpeg" alt="" width={120} height={120} priority className="brand-logo-symbol" />
+          <Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce logo" width={120} height={120} priority className="brand-logo-image" />
         </a>
 
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"}>
@@ -221,7 +220,7 @@ export default function HomePage() {
       <footer className="site-footer">
         <div className="footer-top">
           <a href="/" className="footer-brand-logo" aria-label="CroppTech Commerce home">
-            <Image src="/brand/cropplogotextcommerce.jpg" alt="CroppTech Commerce" width={520} height={150} className="footer-brand-logo-image" />
+            <Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce logo" width={120} height={120} className="footer-brand-logo-image" />
           </a>
           <p>BUSINESS MOVES WITH COMMERCE.</p>
           <div className="social-links">
