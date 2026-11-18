@@ -77,8 +77,15 @@ export default function HomePage() {
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        <a href="/" className="brand-wordmark" aria-label="CroppTech Commerce Store home">
-          <Image src="/brand/cropplogo.jpeg" alt="CroppTech symbol" fill priority sizes="190px" className="brand-logo-image" />
+        <a href="/" className="brand-lockup brand-wordmark" aria-label="CROPPTECH COMMERCE STORE home">
+          <span className="brand-symbol">
+            <Image src="/brand/cropplogo.jpeg" alt="" fill priority sizes="58px" className="brand-logo-image" />
+          </span>
+          <span className="brand-type" aria-hidden="true">
+            <span className="brand-name">CROPPTECH</span>
+            <span className="brand-commerce">COMMERCE</span>
+            <span className="brand-store">STORE</span>
+          </span>
         </a>
 
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"}>
@@ -219,8 +226,15 @@ export default function HomePage() {
 
       <footer className="site-footer">
         <div className="footer-top">
-          <a href="/" className="footer-brand-wordmark" aria-label="CroppTech Commerce Store home">
-            <Image src="/brand/cropplogo.jpeg" alt="CroppTech symbol" fill sizes="190px" className="brand-logo-image" />
+          <a href="/" className="brand-lockup footer-brand-wordmark" aria-label="CROPPTECH COMMERCE STORE home">
+            <span className="brand-symbol">
+              <Image src="/brand/cropplogo.jpeg" alt="" fill sizes="58px" className="brand-logo-image" />
+            </span>
+            <span className="brand-type" aria-hidden="true">
+              <span className="brand-name">CROPPTECH</span>
+              <span className="brand-commerce">COMMERCE</span>
+              <span className="brand-store">STORE</span>
+            </span>
           </a>
           <p>BUSINESS MOVES WITH COMMERCE.</p>
           <div className="social-links">
