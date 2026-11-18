@@ -77,8 +77,8 @@ export default function HomePage() {
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        <a href="/" className="brand-logo" aria-label="CroppTech Commerce home">
-          <Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce logo" width={120} height={120} priority className="brand-logo-image" />
+        <a href="/" className="brand-logo" aria-label="CroppTech Commerce Store home">
+          <Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce Store logo" width={120} height={120} priority className="brand-logo-image" />
         </a>
 
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"}>
@@ -213,14 +213,14 @@ export default function HomePage() {
             />
             <button type="submit" aria-label="Subscribe"><ArrowRight size={20} /></button>
           </div>
-          <small>By subscribing, you agree to receive updates from CroppTech Commerce.</small>
+          <small>By subscribing, you agree to receive updates from CroppTech Commerce Store.</small>
         </form>
       </section>
 
       <footer className="site-footer">
         <div className="footer-top">
-          <a href="/" className="footer-brand-logo" aria-label="CroppTech Commerce home">
-            <Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce logo" width={120} height={120} className="footer-brand-logo-image" />
+          <a href="/" className="footer-brand-logo" aria-label="CroppTech Commerce Store home">
+            <Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce Store logo" width={120} height={120} className="footer-brand-logo-image" />
           </a>
           <p>BUSINESS MOVES WITH COMMERCE.</p>
           <div className="social-links">
@@ -229,7 +229,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} CROP​​PTECH COMMERCE. ALL RIGHTS RESERVED.</span>
+          <span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE. ALL RIGHTS RESERVED.</span>
           <div><a href="#story">ABOUT</a><a href="#story">CONTACT</a><a href="#story">DELIVERY & RETURNS</a></div>
           <span>MADE TO MOVE WITH YOU.</span>
         </div>
