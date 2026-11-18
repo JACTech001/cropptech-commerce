@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowUpRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Mail, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useCart } from "../../components/CartProvider";
 export default function CartPage() {
   const { items, changeQuantity, removeItem, count, ready } = useCart();
@@ -18,7 +18,10 @@ export default function CartPage() {
         </div><button className="cart-remove" onClick={() => removeItem(item.key)} aria-label={"Remove " + item.name}><Trash2 size={16}/></button>
       </article>)}</div>
       <div className="cart-summary"><div><span>ITEMS IN CART</span><strong>{count}</strong></div><p>Ready to order? Continue to place your order request. Our team will confirm pricing, availability and payment details with you.</p>
-      <Link href={"/contact?cart=" + encodeURIComponent(items.map(item => item.name + " — Size " + item.size + " × " + item.quantity).join("; "))} className="cart-buy-link"><ShoppingBag size={17}/> PROCEED TO BUY <ArrowUpRight size={16}/></Link></div></>}
+      <div className="cart-actions">
+        <Link href={"/contact?intent=enquiry&cart=" + encodeURIComponent(items.map(item => item.name + " — Size " + item.size + " × " + item.quantity).join("; "))} className="cart-enquiry-link"><Mail size={17}/> ENQUIRE ABOUT MY CART <ArrowUpRight size={16}/></Link>
+        <Link href={"/contact?intent=order&cart=" + encodeURIComponent(items.map(item => item.name + " — Size " + item.size + " × " + item.quantity).join("; "))} className="cart-buy-link"><ShoppingBag size={17}/> PROCEED TO BUY <ArrowUpRight size={16}/></Link>
+      </div></div></>}
     </section>
     <footer className="shop-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><span>BUSINESS MOVES WITH COMMERCE.</span><Link href="/contact">CONTACT</Link></footer>
   </main>;
