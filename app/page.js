@@ -34,7 +34,7 @@ const collections = [
 
 const categories = [
   {
-    name: "Linen Shirts",
+    name: "Linen Wear",
     detail: "Light layers, all day",
     image:
       "https://stenstroms.com/pub_docs/files/ss26_men_linne-1-1.jpg"
@@ -64,7 +64,7 @@ export default function HomePage() {
       <div className="announcement">
         <span>THE LINEN SHIRT EDIT IS HERE</span>
         <span className="announcement-divider">/</span>
-        <span>SHOP LINEN SHIRTS</span>
+        <span>SHOP LINEN WEAR</span>
         <ArrowUpRight size={13} strokeWidth={1.8} />
       </div>
 
@@ -77,21 +77,14 @@ export default function HomePage() {
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        <a href="/" className="brand-lockup brand-wordmark" aria-label="CROPPTECH COMMERCE STORE home">
-          <span className="brand-symbol">
-            <Image src="/brand/cropplogo.jpeg" alt="" fill priority sizes="58px" className="brand-logo-image" />
-          </span>
-          <span className="brand-type" aria-hidden="true">
-            <span className="brand-name">CROPPTECH</span>
-            <span className="brand-commerce">COMMERCE</span>
-            <span className="brand-store">STORE</span>
-          </span>
+        <a href="/" className="brand-lockup brand-wordmark" aria-label="CROPPTECH COMMERCE home">
+          <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={170} height={49} priority className="brand-text-logo" />
         </a>
 
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"}>
           <a href="/shop" onClick={closeMenu}>MEN</a>
           <a href="/shop" onClick={closeMenu}>WOMEN</a>
-          <a href="/shop" onClick={closeMenu}>LINEN SHIRTS</a>
+          <a href="/shop" onClick={closeMenu}>LINEN WEAR</a>
           <a href="#story" onClick={closeMenu}>OUR STORY</a>
         </nav>
 
@@ -113,10 +106,10 @@ export default function HomePage() {
           <p className="eyebrow hero-eyebrow">CROPPTECH COMMERCE — THE LINEN SHIRT EDIT</p>
           <h1>The linen shirt<br /><em>starts here.</em></h1>
           <p className="hero-copy">
-            Discover breathable linen shirts for men and women. Easy silhouettes, natural texture and effortless everyday style.
+            Discover breathable linen wear for men and women. Easy silhouettes, natural texture and effortless everyday style.
           </p>
           <a className="light-button" href="/shop">
-            SHOP LINEN SHIRTS <ArrowUpRight size={16} />
+            SHOP LINEN WEAR <ArrowUpRight size={16} />
           </a>
         </div>
         <div className="hero-index"><span>01</span><i /> 03</div>
@@ -164,10 +157,10 @@ export default function HomePage() {
           <p className="eyebrow">THE SIGNATURE LINEN SHIRT EDIT</p>
           <h2>Made for<br /><em>the everyday.</em></h2>
           <p>
-            Start with the essential: linen shirts designed for breathable comfort,
+            Start with the essential: linen wear designed for breathable comfort,
             relaxed movement and easy styling, season after season.
           </p>
-          <a href="/shop" className="text-link">SHOP LINEN SHIRTS <ArrowUpRight size={16} /></a>
+          <a href="/shop" className="text-link">SHOP LINEN WEAR <ArrowUpRight size={16} /></a>
           <span className="linen-caption">TEXTURE · MOVEMENT · SIMPLICITY</span>
         </div>
       </section>
@@ -226,15 +219,8 @@ export default function HomePage() {
 
       <footer className="site-footer">
         <div className="footer-top">
-          <a href="/" className="brand-lockup footer-brand-wordmark" aria-label="CROPPTECH COMMERCE STORE home">
-            <span className="brand-symbol">
-              <Image src="/brand/cropplogo.jpeg" alt="" fill sizes="58px" className="brand-logo-image" />
-            </span>
-            <span className="brand-type" aria-hidden="true">
-              <span className="brand-name">CROPPTECH</span>
-              <span className="brand-commerce">COMMERCE</span>
-              <span className="brand-store">STORE</span>
-            </span>
+          <a href="/" className="brand-lockup footer-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
+            <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={170} height={49} className="brand-text-logo" />
           </a>
           <p>BUSINESS MOVES WITH COMMERCE.</p>
           <div className="social-links">
