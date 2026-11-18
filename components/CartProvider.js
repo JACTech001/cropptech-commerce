@@ -30,5 +30,5 @@ export function useCart() {
 }
 export function CartLink({ className = "shop-back" }) {
   const { count } = useCart();
-  return <a className={className} href="/cart" aria-label={`Shopping bag, ${count} items`} title={`Shopping bag (${count})}><ShoppingBag size={19} strokeWidth={1.7} /><span className="home-cart-count">{count}</span></a>;
+  return <a className={className} href="/cart" aria-label={`Shopping bag, ${count} items`} title={`Shopping bag (${count})`}><ShoppingBag size={19} strokeWidth={1.7} /><span className="home-cart-count">{count}</span></a>;
 }
