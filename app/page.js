@@ -19,7 +19,7 @@ const collections = [
     title: "The Men's Edit",
     description: "Relaxed essentials. Thoughtful details. Everyday ease.",
     image:
-      "https://media.mango.com/is/image/punto/37091483-07-001?fit=crop&hei=2867&wid=2048",
+      "https://images.pexels.com/photos/32825460/pexels-photo-32825460.jpeg?auto=compress&cs=tinysrgb&w=1400",
     href: "/shop?collection=men"
   },
   {
@@ -27,7 +27,7 @@ const collections = [
     title: "The Women's Edit",
     description: "Effortless silhouettes, made to move with you.",
     image:
-      "https://saphed.com/cdn/shop/files/DSC_4416.jpg?v=1751714966&width=1800",
+      "https://images.pexels.com/photos/5393448/pexels-photo-5393448.jpeg?auto=compress&cs=tinysrgb&w=1400",
     href: "/shop?collection=women"
   }
 ];
@@ -37,21 +37,21 @@ const categories = [
     name: "Linen Wear",
     detail: "Light layers, all day",
     image:
-      "https://stenstroms.com/pub_docs/files/ss26_men_linne-1-1.jpg",
+      "https://images.pexels.com/photos/9637778/pexels-photo-9637778.jpeg?auto=compress&cs=tinysrgb&w=1800",
     href: "/shop?collection=linen"
   },
   {
     name: "Linen Sets",
     detail: "A considered matching look",
     image:
-      "https://artclubandfriends.com/cdn/shop/files/4_51eccb70-9f0b-4cd4-9c66-0ba0e611e1b8.jpg?v=1763917917",
+      "https://images.pexels.com/photos/15923917/pexels-photo-15923917.jpeg?auto=compress&cs=tinysrgb&w=1400",
     href: "/shop?collection=linen&category=Sets"
   },
   {
     name: "Dresses & More",
     detail: "Easy, expressive pieces",
     image:
-      "https://klarra.com/cdn/shop/files/KLARRAJune220926.jpg?v=1756175516&width=2800",
+      "https://images.pexels.com/photos/6996128/pexels-photo-6996128.jpeg?auto=compress&cs=tinysrgb&w=1400",
     href: "/shop?collection=women&category=Dresses"
   }
 ];
@@ -166,6 +166,20 @@ export default function HomePage() {
           <a href="/shop?collection=linen" className="text-link">SHOP LINEN WEAR <ArrowUpRight size={16} /></a>
           <span className="linen-caption">TEXTURE · MOVEMENT · SIMPLICITY</span>
         </div>
+      </section>
+
+      <section className="linen-moodboard section-pad">
+        <div className="moodboard-heading">
+          <div><p className="eyebrow">LINEN, IN GOOD COMPANY</p><h2>Natural texture.<br /><em>Effortless presence.</em></h2></div>
+          <a href="/shop?collection=linen" className="text-link">EXPLORE LINEN WEAR <ArrowUpRight size={16} /></a>
+        </div>
+        <div className="moodboard-grid">
+          <a href="/shop?collection=linen" className="moodboard-tile moodboard-tile-tall"><img src="https://images.pexels.com/photos/32825460/pexels-photo-32825460.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Men's beige linen outfit" /><span>THE MEN'S LINEN EDIT</span></a>
+          <a href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/5393448/pexels-photo-5393448.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Woman wearing a relaxed linen outfit" /><span>SOFT, RELAXED SILHOUETTES</span></a>
+          <a href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/15923917/pexels-photo-15923917.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Neutral linen garments on wooden hangers" /><span>THE DETAILS</span></a>
+          <a href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/9637778/pexels-photo-9637778.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Men's white linen outfit" /><span>MADE FOR EVERYDAY</span></a>
+        </div>
+        <p className="moodboard-note">A visual style edit for inspiration. Product fabrics, styles and availability will be confirmed in the store catalogue.</p>
       </section>
 
       <section className="category-section section-pad" id="categories">
