@@ -563,3 +563,13 @@ h1, h2, h3, p { margin-top: 0; }
 .contact-selection-note { color:var(--muted); }
 .contact-back-row { margin-top:35px; }
 @media(max-width:640px) { .contact-channel-grid { grid-template-columns:1fr; gap:14px; } .contact-channel-card { padding:24px; } .contact-channel-card > p:not(.eyebrow) { min-height:0; } .contact-selection { padding:22px; } }
+
+
+/* Cart purchase action and shopping-bag icon */
+.shop-top-note { display:inline-flex; align-items:center; gap:8px; }
+.cart-page-title { display:flex; align-items:center; gap:13px; }
+.cart-page-title > svg { color:var(--red); flex-shrink:0; }
+.cart-buy-link { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; min-height:54px; padding:0 18px; background:var(--red); color:#fff; font-size:9px; font-weight:700; letter-spacing:1.1px; transition:background .2s ease; }
+.cart-buy-link:hover { background:var(--red-dark); }
+.cart-buy-link svg:first-child { margin-right:3px; }
+@media(max-width:640px) { .cart-page-title { gap:9px; } .cart-page-title > svg { width:27px; height:27px; } }
