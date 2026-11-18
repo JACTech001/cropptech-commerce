@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Search, SlidersHorizontal } from "lucide-react";
 
 const products = [
@@ -40,8 +41,7 @@ export default function ShopPage() {
       <header className="shop-topbar">
         <Link href="/" className="shop-back"><ArrowLeft size={16} /> HOME</Link>
         <Link href="/" className="shop-brand-wordmark" aria-label="CroppTech Commerce Store home">
-          <span className="wordmark-main">CROPP<span>TECH</span></span>
-          <span className="wordmark-sub">COMMERCE STORE</span>
+          <Image src="/brand/cropplogotextcommerce.jpg" alt="CroppTech Commerce Store" fill priority sizes="190px" className="brand-logo-image" />
         </Link>
         <span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span>
       </header>
