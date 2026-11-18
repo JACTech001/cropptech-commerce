@@ -25,12 +25,14 @@ const products = [
 
 const audiences = ["All", "Men", "Women", "Linen"];
 const categories = ["All categories", "Shirts", "T-Shirts", "Trousers", "Shorts", "Sets", "Dresses", "Skirts", "Jackets"];
+const sizes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];
 
 export default function ShopPage() {
   const [audience, setAudience] = useState("All");
   const [category, setCategory] = useState("All categories");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("featured");
+  const [selectedSizes, setSelectedSizes] = useState({});
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -101,13 +103,19 @@ export default function ShopPage() {
               </div>
               <div className="shop-product-info">
                 <div><p>{product.audience} / {product.category}</p><h3>{product.name}</h3><span>{product.tone} colour direction</span></div>
-                <span className="product-price-note">Details soon</span>
+                <span className="product-price-note">Price to be added</span>
+              </div>
+              <div className="product-size-picker">
+                <span className="product-size-label">SELECT SIZE</span>
+                <div className="product-size-options" role="group" aria-label={`Choose size for ${product.name}`}>
+                  {sizes.map((size) => <button key={size} type="button" className={selectedSizes[product.id] === size ? "selected" : ""} aria-pressed={selectedSizes[product.id] === size} onClick={() => setSelectedSizes((current) => ({ ...current, [product.id]: size }))}>{size}</button>)}
+                </div>
               </div>
             </article>
           ))}
           {visibleProducts.length === 0 && <div className="shop-empty"><h3>No styles found.</h3><p>Try another search or clear your filters.</p><button onClick={() => { setAudience("All"); setCategory("All categories"); setSearch(""); }}>CLEAR FILTERS</button></div>}
         </div>
-        <p className="catalogue-disclaimer">These are curated style previews, not confirmed stock listings. Product fabrics, sizes, prices and availability will be confirmed before orders open.</p>
+        <p className="catalogue-disclaimer">Choose a size for each piece. Product prices will be added soon.</p>
       </section>
       <section className="shop-bottom-cta"><p className="eyebrow">A MORE CONSIDERED WARDROBE</p><h2>Good style starts<br /><em>with the essentials.</em></h2><Link href="/" className="text-link">BACK TO HOME <ArrowUpRight size={16} /></Link></section>
       <footer className="shop-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><span>BUSINESS MOVES WITH COMMERCE.</span><Link href="/contact">CONTACT</Link></footer>
