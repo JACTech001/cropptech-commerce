@@ -106,7 +106,7 @@ export default function HomePage() {
           <p className="eyebrow hero-eyebrow">CROPPTECH COMMERCE — THE LINEN SHIRT EDIT</p>
           <h1>The linen shirt<br /><em>starts here.</em></h1>
           <p className="hero-copy">
-            Discover breathable linen wear for men and women. Easy silhouettes, natural texture and effortless everyday style.
+            Discover breathable linen wear for men and women, alongside other clothing styles and everyday wardrobe essentials. Find easy pieces for every look.
           </p>
           <a className="light-button" href="/shop">
             SHOP LINEN WEAR <ArrowUpRight size={16} />
