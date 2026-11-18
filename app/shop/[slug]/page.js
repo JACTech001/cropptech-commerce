@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Check } from "lucide-react";
 import StorePageShell from "../../../components/StorePageShell";
+import ProductAddButton from "../../../components/ProductAddButton";
+import { CartLink } from "../../../components/CartProvider";
 
 const products = [
   { id: 1, name: "Relaxed Linen Shirt", category: "Shirts", audience: "Men", tone: "Natural", image: "https://images.pexels.com/photos/32825460/pexels-photo-32825460/free-photo-of-stylish-male-model-in-beige-linen-outfit-outdoors.jpeg?auto=compress&cs=tinysrgb&w=1000", tag: "THE LINEN EDIT", isLinen: true },
@@ -47,7 +49,7 @@ export default async function ProductDetailPage({ params }) {
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" />
         </Link>
-        <span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span>
+        <div className="shop-header-actions"><span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span><CartLink className="shop-cart-link" /></div>
       </header>
 
       <div className="product-detail-wrap">
@@ -66,10 +68,7 @@ export default async function ProductDetailPage({ params }) {
               ? "Explore this piece from our linen collection, selected for a relaxed, considered everyday wardrobe. Contact our team to confirm availability, sizing and product details before ordering."
               : "Explore this piece from our everyday collection. Contact our team to confirm availability, sizing and product details before ordering."}
           </p>
-          <div className="product-detail-sizes">
-            <span className="product-size-label">AVAILABLE SIZE OPTIONS</span>
-            <div>{sizes.map((size) => <span key={size}>{size}</span>)}</div>
-          </div>
+          <ProductAddButton compact product={{ ...product, slug: slugify(product.name) }} />
           <p className="product-detail-note"><Check size={15} /> Size availability is confirmed when you enquire.</p>
           <Link className="product-enquire-link" href={`/contact?product=${encodeURIComponent(product.name)}`}>
             ENQUIRE ABOUT THIS PIECE <ArrowUpRight size={16} />
