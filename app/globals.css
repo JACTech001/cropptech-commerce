@@ -23,14 +23,27 @@ button { color: inherit; }
 .brand-wordmark, .footer-brand-wordmark, .shop-brand-wordmark {
   display: block;
   position: relative;
-  width: min(100%, 190px);
-  height: 58px;
-  min-width: 0;
-  border: 1px solid var(--red);
+  width: 68px;
+  height: 68px;
+  min-width: 68px;
+  border: 0;
   border-radius: 50%;
   overflow: hidden;
   background: var(--red);
+  box-shadow: 0 0 0 1px rgba(164, 0, 0, .12);
 }
+.brand-logo-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 2px;
+  transform: none;
+}
+.footer-brand-wordmark { width: 68px; height: 68px; }
+.shop-brand-wordmark { width: 68px; height: 68px; }
 .brand-logo-image {
   position: absolute;
   inset: 0;
@@ -40,8 +53,8 @@ button { color: inherit; }
   object-position: center center;
   transform: scale(1.42);
 }
-.footer-brand-wordmark { width: 190px; height: 58px; }
-.shop-brand-wordmark { width: 190px; height: 58px; }
+.footer-brand-wordmark { width: 68px; height: 68px; }
+.shop-brand-wordmark { width: 68px; height: 68px; }
 .main-nav { display: flex; justify-content: center; align-items: center; gap: clamp(18px, 3vw, 43px); }
 .main-nav a, .footer-bottom a { font-size: 9px; letter-spacing: 1.1px; font-weight: 600; transition: color .2s; }
 .main-nav a:hover, .footer-bottom a:hover { color: var(--red); }
@@ -52,7 +65,7 @@ button { color: inherit; }
 .mobile-menu-button { display: none; }
 
 .hero { height: min(690px, 69vw); min-height: 520px; position: relative; overflow: hidden; color: white; background: #777; }
-.hero-image { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=2200&q=90'); background-size: cover; background-position: center 38%; transform: scale(1.01); }
+.hero-image { position: absolute; inset: 0; background-image: url('https://stenstroms.com/pub_docs/files/ss26_men_linne-1-1.jpg'); background-size: cover; background-position: center 38%; transform: scale(1.01); }
 .hero-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,17,15,.65) 0%, rgba(20,17,15,.28) 48%, rgba(20,17,15,.02) 100%); }
 .hero-content { position: absolute; left: 10.2%; top: 50%; transform: translateY(-47%); max-width: 540px; }
 .eyebrow { font-size: 9px; font-weight: 600; letter-spacing: 2px; }
@@ -89,7 +102,7 @@ h1, h2, h3, p { margin-top: 0; }
 .collection-card-copy p { color: var(--muted); font-size: 11px; margin: 0; }
 
 .linen-section { min-height: 570px; display: grid; grid-template-columns: 1.1fr .9fr; background: var(--cream); }
-.linen-photo { min-height: 570px; background: url('https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=1400&q=85') center 40% / cover; }
+.linen-photo { min-height: 570px; background: url('https://forbesimg.com/imageserve/644086e2c9f66f7369913892/960x0.jpg?fit=scale') center 40% / cover; }
 .linen-copy { padding: 80px 12%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; position: relative; }
 .linen-copy h2 { font-size: clamp(54px, 6vw, 76px); margin-bottom: 24px; }
 .linen-copy > p:not(.eyebrow) { color: var(--muted); font-size: 12px; line-height: 1.9; max-width: 330px; margin-bottom: 28px; }
@@ -145,7 +158,7 @@ h1, h2, h3, p { margin-top: 0; }
   .announcement { font-size: 8px; height: 30px; }
   .site-header { height: 72px; grid-template-columns: 40px 1fr 70px; padding: 0 5%; }
   .mobile-menu-button { display: inline-flex; justify-self: start; }
-  .brand-wordmark { justify-self: center; width: min(100%, 150px); height: 46px; }
+  .brand-wordmark { justify-self: center; width: 54px; height: 54px; min-width: 54px; }
   .header-actions { gap: 12px; }
   .header-actions .icon-button:first-child { display: none; }
   .main-nav { display: none; position: absolute; left: 0; right: 0; top: 72px; padding: 22px 6%; background: var(--paper); border-top: 1px solid var(--line); box-shadow: 0 12px 20px rgba(0,0,0,.06); align-items: flex-start; flex-direction: column; gap: 21px; }
@@ -264,7 +277,7 @@ h1, h2, h3, p { margin-top: 0; }
 .shop-brand-wordmark .wordmark-main { font-size: 25px; }
 
 @media (max-width: 640px) {
-  .footer-brand-wordmark { width: 175px; height: 52px; }
-  .shop-brand-wordmark { width: 150px; height: 46px; }
+  .footer-brand-wordmark { width: 54px; height: 54px; min-width: 54px; }
+  .shop-brand-wordmark { width: 54px; height: 54px; min-width: 54px; }
 }
 
