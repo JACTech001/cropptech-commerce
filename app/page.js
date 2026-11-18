@@ -19,7 +19,7 @@ const collections = [
     title: "The Men's Edit",
     description: "Relaxed essentials. Thoughtful details. Everyday ease.",
     image:
-      "https://images.pexels.com/photos/32825460/pexels-photo-32825460.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/32825460/pexels-photo-32825460/free-photo-of-stylish-male-model-in-beige-linen-outfit-outdoors.jpeg?auto=compress&cs=tinysrgb&w=1400",
     href: "/shop?collection=men"
   },
   {
@@ -44,7 +44,7 @@ const categories = [
     name: "Linen Sets",
     detail: "A considered matching look",
     image:
-      "https://images.pexels.com/photos/15923917/pexels-photo-15923917.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/15923917/pexels-photo-15923917/free-photo-of-linen-clothes-on-clothes-hangers.jpeg?auto=compress&cs=tinysrgb&w=1400",
     href: "/shop?collection=linen&category=Sets"
   },
   {
