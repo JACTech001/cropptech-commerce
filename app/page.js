@@ -61,9 +61,9 @@ export default function HomePage() {
   return (
     <main>
       <div className="announcement">
-        <span>THE LINEN EDIT IS HERE</span>
+        <span>THE LINEN SHIRT EDIT IS HERE</span>
         <span className="announcement-divider">/</span>
-        <span>DISCOVER THE COLLECTION</span>
+        <span>SHOP LINEN SHIRTS</span>
         <ArrowUpRight size={13} strokeWidth={1.8} />
       </div>
 
@@ -84,7 +84,7 @@ export default function HomePage() {
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"}>
           <a href="/shop" onClick={closeMenu}>MEN</a>
           <a href="/shop" onClick={closeMenu}>WOMEN</a>
-          <a href="/shop" onClick={closeMenu}>LINEN COLLECTION</a>
+          <a href="/shop" onClick={closeMenu}>LINEN SHIRTS</a>
           <a href="#story" onClick={closeMenu}>OUR STORY</a>
         </nav>
 
@@ -103,14 +103,13 @@ export default function HomePage() {
         <div className="hero-image" />
         <div className="hero-shade" />
         <div className="hero-content">
-          <p className="eyebrow hero-eyebrow">CROPPT​​ECH COMMERCE — THE LINEN EDIT</p>
-          <h1>Made for the<br /><em>way you move.</em></h1>
+          <p className="eyebrow hero-eyebrow">CROPPTECH COMMERCE — THE LINEN SHIRT EDIT</p>
+          <h1>The linen shirt<br /><em>starts here.</em></h1>
           <p className="hero-copy">
-            Discover easy, considered fashion for every day.
-            Natural textures. Effortless silhouettes.
+            Discover breathable linen shirts for men and women. Easy silhouettes, natural texture and effortless everyday style.
           </p>
-          <a className="light-button" href="#linen">
-            EXPLORE THE COLLECTION <ArrowUpRight size={16} />
+          <a className="light-button" href="/shop">
+            SHOP LINEN SHIRTS <ArrowUpRight size={16} />
           </a>
         </div>
         <div className="hero-index"><span>01</span><i /> 03</div>
@@ -119,7 +118,7 @@ export default function HomePage() {
 
       <section className="intro-strip" id="story">
         <p>BUSINESS MOVES WITH COMMERCE.</p>
-        <span>Style that feels as good as it looks — thoughtfully selected for him and her.</span>
+        <span>Linen shirts take the lead. Explore relaxed fits and timeless styles for him and her.</span>
       </section>
 
       <section className="collection-section section-pad">
@@ -155,13 +154,13 @@ export default function HomePage() {
       <section className="linen-section" id="linen">
         <div className="linen-photo" />
         <div className="linen-copy">
-          <p className="eyebrow">THE COLLECTION TO LIVE IN</p>
-          <h2>Natural by<br /><em>nature.</em></h2>
+          <p className="eyebrow">THE SIGNATURE LINEN SHIRT EDIT</p>
+          <h2>Made for<br /><em>the everyday.</em></h2>
           <p>
-            Meet the linen edit: relaxed shapes, breathable textures and
-            timeless pieces that move easily from one moment to the next.
+            Start with the essential: linen shirts designed for breathable comfort,
+            relaxed movement and easy styling, season after season.
           </p>
-          <a href="/shop" className="text-link">SHOP THE LINEN EDIT <ArrowUpRight size={16} /></a>
+          <a href="/shop" className="text-link">SHOP LINEN SHIRTS <ArrowUpRight size={16} /></a>
           <span className="linen-caption">TEXTURE · MOVEMENT · SIMPLICITY</span>
         </div>
       </section>
@@ -169,8 +168,8 @@ export default function HomePage() {
       <section className="category-section section-pad" id="categories">
         <div className="section-heading category-heading">
           <div>
-            <p className="eyebrow">THE CROPPTECH SELECTION</p>
-            <h2>Pieces for<br /><em>every chapter.</em></h2>
+            <p className="eyebrow">BEYOND THE LINEN SHIRT</p>
+            <h2>More to<br /><em>make it yours.</em></h2>
           </div>
           <a href="#linen" className="text-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></a>
         </div>
@@ -190,7 +189,7 @@ export default function HomePage() {
       </section>
 
       <section className="brand-note">
-        <p className="eyebrow">THE CROP​​PTECH POINT OF VIEW</p>
+        <p className="eyebrow">THE CROPPTECH POINT OF VIEW</p>
         <h2>Less noise.<br /><em>More feeling.</em></h2>
         <p>Good style is not complicated. It is the confidence to keep things simple.</p>
         <a href="#story" className="light-button">GET TO KNOW US <ArrowUpRight size={16} /></a>
