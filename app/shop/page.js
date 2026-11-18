@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Search, SlidersHorizontal } from "lucide-react";
+import ProductAddButton from "../../components/ProductAddButton";
+import { CartLink } from "../../components/CartProvider";
 
 const products = [
   { id: 1, name: "Relaxed Linen Shirt", category: "Shirts", audience: "Men", tone: "Natural", image: "https://images.pexels.com/photos/32825460/pexels-photo-32825460/free-photo-of-stylish-male-model-in-beige-linen-outfit-outdoors.jpeg?auto=compress&cs=tinysrgb&w=1000", tag: "THE LINEN EDIT", isLinen: true },
@@ -69,7 +71,7 @@ export default function ShopPage() {
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" />
         </Link>
-        <span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span>
+        <div className="shop-header-actions"><span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span><CartLink className="shop-cart-link" /></div>
       </header>
       <section className="shop-hero">
         <div>
