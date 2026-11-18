@@ -17,7 +17,6 @@ import { CartLink } from "../components/CartProvider";
 
 const collections = [
   {
-    number: "01",
     title: "The Men's Edit",
     description: "Relaxed essentials. Thoughtful details. Everyday ease.",
     image:
@@ -25,7 +24,6 @@ const collections = [
     href: "/shop?collection=men"
   },
   {
-    number: "02",
     title: "The Women's Edit",
     description: "Effortless silhouettes, made to move with you.",
     image:
@@ -114,7 +112,6 @@ export default function HomePage() {
             SHOP LINEN WEAR <ArrowUpRight size={16} />
           </a>
         </div>
-        <div className="hero-index"><span>01</span><i /> 03</div>
         <p className="hero-side-note">A NEW PERSPECTIVE ON EVERYDAY STYLE</p>
       </section>
 
@@ -136,9 +133,8 @@ export default function HomePage() {
 
         <div className="collection-grid">
           {collections.map((item) => (
-            <a className="collection-card" href={item.href} key={item.number}>
+            <a className="collection-card" href={item.href} key={item.title}>
               <div className="collection-image" style={{ backgroundImage: `url("${item.image}")` }}>
-                <span className="collection-number">{item.number}</span>
                 <span className="round-arrow"><ArrowUpRight size={20} /></span>
               </div>
               <div className="collection-card-copy">
@@ -217,10 +213,9 @@ export default function HomePage() {
           <a href="/shop" className="text-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></a>
         </div>
         <div className="category-grid">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <a href={category.href} className="category-card" key={category.name}>
               <div className="category-image" style={{ backgroundImage: `url("${category.image}")` }}>
-                <span>0{index + 1}</span>
               </div>
               <div className="category-meta">
                 <div><h3>{category.name}</h3><p>{category.detail}</p></div>
