@@ -107,12 +107,8 @@ export default function ShopPage() {
                 <div><p>{product.audience} / {product.category}</p><h3><Link href={`/shop/${productSlug(product.name)}`}>{product.name}</Link></h3><span>{product.tone} colour direction</span></div>
                 <span className="product-price-note">Price to be added</span>
               </div>
-              <div className="product-size-picker">
-                <span className="product-size-label">SELECT SIZE</span>
-                <div className="product-size-options" role="group" aria-label={`Choose size for ${product.name}`}>
-                  {sizes.map((size) => <button key={size} type="button" className={selectedSizes[product.id] === size ? "selected" : ""} aria-pressed={selectedSizes[product.id] === size} onClick={() => setSelectedSizes((current) => ({ ...current, [product.id]: size }))}>{size}</button>)}
-                </div>
-              </div>
+              <ProductAddButton product={{ ...product, slug: productSlug(product.name) }} />
+
             </article>
           ))}
           {visibleProducts.length === 0 && <div className="shop-empty"><h3>No styles found.</h3><p>Try another search or clear your filters.</p><button onClick={() => { setAudience("All"); setCategory("All categories"); setSearch(""); }}>CLEAR FILTERS</button></div>}
