@@ -27,7 +27,8 @@ const products = [
 
 const audiences = ["All", "Men", "Women", "Linen"];
 const categories = ["All categories", "Shirts", "T-Shirts", "Trousers", "Shorts", "Sets", "Dresses", "Skirts", "Jackets"];
-const sizes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];\nconst productSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const sizes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];
+const productSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 export default function ShopPage() {
   const [audience, setAudience] = useState("All");
