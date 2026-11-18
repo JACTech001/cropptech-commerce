@@ -40,13 +40,13 @@ export default function ShopPage() {
     <main className="shop-page">
       <header className="shop-topbar">
         <Link href="/" className="shop-back"><ArrowLeft size={16} /> HOME</Link>
-        <Link href="/" className="shop-brand-logo" aria-label="CroppTech Commerce home"><Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce logo" width={120} height={120} /></Link>
+        <Link href="/" className="shop-brand-logo" aria-label="CroppTech Commerce Store home"><Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce Store logo" width={120} height={120} /></Link>
         <span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span>
       </header>
 
       <section className="shop-hero">
         <div>
-          <p className="eyebrow">CROPPT​ECH COMMERCE / COLLECTIONS</p>
+          <p className="eyebrow">CROPPTECH COMMERCE STORE / COLLECTIONS</p>
           <h1>Find your<br /><em>everyday edit.</em></h1>
           <p>Explore relaxed silhouettes and considered essentials for him and her, led by our linen collection.</p>
         </div>
@@ -88,7 +88,7 @@ export default function ShopPage() {
       </section>
 
       <section className="shop-bottom-cta"><p className="eyebrow">A MORE CONSIDERED WARDROBE</p><h2>Good style starts<br /><em>with the essentials.</em></h2><Link href="/" className="text-link">BACK TO HOME <ArrowUpRight size={16} /></Link></section>
-      <footer className="shop-footer"><span>© {new Date().getFullYear()} CROP​​PTECH COMMERCE</span><span>BUSINESS MOVES WITH COMMERCE.</span></footer>
+      <footer className="shop-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><span>BUSINESS MOVES WITH COMMERCE.</span></footer>
     </main>
   );
 }
