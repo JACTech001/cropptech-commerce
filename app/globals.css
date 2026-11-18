@@ -253,3 +253,8 @@ h1, h2, h3, p { margin-top: 0; }
   .brand-logo { width: 48px; height: 48px; justify-self: center; }
   .footer-brand-logo { width: 56px; height: 56px; }
 }
+
+
+/* Circular CroppTech logo in the shop header */
+.shop-brand-logo { display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; }
+.shop-brand-logo img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid var(--red); box-shadow: 0 2px 9px rgba(164,0,0,.2); }
