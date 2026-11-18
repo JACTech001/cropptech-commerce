@@ -9,7 +9,9 @@ export default async function ContactPage({ searchParams }) {
   const product = typeof params?.product === "string" ? params.product : "";
   const cart = typeof params?.cart === "string" ? params.cart : "";
   const selection = cart || (product ? product : "");
-  const subject = selection ? "CroppTech order enquiry" : "Enquiry for CroppTech Commerce Store";
+  const intent = typeof params?.intent === "string" ? params.intent : "enquiry";
+  const isOrder = intent === "order";
+  const subject = selection ? (isOrder ? "CroppTech order request" : "CroppTech product enquiry") : "Enquiry for CroppTech Commerce Store";
   const body = selection
     ? "Hello CroppTech Commerce Store,\n\nI would like to enquire about the following selection:\n" + selection + "\n\nPlease confirm availability and pricing.\n\nThank you."
     : "Hello CroppTech Commerce Store,\n\nI would like to make an enquiry.\n\nThank you.";
@@ -22,7 +24,7 @@ export default async function ContactPage({ searchParams }) {
           <span className="contact-channel-icon"><Mail size={22} /></span>
           <p className="eyebrow">EMAIL US</p>
           <h2>Let's talk business.</h2>
-          <p>Send us product questions, order enquiries or partnership requests. For shopping-bag enquiries, your selected items can be included in the email.</p>
+          <p>Send us product questions, order enquiries or partnership requests. Your selected items are included in the pre-filled email.</p>
           <a className="contact-channel-link" href={emailHref}>Cropptechcommercestores@gmail.com <ArrowUpRight size={16} /></a>
         </article>
         <article className="contact-channel-card">
@@ -34,7 +36,7 @@ export default async function ContactPage({ searchParams }) {
         </article>
       </div>
       {selection && <div className="contact-selection">
-        <p className="eyebrow"><ShoppingBag size={14} /> YOUR ENQUIRY SELECTION</p>
+        <p className="eyebrow"><ShoppingBag size={14} /> {isOrder ? "YOUR ORDER REQUEST" : "YOUR ENQUIRY SELECTION"}</p>
         <p>{selection}</p>
         <p className="contact-selection-note">Your selection is also included in the pre-filled email when you choose Email us.</p>
       </div>}
