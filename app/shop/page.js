@@ -40,7 +40,7 @@ export default function ShopPage() {
     <main className="shop-page">
       <header className="shop-topbar">
         <Link href="/" className="shop-back"><ArrowLeft size={16} /> HOME</Link>
-        <Link href="/" className="shop-brand-logo" aria-label="CroppTech Commerce home"><Image src="/brand/cropplogotextcommerce.jpg" alt="CroppTech Commerce" width={520} height={150} /></Link>
+        <Link href="/" className="shop-brand-logo" aria-label="CroppTech Commerce home"><Image src="/brand/cropplogo.jpeg" alt="CroppTech Commerce logo" width={120} height={120} /></Link>
         <span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span>
       </header>
 
