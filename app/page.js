@@ -10,7 +10,6 @@ import {
   X,
   Instagram,
   Facebook,
-  ChevronDown
 } from "lucide-react";
 
 const collections = [
@@ -20,7 +19,7 @@ const collections = [
     description: "Relaxed essentials. Thoughtful details. Everyday ease.",
     image:
       "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=1200&q=85",
-    href: "#mens"
+    href: "/shop"
   },
   {
     number: "02",
@@ -28,7 +27,7 @@ const collections = [
     description: "Effortless silhouettes, made to move with you.",
     image:
       "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=85",
-    href: "#womens"
+    href: "/shop"
   }
 ];
 
@@ -83,9 +82,9 @@ export default function HomePage() {
         </a>
 
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"}>
-          <a href="#mens" onClick={closeMenu}>MEN</a>
-          <a href="#womens" onClick={closeMenu}>WOMEN</a>
-          <a href="#linen" onClick={closeMenu}>LINEN COLLECTION</a>
+          <a href="/shop" onClick={closeMenu}>MEN</a>
+          <a href="/shop" onClick={closeMenu}>WOMEN</a>
+          <a href="/shop" onClick={closeMenu}>LINEN COLLECTION</a>
           <a href="#story" onClick={closeMenu}>OUR STORY</a>
         </nav>
 
@@ -162,7 +161,7 @@ export default function HomePage() {
             Meet the linen edit: relaxed shapes, breathable textures and
             timeless pieces that move easily from one moment to the next.
           </p>
-          <a href="#categories" className="text-link">DISCOVER LINEN <ArrowUpRight size={16} /></a>
+          <a href="/shop" className="text-link">SHOP THE LINEN EDIT <ArrowUpRight size={16} /></a>
           <span className="linen-caption">TEXTURE · MOVEMENT · SIMPLICITY</span>
         </div>
       </section>
@@ -173,7 +172,7 @@ export default function HomePage() {
             <p className="eyebrow">THE CROPPTECH SELECTION</p>
             <h2>Pieces for<br /><em>every chapter.</em></h2>
           </div>
-          <a href="#linen" className="text-link">VIEW ALL COLLECTIONS <ArrowUpRight size={16} /></a>
+          <a href="#linen" className="text-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></a>
         </div>
         <div className="category-grid">
           {categories.map((category, index) => (
