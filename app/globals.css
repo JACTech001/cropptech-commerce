@@ -356,3 +356,39 @@ h1, h2, h3, p { margin-top: 0; }
   .site-header .brand-lockup { justify-self: center; }
   .footer-brand-wordmark .brand-symbol { width: 48px; height: 48px; min-width: 48px; }
 }
+
+
+/* Use the original transparent CroppTech Commerce wordmark */
+.brand-lockup.brand-wordmark,
+.brand-lockup.footer-brand-wordmark,
+.brand-lockup.shop-brand-wordmark {
+  display: flex;
+  align-items: center;
+  justify-self: start;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+.brand-text-logo {
+  display: block;
+  width: 170px;
+  height: auto;
+  object-fit: contain;
+}
+.footer-brand-wordmark {
+  padding: 8px 12px;
+  border-radius: 5px !important;
+  background: #fbfaf7 !important;
+}
+.shop-brand-wordmark { justify-self: center; }
+@media (max-width: 640px) {
+  .brand-text-logo { width: 132px; }
+  .site-header .brand-lockup { justify-self: center; }
+  .footer-brand-wordmark .brand-text-logo { width: 145px; }
+}
