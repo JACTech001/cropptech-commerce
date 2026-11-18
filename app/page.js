@@ -19,7 +19,7 @@ const collections = [
     title: "The Men's Edit",
     description: "Relaxed essentials. Thoughtful details. Everyday ease.",
     image:
-      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=1200&q=85",
+      "https://media.mango.com/is/image/punto/37091483-07-001?fit=crop&hei=2867&wid=2048",
     href: "/shop"
   },
   {
@@ -27,7 +27,7 @@ const collections = [
     title: "The Women's Edit",
     description: "Effortless silhouettes, made to move with you.",
     image:
-      "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=85",
+      "https://saphed.com/cdn/shop/files/DSC_4416.jpg?v=1751714966&width=1800",
     href: "/shop"
   }
 ];
@@ -37,19 +37,19 @@ const categories = [
     name: "Linen Shirts",
     detail: "Light layers, all day",
     image:
-      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&q=85"
+      "https://stenstroms.com/pub_docs/files/ss26_men_linne-1-1.jpg"
   },
   {
     name: "Linen Sets",
     detail: "A considered matching look",
     image:
-      "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?auto=format&fit=crop&w=900&q=85"
+      "https://artclubandfriends.com/cdn/shop/files/4_51eccb70-9f0b-4cd4-9c66-0ba0e611e1b8.jpg?v=1763917917"
   },
   {
     name: "Dresses & More",
     detail: "Easy, expressive pieces",
     image:
-      "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=900&q=85"
+      "https://klarra.com/cdn/shop/files/KLARRAJune220926.jpg?v=1756175516&width=2800"
   }
 ];
 
