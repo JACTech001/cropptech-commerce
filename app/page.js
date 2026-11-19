@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   ArrowRight,
-  ArrowUpRight,
   Menu,
   Search,
   X,
@@ -106,15 +105,15 @@ export default function HomePage() {
         <button className="mobile-menu-backdrop" aria-label="Close navigation menu" onClick={closeMenu} tabIndex={menuOpen ? 0 : -1} style={{display:menuOpen ? "block" : "none"}} />
         <nav id="mobile-navigation" className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
           <div className="mobile-menu-heading"><span>EXPLORE CROPPTECH</span><button type="button" className="mobile-menu-close" onClick={closeMenu} aria-label="Close menu"><X size={21} /></button></div>
-          <a href="/shop?collection=men" onClick={closeMenu}>MEN <ArrowUpRight size={15} /></a>
-          <a href="/shop?collection=women" onClick={closeMenu}>WOMEN <ArrowUpRight size={15} /></a>
-          <a href="/shop?collection=linen" onClick={closeMenu}>LINEN WEAR <ArrowUpRight size={15} /></a>
-          <a href="/shop" onClick={closeMenu}>SHOP ALL <ArrowUpRight size={15} /></a>
+          <a href="/shop?collection=men" onClick={closeMenu}>MEN</a>
+          <a href="/shop?collection=women" onClick={closeMenu}>WOMEN</a>
+          <a href="/shop?collection=linen" onClick={closeMenu}>LINEN WEAR</a>
+          <a href="/shop" onClick={closeMenu}>SHOP ALL</a>
           <div className="mobile-menu-divider" />
-          <a href="/about" onClick={closeMenu}>OUR STORY <ArrowUpRight size={15} /></a>
-          <a href="/contact" onClick={closeMenu}>CONTACT <ArrowUpRight size={15} /></a>
-          <a href="/faq" onClick={closeMenu}>HELP & FAQ <ArrowUpRight size={15} /></a>
-          <div className="mobile-menu-footer"><span>BUSINESS MOVES WITH COMMERCE.</span><a href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>FOLLOW ON TIKTOK <ArrowUpRight size={14} /></a></div>
+          <a href="/about" onClick={closeMenu}>OUR STORY</a>
+          <a href="/contact" onClick={closeMenu}>CONTACT</a>
+          <a href="/faq" onClick={closeMenu}>HELP & FAQ</a>
+          <div className="mobile-menu-footer"><span>BUSINESS MOVES WITH COMMERCE.</span><a href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>FOLLOW ON TIKTOK</a></div>
         </nav>
 
         <div className="header-actions">
