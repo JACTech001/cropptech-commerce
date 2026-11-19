@@ -9,8 +9,8 @@ import { CartLink } from "../../components/CartProvider";
 import { products, productSlug } from "../../data/products";
 import { CurrencySelector, ProductPrice } from "../../components/CurrencyProvider";
 
-const audiences = ["All", "Men", "Women", "Linen"];
-const categories = ["All categories", "Shirts", "T-Shirts", "Trousers", "Shorts", "Sets", "Dresses", "Skirts", "Jackets"];
+const audiences = ["All", "Men", "Women"];
+const categories = ["All categories", "Shirts", "Trousers", "Shorts", "Sets", "Dresses", "Skirts"];
 const sizes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];
 
 export default function ShopPage() {
@@ -23,14 +23,14 @@ export default function ShopPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const collection = (params.get("collection") || "all").toLowerCase();
-    if (["men", "women", "linen"].includes(collection)) setAudience(collection.charAt(0).toUpperCase() + collection.slice(1));
+    if (["men", "women"].includes(collection)) setAudience(collection.charAt(0).toUpperCase() + collection.slice(1));
     const selectedCategory = params.get("category");
     if (selectedCategory && categories.includes(selectedCategory)) setCategory(selectedCategory);
   }, []);
 
   const visibleProducts = useMemo(() => {
     let list = products.filter((product) => {
-      const collectionMatch = audience === "All" || (audience === "Linen" ? product.isLinen : product.audience === audience);
+      const collectionMatch = audience === "All" || product.audience === audience;
       const categoryMatch = category === "All categories" || product.category === category;
       const searchMatch = [product.name, product.tone, product.category].some((value) => value.toLowerCase().includes(search.toLowerCase()));
       return collectionMatch && categoryMatch && searchMatch;
@@ -61,9 +61,9 @@ export default function ShopPage() {
         <div>
           <p className="eyebrow">CROPPTECH COMMERCE STORE / COLLECTIONS</p>
           <h1>{audience === "All" ? <>Find your<br /><em>everyday edit.</em></> : audience === "Linen" ? <>The linen<br /><em>collection.</em></> : <>The {audience.toLowerCase()}'s<br /><em>edit.</em></>}</h1>
-          <p>{audience === "Men" ? "Explore clothing selected for men, from relaxed linen essentials to everyday wardrobe staples." : audience === "Women" ? "Explore clothing selected for women, from effortless linen pieces to everyday wardrobe staples." : audience === "Linen" ? "One considered linen collection for both men and women. Explore breathable pieces, relaxed shapes and natural textures." : "Explore considered clothing for men and women, led by our shared linen collection."}</p>
+          <p>{audience === "Men" ? "Explore breathable linen pieces for men, with relaxed shapes and natural textures." : audience === "Women" ? "Explore considered linen wear for women, from easy silhouettes to matching sets." : "A considered collection of linen wear for men and women. Discover breathable pieces, relaxed shapes and natural textures."}</p>
         </div>
-        <span className="shop-hero-index">LINEN & EVERYDAY</span>
+        <span className="shop-hero-index">LINEN WEAR / MEN & WOMEN</span>
       </section>
       <section className="shop-catalogue">
         <div className="catalogue-heading">
@@ -97,7 +97,7 @@ export default function ShopPage() {
           ))}
           {visibleProducts.length === 0 && <div className="shop-empty"><h3>No styles found.</h3><p>Try another search or clear your filters.</p><button onClick={() => { setAudience("All"); setCategory("All categories"); setSearch(""); }}>CLEAR FILTERS</button></div>}
         </div>
-        <p className="catalogue-disclaimer">Choose a size for each piece. Prices shown where confirmed. Product details and availability are being completed.</p>
+        <p className="catalogue-disclaimer">Choose a size for each piece. Every piece in this collection is selected as linen wear. Product details and availability are being completed.</p>
       </section>
       <section className="shop-bottom-cta"><p className="eyebrow">A MORE CONSIDERED WARDROBE</p><h2>Good style starts<br /><em>with the essentials.</em></h2><Link href="/" className="text-link">BACK TO HOME <ArrowUpRight size={16} /></Link></section>
       <footer className="shop-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><span>BUSINESS MOVES WITH COMMERCE.</span><Link href="/contact">CONTACT</Link></footer>
