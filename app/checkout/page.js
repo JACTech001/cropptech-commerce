@@ -20,6 +20,7 @@ export default function CheckoutPage() {
     const product = products.find(entry => entry.id === item.id);
     return { ...item, price: product?.price ?? null };
   }), [selectedItems]);
+  const subtotal = lines.reduce((sum, item) => sum + ((item.price || 0) * item.quantity), 0);
 
   function update(event) {
     setForm(current => ({ ...current, [event.target.name]: event.target.value }));
@@ -107,7 +108,7 @@ export default function CheckoutPage() {
             <div className="checkout-summary-image"><Image src={item.image} alt={item.name} fill sizes="76px" style={{objectFit:"cover"}}/></div>
             <div className="checkout-summary-copy"><h3>{item.name}</h3><p>Size {item.size} · Qty {item.quantity}</p><ProductPrice amount={item.price} /></div>
           </article>)}</div>
-          <div className="checkout-summary-foot"><span>DELIVERY</span><strong>To be confirmed</strong></div>
+          <div className="checkout-summary-foot"><span>ITEMS SUBTOTAL</span><strong><ProductPrice amount={subtotal} /></strong></div>\n          <div className="checkout-summary-foot"><span>DELIVERY</span><strong>To be confirmed</strong></div>
           <div className="checkout-summary-foot"><span>PAYMENT</span><strong>Confirmed after review</strong></div>
           <Link href="/cart" className="checkout-edit-link"><ArrowLeft size={14}/> EDIT YOUR BAG</Link>
         </aside>
