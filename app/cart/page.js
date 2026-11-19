@@ -3,9 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useCart } from "../../components/CartProvider";
+import { products } from "../../data/products";
+import { ProductPrice } from "../../components/CurrencyProvider";
 
 export default function CartPage() {
   const { items, changeQuantity, removeItem, toggleItem, changeSize, selectedItems, selectedCount, count, ready } = useCart();
+  const selectedSubtotal = selectedItems.reduce((sum, item) => sum + ((products.find(product => product.id === item.id)?.price || 0) * item.quantity), 0);
   return <main className="cart-page">
     <header className="shop-topbar"><Link href="/shop" className="shop-back"><ArrowLeft size={16}/> CONTINUE SHOPPING</Link><Link href="/" className="brand-lockup shop-brand-wordmark">CROPPTECH</Link><span className="shop-top-note"><ShoppingBag size={14}/> YOUR CART</span></header>
     <section className="cart-content">
@@ -20,7 +23,7 @@ export default function CartPage() {
           <div className="cart-quantity"><button aria-label="Decrease quantity" onClick={() => changeQuantity(item.key, item.quantity - 1)}><Minus size={13}/></button><span>{item.quantity}</span><button aria-label="Increase quantity" onClick={() => changeQuantity(item.key, item.quantity + 1)}><Plus size={13}/></button></div>
         </div><button className="cart-remove" onClick={() => removeItem(item.key)} aria-label={"Remove " + item.name}><Trash2 size={16}/></button>
       </article>)}</div>
-      <div className="cart-summary"><div><span>SELECTED ITEMS / {count} IN BAG</span><strong>{selectedCount}</strong></div><p>Ready to order? Continue to place your order request. Our team will confirm pricing, availability and payment details with you.</p>
+      <div className="cart-summary"><div><span>SELECTED ITEMS / {count} IN BAG</span><strong>{selectedCount}</strong></div><div className="cart-subtotal"><span>SELECTED SUBTOTAL</span><strong><ProductPrice amount={selectedSubtotal} /></strong></div><p>Delivery is calculated separately. Our team will confirm stock availability, final pricing and payment details with you.</p>
       {selectedItems.length ? <Link href="/checkout" className="cart-buy-link"><ShoppingBag size={17}/> PROCEED TO BUY <ArrowUpRight size={16}/></Link> : <p className="cart-no-selection">Select at least one item to continue.</p>}</div></>}
     </section>
     <footer className="shop-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><span>BUSINESS MOVES WITH COMMERCE.</span><Link href="/contact">CONTACT</Link></footer>
