@@ -86,9 +86,8 @@ export function useCurrency() {
 export function CurrencySelector() {
   const { currency, chooseCurrency, currencies, ratesReady, rates } = useCurrency();
   return (
-    <label className="currency-selector" aria-label="Display currency">
-      <span>DISPLAY</span>
-      <select value={currency} onChange={(event) => chooseCurrency(event.target.value)} aria-label="Choose display currency">
+    <label className="currency-selector" aria-label="Currency">
+      <select value={currency} onChange={(event) => chooseCurrency(event.target.value)} aria-label="Choose currency">
         {currencies.map((item) => <option key={item.code} value={item.code}>{item.code}</option>)}
       </select>
       {currency !== "NGN" && !rates[currency] && ratesReady ? <span className="currency-unavailable">RATE N/A</span> : null}
