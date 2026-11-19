@@ -60,14 +60,14 @@ export default function ShopPage() {
       <section className="shop-hero">
         <div>
           <p className="eyebrow">CROPPTECH COMMERCE STORE / COLLECTIONS</p>
-          <h1>{audience === "All" ? <>Find your<br /><em>everyday edit.</em></> : audience === "Linen" ? <>The linen<br /><em>collection.</em></> : <>The {audience.toLowerCase()}'s<br /><em>edit.</em></>}</h1>
+          <h1>{audience === "All" ? <>The linen<br /><em>collection.</em></> : <>The {audience.toLowerCase()}&apos;s<br /><em>linen edit.</em></>}</h1>
           <p>{audience === "Men" ? "Explore breathable linen pieces for men, with relaxed shapes and natural textures." : audience === "Women" ? "Explore considered linen wear for women, from easy silhouettes to matching sets." : "A considered collection of linen wear for men and women. Discover breathable pieces, relaxed shapes and natural textures."}</p>
         </div>
         <span className="shop-hero-index">LINEN WEAR / MEN & WOMEN</span>
       </section>
       <section className="shop-catalogue">
         <div className="catalogue-heading">
-          <div><p className="eyebrow">THE COLLECTION</p><h2>{audience === "All" ? "Shop all pieces" : audience === "Linen" ? "Shop linen wear" : "Shop " + audience.toLowerCase() + "'s pieces"} <span>({visibleProducts.length})</span></h2></div>
+          <div><p className="eyebrow">THE COLLECTION</p><h2>{audience === "All" ? "Shop linen wear" : "Shop " + audience.toLowerCase() + " linen"} <span>({visibleProducts.length})</span></h2></div>
           <label className="shop-search"><Search size={17} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search styles or colours" aria-label="Search styles or colours" /></label>
         </div>
         <div className="shop-controls">
