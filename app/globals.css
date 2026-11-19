@@ -794,3 +794,8 @@ h1, h2, h3, p { margin-top: 0; }
 
 /* Cart page header item count */
 .cart-header-count { display:inline-flex; align-items:center; justify-content:center; min-width:16px; height:16px; margin-left:2px; color:var(--red); font-size:10px; font-weight:700; line-height:1; }
+
+
+/* Keep navigation labels and their mobile arrows on a single line */
+.main-nav a { white-space: nowrap; flex-shrink: 0; }
+.mobile-nav-arrow { flex: 0 0 auto; white-space: nowrap; }
