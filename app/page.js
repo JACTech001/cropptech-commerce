@@ -9,8 +9,7 @@ import {
   Search,
   ShoppingBag,
   X,
-  Instagram,
-  Facebook,
+  Music2,
 } from "lucide-react";
 import ProductAddButton from "../components/ProductAddButton";
 import { CartLink } from "../components/CartProvider";
@@ -61,8 +60,17 @@ const categories = [
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
 
   const closeMenu = () => setMenuOpen(false);
+
+  function requestUpdates(event) {
+    event.preventDefault();
+    const subject = encodeURIComponent("CroppTech Commerce Store updates");
+    const body = encodeURIComponent("Please add this email address to the store updates list when subscriptions are available:\\n\\n" + email);
+    window.location.href = "mailto:Cropptechcommercestores@gmail.com?subject=" + subject + "&body=" + body;
+    setNewsletterMessage("Your email app should open with your request. Send the email to complete it.");
+  }
 
   return (
     <main>
@@ -240,8 +248,8 @@ export default function HomePage() {
           <p className="eyebrow">A NOTE FROM US</p>
           <h2>Stay in the<br /><em>know.</em></h2>
         </div>
-        <form className="newsletter-form" onSubmit={(event) => event.preventDefault()}>
-          <label htmlFor="newsletter-email">New collections, considered edits and updates. Straight to your inbox.</label>
+        <form className="newsletter-form" onSubmit={requestUpdates}>
+          <label htmlFor="newsletter-email">Want to hear about new linen collections? Leave your email and send us an update request.</label>
           <div className="email-field">
             <input
               id="newsletter-email"
@@ -253,7 +261,7 @@ export default function HomePage() {
             />
             <button type="submit" aria-label="Subscribe"><ArrowRight size={20} /></button>
           </div>
-          <small>By subscribing, you agree to receive updates from CroppTech Commerce Store.</small>
+          <small>No automatic subscription yet. Your email app will open so you can send the request.</small>\n          {newsletterMessage && <small role="status">{newsletterMessage}</small>}
         </form>
       </section>
 
