@@ -7,7 +7,6 @@ import {
   ArrowUpRight,
   Menu,
   Search,
-  ShoppingBag,
   X,
   Music2,
 } from "lucide-react";
