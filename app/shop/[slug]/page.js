@@ -65,14 +65,11 @@ export default async function ProductDetailPage({ params }) {
           <div className="product-detail-rule" />
           <p className="product-detail-description">
             {product.isLinen
-              ? "Explore this piece from our linen collection, selected for a relaxed, considered everyday wardrobe. Contact our team to confirm availability, sizing and product details before ordering."
-              : "Explore this piece from our everyday collection. Contact our team to confirm availability, sizing and product details before ordering."}
+              ? "Explore this piece from our linen collection, selected for a relaxed, considered everyday wardrobe. Choose your size to add it to your shopping bag."
+              : "Explore this piece from our everyday collection. Choose your size to add it to your shopping bag."}
           </p>
           <ProductAddButton compact product={{ ...product, slug: slugify(product.name) }} />
-          <p className="product-detail-note"><Check size={15} /> Size availability is confirmed when you enquire.</p>
-          <Link className="product-enquire-link" href={`/contact?product=${encodeURIComponent(product.name)}`}>
-            ENQUIRE ABOUT THIS PIECE <ArrowUpRight size={16} />
-          </Link>
+          <p className="product-detail-note"><Check size={15} /> Select your size, then add this piece to your shopping bag.</p>
           <Link href="/shop" className="product-back-link"><ArrowLeft size={14} /> CONTINUE SHOPPING</Link>
         </section>
       </div>
