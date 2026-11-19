@@ -88,8 +88,10 @@ export default function ShopPage() {
                 <span className="shop-product-view">{product.audience.toUpperCase()} / {product.category.toUpperCase()} <ArrowUpRight size={14} /></span>
               </div>
               <div className="shop-product-info">
-                <div><p>{product.audience} / {product.category}</p><h3><Link href={`/shop/${productSlug(product.name)}`}>{product.name}</Link></h3><span>{product.tone} colour direction</span></div>
-                <ProductPrice amount={product.price} className="product-price-note" />
+                <p className="shop-product-category">{product.audience} / {product.category}</p>
+                <h3><Link href={`/shop/${productSlug(product.name)}`}>{product.name}</Link></h3>
+                <span className="shop-product-tone">{product.tone} colour direction</span>
+                <div className="shop-product-price-row"><span className="shop-product-price-label">PRICE</span><ProductPrice amount={product.price} className="product-price-note" /></div>
               </div>
               <ProductAddButton product={{ ...product, slug: productSlug(product.name) }} />
 
