@@ -80,7 +80,7 @@ export default function ShopPage() {
           <h1>{audience === "All" ? <>Find your<br /><em>everyday edit.</em></> : audience === "Linen" ? <>The linen<br /><em>collection.</em></> : <>The {audience.toLowerCase()}'s<br /><em>edit.</em></>}</h1>
           <p>{audience === "Men" ? "Explore clothing selected for men, from relaxed linen essentials to everyday wardrobe staples." : audience === "Women" ? "Explore clothing selected for women, from effortless linen pieces to everyday wardrobe staples." : audience === "Linen" ? "One considered linen collection for both men and women. Explore breathable pieces, relaxed shapes and natural textures." : "Explore considered clothing for men and women, led by our shared linen collection."}</p>
         </div>
-        <span className="shop-hero-index">COLLECTION 001 — LINEN & EVERYDAY</span>
+        <span className="shop-hero-index">LINEN & EVERYDAY</span>
       </section>
       <section className="shop-catalogue">
         <div className="catalogue-heading">
