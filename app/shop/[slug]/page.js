@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowUpRight, Check } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, Info } from "lucide-react";
 import StorePageShell from "../../../components/StorePageShell";
 import ProductAddButton from "../../../components/ProductAddButton";
 import { CartLink } from "../../../components/CartProvider";
@@ -25,6 +25,8 @@ export default async function ProductDetailPage({ params }) {
     );
   }
 
+  const sizes = product.availableSizes || [];
+
   return (
     <main className="product-detail-page">
       <header className="shop-topbar">
@@ -46,13 +48,22 @@ export default async function ProductDetailPage({ params }) {
           <p className="product-detail-tone">{product.tone} colour direction</p>
           <ProductPrice amount={product.price} className="product-detail-price" />
           <div className="product-detail-rule" />
-          <p className="product-detail-description">
-            {product.isLinen
-              ? "Explore this piece from our linen collection, selected for a relaxed, considered everyday wardrobe. Choose your size to add it to your shopping bag."
-              : "Explore this piece from our everyday collection. Choose your size to add it to your shopping bag."}
-          </p>
+
+          <div className="product-detail-description-block">
+            <p className="eyebrow">ABOUT THIS PIECE</p>
+            <p className="product-detail-description">{product.description || "A considered piece from our linen collection, designed for relaxed everyday styling."}</p>
+          </div>
+
+          <div className="product-detail-specs">
+            <div><span>COLLECTION</span><strong>{product.audience} linen wear</strong></div>
+            <div><span>COLOUR DIRECTION</span><strong>{product.tone}</strong></div>
+            <div><span>SUGGESTED SIZE RANGE</span><strong>{sizes.length ? sizes.join(" · ") : "To be confirmed"}</strong></div>
+          </div>
+
           <ProductAddButton compact product={{ ...product, slug: slugify(product.name) }} />
-          <p className="product-detail-note"><Check size={15} /> Select your size, then add this piece to your shopping bag.</p>
+
+          <p className="product-detail-note"><Check size={15} /> Choose a size to add this piece to your shopping bag.</p>
+          <div className="product-detail-availability"><Info size={15} /><span>Product availability and final measurements will be confirmed when your order is reviewed. Product imagery is currently a style reference.</span></div>
           <Link href="/shop" className="product-back-link"><ArrowLeft size={14} /> CONTINUE SHOPPING</Link>
         </section>
       </div>
