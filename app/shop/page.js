@@ -26,6 +26,8 @@ export default function ShopPage() {
     if (["men", "women"].includes(collection)) setAudience(collection.charAt(0).toUpperCase() + collection.slice(1));
     const selectedCategory = params.get("category");
     if (selectedCategory && categories.includes(selectedCategory)) setCategory(selectedCategory);
+    const initialSearch = params.get("search");
+    if (initialSearch) setSearch(initialSearch);
   }, []);
 
   const visibleProducts = useMemo(() => {
