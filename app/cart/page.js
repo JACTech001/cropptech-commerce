@@ -10,7 +10,7 @@ export default function CartPage() {
   const { items, changeQuantity, removeItem, toggleItem, changeSize, selectedItems, selectedCount, count, ready } = useCart();
   const selectedSubtotal = selectedItems.reduce((sum, item) => sum + ((products.find(product => product.id === item.id)?.price || 0) * item.quantity), 0);
   return <main className="cart-page">
-    <header className="shop-topbar"><Link href="/shop" className="shop-back"><ArrowLeft size={16}/> CONTINUE SHOPPING</Link><Link href="/" className="brand-lockup shop-brand-wordmark">CROPPTECH</Link><CartLink className="shop-cart-link" /></header>
+    <header className="shop-topbar"><Link href="/shop" className="shop-back"><ArrowLeft size={16}/> CONTINUE SHOPPING</Link><Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home"><Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" /></Link><CartLink className="shop-cart-link" /></header>
     <section className="cart-content">
       <p className="eyebrow">CROPPTECH COMMERCE STORE / YOUR SELECTION</p><h1 className="cart-page-title"><ShoppingBag size={35} strokeWidth={1.7}/> Your <em>cart.</em></h1>
       <p className="cart-intro">Review your selected pieces and sizes before placing your order.</p>
