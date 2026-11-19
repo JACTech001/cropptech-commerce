@@ -50,8 +50,8 @@ const categories = [
     href: "/shop?collection=linen&category=Sets"
   },
   {
-    name: "Dresses & More",
-    detail: "Easy, expressive pieces",
+    name: "Linen Dresses",
+    detail: "Easy, expressive linen shapes",
     image:
       "https://images.pexels.com/photos/6996128/pexels-photo-6996128.jpeg?auto=compress&cs=tinysrgb&w=1400",
     href: "/shop?collection=women&category=Dresses"
@@ -109,7 +109,7 @@ export default function HomePage() {
           <p className="eyebrow hero-eyebrow">CROPPTECH COMMERCE — THE LINEN SHIRT EDIT</p>
           <h1>The linen shirt<br /><em>starts here.</em></h1>
           <p className="hero-copy">
-            Discover breathable linen wear for men and women, alongside other clothing styles and everyday wardrobe essentials. Find easy pieces for every look.
+            Discover breathable linen wear for men and women. Explore relaxed shirts, considered sets and effortless pieces made for everyday living.
           </p>
           <a className="light-button" href="/shop?collection=linen">
             SHOP LINEN WEAR <ArrowUpRight size={16} />
@@ -120,7 +120,7 @@ export default function HomePage() {
 
       <section className="intro-strip" id="story">
         <p>BUSINESS MOVES WITH COMMERCE.</p>
-        <span>Linen shirts take the lead. Explore relaxed fits and timeless styles for him and her.</span>
+        <span>A considered linen collection for men and women, shaped around comfort, texture and timeless style.</span>
       </section>
 
       <section className="collection-section section-pad">
@@ -130,7 +130,7 @@ export default function HomePage() {
             <h2>Two ways to<br /><em>wear your day.</em></h2>
           </div>
           <p className="section-aside">
-            Versatile pieces and relaxed essentials, selected to make getting dressed feel effortless.
+            Linen essentials for him and her, selected to make getting dressed feel effortless.
           </p>
         </div>
 
@@ -155,10 +155,10 @@ export default function HomePage() {
       <section className="linen-section" id="linen">
         <div className="linen-photo" />
         <div className="linen-copy">
-          <p className="eyebrow">THE SIGNATURE LINEN SHIRT EDIT</p>
+          <p className="eyebrow">THE LINEN WEAR COLLECTION</p>
           <h2>Made for<br /><em>the everyday.</em></h2>
           <p>
-            Start with the essential: linen wear designed for breathable comfort,
+            Linen wear designed for breathable comfort,
             relaxed movement and easy styling, season after season.
           </p>
           <a href="/shop?collection=linen" className="text-link">SHOP LINEN WEAR <ArrowUpRight size={16} /></a>
@@ -201,8 +201,8 @@ export default function HomePage() {
       <section className="category-section section-pad" id="categories">
         <div className="section-heading category-heading">
           <div>
-            <p className="eyebrow">BEYOND THE LINEN SHIRT</p>
-            <h2>More to<br /><em>make it yours.</em></h2>
+            <p className="eyebrow">THE LINEN WARDROBE</p>
+            <h2>More ways to<br /><em>wear linen.</em></h2>
           </div>
           <a href="/shop" className="text-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></a>
         </div>
