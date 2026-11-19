@@ -58,18 +58,32 @@ const categories = [
 
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [email, setEmail] = useState("");
   const [newsletterMessage, setNewsletterMessage] = useState("");
 
   const closeMenu = () => setMenuOpen(false);
 
   useEffect(() => {
-    if (!menuOpen) return;
-    const handleKeyDown = (event) => { if (event.key === "Escape") closeMenu(); };
-    document.body.style.overflow = "hidden";
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        closeMenu();
+        setSearchOpen(false);
+      }
+    };
+    if (menuOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
     window.addEventListener("keydown", handleKeyDown);
-    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", handleKeyDown); };
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [menuOpen]);
+
+  const searchResults = searchQuery.trim()
+    ? products.filter((product) => [product.name, product.category, product.audience, product.tone].some((value) => value.toLowerCase().includes(searchQuery.trim().toLowerCase())))
+    : products;
 
   function requestUpdates(event) {
     event.preventDefault();
@@ -119,13 +133,37 @@ export default function HomePage() {
         </nav>
 
         <div className="header-actions">
-          <a href="/shop" className="icon-button" aria-label="Search linen products">
+          <button type="button" className="icon-button search-trigger" aria-label="Search linen products" aria-expanded={searchOpen} onClick={() => { setSearchOpen((open) => !open); setMenuOpen(false); }}>
             <Search size={19} strokeWidth={1.6} />
-          </a>
+          </button>
           <CurrencySelector />
           <CartLink className="home-cart-link" />
         </div>
       </header>
+
+      {searchOpen && (
+        <section className="home-search-panel" aria-label="Product search">
+          <div className="home-search-inner">
+            <div className="home-search-input-wrap">
+              <Search size={19} strokeWidth={1.7} />
+              <input autoFocus type="search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search linen styles, categories or colours..." aria-label="Search products" />
+              {searchQuery && <button type="button" className="home-search-clear" onClick={() => setSearchQuery("")}>CLEAR</button>}
+              <button type="button" className="home-search-close" onClick={() => setSearchOpen(false)} aria-label="Close search"><X size={20} /></button>
+            </div>
+            <div className="home-search-results" aria-live="polite">
+              <div className="home-search-results-heading"><span>{searchQuery.trim() ? "SEARCH RESULTS" : "POPULAR IN THE COLLECTION"}</span><span>{searchResults.length} {searchResults.length === 1 ? "ITEM" : "ITEMS"}</span></div>
+              {searchResults.length ? searchResults.map((product) => (
+                <a className="home-search-result" href={"/shop/" + productSlug(product.name)} key={product.id}>
+                  <img src={product.image} alt="" />
+                  <span className="home-search-result-copy"><strong>{product.name}</strong><small>{product.audience} / {product.category} · {product.tone}</small></span>
+                  <span className="home-search-result-price">{product.price == null ? "Price to be confirmed" : "₦" + product.price.toLocaleString("en-NG")}</span>
+                  <ArrowUpRight size={16} />
+                </a>
+              )) : <p className="home-search-empty">No products match “{searchQuery}”. Try a different style, category or colour.</p>}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="hero">
         <div className="hero-image" />
