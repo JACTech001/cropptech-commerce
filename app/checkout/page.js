@@ -66,7 +66,7 @@ export default function CheckoutPage() {
   return <main className="checkout-page">
     <header className="shop-topbar">
       <Link href="/cart" className="shop-back"><ArrowLeft size={16}/> BACK TO CART</Link>
-      <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CroppTech Commerce home">CROPPTECH</Link>
+      <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home"><Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" /></Link>
       <div className="shop-header-actions"><CurrencySelector /><Link href="/cart" className="shop-cart-link"><ShoppingBag size={18} strokeWidth={1.7}/></Link></div>
     </header>
 
