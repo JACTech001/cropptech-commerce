@@ -34,21 +34,22 @@ export function CurrencyProvider({ children }) {
     let active = true;
     async function loadRates() {
       try {
-        const response = await fetch("https://api.frankfurter.dev/v2/rates?base=USD&quotes=NGN,GBP,EUR,CAD");
+        const response = await fetch("https://open.er-api.com/v6/latest/USD");
         if (!response.ok) throw new Error("Exchange rates are currently unavailable.");
-        const rows = await response.json();
-        const usdToNgn = rows.find((row) => row.quote === "NGN")?.rate;
+        const data = await response.json();
+        if (data.result !== "success") throw new Error("Exchange rates are currently unavailable.");
+        const usdToNgn = data.rates?.NGN;
         if (!usdToNgn) throw new Error("NGN reference rate is unavailable.");
         const nextRates = { NGN: 1, USD: 1 / usdToNgn };
         for (const code of ["GBP", "EUR", "CAD"]) {
-          const usdRate = rows.find((row) => row.quote === code)?.rate;
+          const usdRate = data.rates?.[code];
           if (usdRate) nextRates[code] = usdRate / usdToNgn;
         }
         if (active) {
           setRates(nextRates);
-          setRateDate(rows[0]?.date || "");
+          setRateDate(data.time_last_update_utc || "");
           setRatesReady(true);
-          try { localStorage.setItem(RATE_CACHE_KEY, JSON.stringify({ rates: nextRates, date: rows[0]?.date || "", savedAt: Date.now() })); } catch {}
+          try { localStorage.setItem(RATE_CACHE_KEY, JSON.stringify({ rates: nextRates, date: data.time_last_update_utc || "", savedAt: Date.now() })); } catch {}
         }
       } catch {
         if (active) setRatesReady(true);
