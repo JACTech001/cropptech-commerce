@@ -6,7 +6,8 @@ import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Search, SlidersHorizontal } from "lucide-react";
 import ProductAddButton from "../../components/ProductAddButton";
 import { CartLink } from "../../components/CartProvider";
-import { products, formatPrice, productSlug } from "../../data/products";
+import { products, productSlug } from "../../data/products";
+import { CurrencySelector, ProductPrice } from "../../components/CurrencyProvider";
 
 const audiences = ["All", "Men", "Women", "Linen"];
 const categories = ["All categories", "Shirts", "T-Shirts", "Trousers", "Shorts", "Sets", "Dresses", "Skirts", "Jackets"];
@@ -54,7 +55,7 @@ export default function ShopPage() {
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" />
         </Link>
-        <div className="shop-header-actions"><span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span><CartLink className="shop-cart-link" /></div>
+        <div className="shop-header-actions"><span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span><CurrencySelector /><CartLink className="shop-cart-link" /></div>
       </header>
       <section className="shop-hero">
         <div>
@@ -88,7 +89,7 @@ export default function ShopPage() {
               </div>
               <div className="shop-product-info">
                 <div><p>{product.audience} / {product.category}</p><h3><Link href={`/shop/${productSlug(product.name)}`}>{product.name}</Link></h3><span>{product.tone} colour direction</span></div>
-                <span className="product-price-note">{formatPrice(product.price)}</span>
+                <ProductPrice amount={product.price} className="product-price-note" />
               </div>
               <ProductAddButton product={{ ...product, slug: productSlug(product.name) }} />
 
