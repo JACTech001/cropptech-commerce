@@ -622,7 +622,7 @@ h1, h2, h3, p { margin-top: 0; }
 
 /* Icon-only shopping bag with a close, unboxed item count */
 .home-cart-link::before { content:none; }
-.home-cart-link { gap:3px; min-width:28px; justify-content:center; }
+.home-cart-link { position:relative; display:inline-flex; align-items:center; gap:3px; min-width:28px; min-height:24px; justify-content:center; }
 .home-cart-link > svg { display:block; }
 .home-cart-count {
   position:absolute;
