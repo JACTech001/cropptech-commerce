@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useCart } from "../../components/CartProvider";
+
 export default function CartPage() {
   const { items, changeQuantity, removeItem, toggleItem, changeSize, selectedItems, selectedCount, count, ready } = useCart();
   return <main className="cart-page">
@@ -11,9 +12,11 @@ export default function CartPage() {
       <p className="eyebrow">CROPPTECH COMMERCE STORE / YOUR SELECTION</p><h1 className="cart-page-title"><ShoppingBag size={35}/> Your <em>cart.</em></h1>
       <p className="cart-intro">Review your selected pieces and sizes before placing your order.</p>
       {!ready ? <p>Loading your cart...</p> : items.length === 0 ? <div className="cart-empty"><h2>Your cart is empty.</h2><p>Explore the collection and add pieces you like.</p><Link href="/shop" className="product-enquire-link">EXPLORE THE COLLECTION <ArrowUpRight size={16}/></Link></div> :
-      <><div className="cart-list">{items.map(item => <article className="cart-item" key={item.key}>
+      <><div className="cart-list">{items.map(item => <article className={"cart-item" + (item.selected === false ? " cart-item-unselected" : "")} key={item.key}>
+        <label className="cart-item-check" aria-label={"Include " + item.name + " in order"}><input type="checkbox" checked={item.selected !== false} onChange={() => toggleItem(item.key)}/><span></span></label>
         <Link href={"/shop/" + item.slug} className="cart-item-image"><Image src={item.image} alt={item.name} fill sizes="110px" style={{objectFit:"cover"}}/></Link>
-        <div className="cart-item-details"><p>{item.audience} / {item.category}</p><h2><Link href={"/shop/" + item.slug}>{item.name}</Link></h2><span>{item.tone} · Size {item.size}</span>
+        <div className="cart-item-details"><p>{item.audience} / {item.category}</p><h2><Link href={"/shop/" + item.slug}>{item.name}</Link></h2><span>{item.tone}</span>
+          <label className="cart-size-change">SIZE <select value={item.size} onChange={event => changeSize(item.key, event.target.value)}>{["S","M","L","XL","2XL","3XL","4XL","5XL"].map(size => <option key={size} value={size}>{size}</option>)}</select></label>
           <div className="cart-quantity"><button aria-label="Decrease quantity" onClick={() => changeQuantity(item.key, item.quantity - 1)}><Minus size={13}/></button><span>{item.quantity}</span><button aria-label="Increase quantity" onClick={() => changeQuantity(item.key, item.quantity + 1)}><Plus size={13}/></button></div>
         </div><button className="cart-remove" onClick={() => removeItem(item.key)} aria-label={"Remove " + item.name}><Trash2 size={16}/></button>
       </article>)}</div>
