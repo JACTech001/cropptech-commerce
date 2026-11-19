@@ -94,9 +94,9 @@ export default function HomePage() {
         </nav>
 
         <div className="header-actions">
-          <button className="icon-button" aria-label="Search">
+          <a href="/shop" className="icon-button" aria-label="Search linen products">
             <Search size={19} strokeWidth={1.6} />
-          </button>
+          </a>
           <CurrencySelector />
           <CartLink className="home-cart-link" />
         </div>
