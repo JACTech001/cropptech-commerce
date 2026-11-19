@@ -14,7 +14,8 @@ import {
 } from "lucide-react";
 import ProductAddButton from "../components/ProductAddButton";
 import { CartLink } from "../components/CartProvider";
-import { products, formatPrice, productSlug } from "../data/products";
+import { products, productSlug } from "../data/products";
+import { CurrencySelector, ProductPrice } from "../components/CurrencyProvider";
 
 const collections = [
   {
@@ -96,6 +97,7 @@ export default function HomePage() {
           <button className="icon-button" aria-label="Search">
             <Search size={19} strokeWidth={1.6} />
           </button>
+          <CurrencySelector />
           <CartLink className="home-cart-link" />
         </div>
       </header>
@@ -174,7 +176,7 @@ export default function HomePage() {
             const slug = productSlug(product.name);
             return <article className="home-featured-card" key={product.id}>
               <a href={"/shop/" + slug} className="home-featured-image"><img src={product.image} alt={product.name} /><span>{product.tag}</span></a>
-              <div className="home-featured-meta"><div><p>{product.audience} / {product.category}</p><h3><a href={"/shop/" + slug}>{product.name}</a></h3><span>{product.tone} colour direction</span></div><small>{formatPrice(product.price)}</small></div>
+              <div className="home-featured-meta"><div><p>{product.audience} / {product.category}</p><h3><a href={"/shop/" + slug}>{product.name}</a></h3><span>{product.tone} colour direction</span></div><ProductPrice amount={product.price} className="home-price" /></div>
               <ProductAddButton product={{ ...product, slug }} />
             </article>;
           })}
