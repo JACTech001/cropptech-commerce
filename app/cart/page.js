@@ -19,7 +19,7 @@ export default function CartPage() {
         <label className="cart-item-check" aria-label={"Include " + item.name + " in order"}><input type="checkbox" checked={item.selected !== false} onChange={() => toggleItem(item.key)}/><span></span></label>
         <Link href={"/shop/" + item.slug} className="cart-item-image"><Image src={item.image} alt={item.name} fill sizes="110px" style={{objectFit:"cover"}}/></Link>
         <div className="cart-item-details"><p>{item.audience} / {item.category}</p><h2><Link href={"/shop/" + item.slug}>{item.name}</Link></h2><span>{item.tone}</span>
-          <label className="cart-size-change">SIZE <select value={item.size} onChange={event => changeSize(item.key, event.target.value)}>{["S","M","L","XL","2XL","3XL","4XL","5XL"].map(size => <option key={size} value={size}>{size}</option>)}</select></label>
+          <label className="cart-size-change">SIZE <select value={item.size} onChange={event => changeSize(item.key, event.target.value)}>{(item.availableSizes?.length ? item.availableSizes : ["S","M","L","XL","2XL","3XL","4XL","5XL"]).map(size => <option key={size} value={size}>{size}</option>)}</select></label>
           <div className="cart-quantity"><button aria-label="Decrease quantity" onClick={() => changeQuantity(item.key, item.quantity - 1)}><Minus size={13}/></button><span>{item.quantity}</span><button aria-label="Increase quantity" onClick={() => changeQuantity(item.key, item.quantity + 1)}><Plus size={13}/></button></div>
         </div><button className="cart-remove" onClick={() => removeItem(item.key)} aria-label={"Remove " + item.name}><Trash2 size={16}/></button>
       </article>)}</div>
