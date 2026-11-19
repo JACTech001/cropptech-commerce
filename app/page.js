@@ -272,8 +272,7 @@ export default function HomePage() {
           </a>
           <p>BUSINESS MOVES WITH COMMERCE.</p>
           <div className="social-links">
-            <a href="#" aria-label="Instagram"><Instagram size={18} /></a>
-            <a href="#" aria-label="Facebook"><Facebook size={18} /></a>
+            <a href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><Music2 size={18} /></a>
           </div>
         </div>
         <div className="footer-bottom">
