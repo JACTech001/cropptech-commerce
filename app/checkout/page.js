@@ -50,6 +50,9 @@ export default function CheckoutPage() {
       "ORDER ITEMS",
       orderLines,
       "",
+      `Priced items subtotal (NGN): ${subtotal.toLocaleString("en-NG")}`,
+      "Delivery: To be confirmed",
+      "",
       "Please confirm stock availability, final delivery cost, total amount and payment instructions.",
     ].filter(Boolean).join("\n");
     const subject = encodeURIComponent("New store order request — " + form.fullName);
