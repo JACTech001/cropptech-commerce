@@ -645,3 +645,44 @@ h1, h2, h3, p { margin-top: 0; }
   .currency-selector select { font-size: 8px; }
   .header-actions { gap: 9px; }
 }
+
+
+/* Consistent product-card information hierarchy */
+.shop-product-card,
+.home-featured-card { display:flex; flex-direction:column; min-width:0; height:100%; }
+.shop-product-image,
+.home-featured-image { flex:0 0 auto; }
+.shop-product-info { display:flex; flex-direction:column; align-items:stretch; gap:0; padding:15px 0 0; min-height:132px; }
+.shop-product-info .shop-product-category,
+.home-product-category { color:var(--muted); font-size:8px; line-height:1.4; letter-spacing:1px; text-transform:uppercase; margin:0 0 7px; }
+.shop-product-info h3,
+.home-featured-meta h3 { font-size:14px; line-height:1.35; font-weight:500; margin:0 0 5px; overflow-wrap:anywhere; }
+.shop-product-info h3 a:hover,
+.home-featured-meta h3 a:hover { color:var(--red); }
+.shop-product-info .shop-product-tone,
+.home-product-tone { display:block; color:#918980; font-size:9px; line-height:1.5; }
+.shop-product-price-row,
+.home-product-price-row { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-top:auto; padding-top:13px; }
+.shop-product-price-label,
+.home-product-price-row > span:first-child { color:#938b83; font-size:7px; letter-spacing:1px; line-height:1.5; }
+.shop-product-info .product-price-note,
+.home-featured-meta .home-price { display:block; color:var(--red); text-align:right; font-size:10px; line-height:1.4; font-weight:600; white-space:normal; overflow-wrap:anywhere; padding:0; margin:0; }
+.shop-product-info .currency-estimate,
+.home-featured-meta .currency-estimate { text-align:right; font-size:7px; line-height:1.35; }
+.shop-product-card .product-size-picker,
+.home-featured-card .product-size-picker { margin-top:13px; padding-top:12px; border-top:1px solid var(--line); }
+.shop-product-card .product-size-label,
+.home-featured-card .product-size-label { font-size:7px; line-height:1.5; letter-spacing:.75px; }
+.shop-product-card .cart-add-button,
+.home-featured-card .cart-add-button { margin-top:9px; min-height:40px; }
+@media(max-width:640px) {
+  .shop-product-info { min-height:145px; padding-top:11px; }
+  .shop-product-info h3,
+  .home-featured-meta h3 { font-size:12px; line-height:1.35; }
+  .shop-product-info .shop-product-category,
+  .home-product-category { font-size:7px; }
+  .shop-product-info .product-price-note,
+  .home-featured-meta .home-price { font-size:9px; }
+  .shop-product-card .product-size-label,
+  .home-featured-card .product-size-label { font-size:6px; letter-spacing:.35px; }
+}
