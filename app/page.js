@@ -89,21 +89,23 @@ export default function HomePage() {
       </div>
 
       <header className="site-header">
-        <button
-          className="icon-button mobile-menu-button"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-navigation"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        {!menuOpen && (
+          <button
+            className="icon-button mobile-menu-button"
+            aria-label="Open menu"
+            aria-expanded={false}
+            aria-controls="mobile-navigation"
+            onClick={() => setMenuOpen(true)}
+          >
+            <Menu size={22} />
+          </button>
+        )}
 
         <a href="/" className="brand-lockup brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={170} height={49} priority className="brand-text-logo" />
         </a>
 
-        <button className="mobile-menu-backdrop" aria-label="Close navigation menu" onClick={closeMenu} tabIndex={menuOpen ? 0 : -1} style={{display:menuOpen ? "block" : "none"}} />
+        <div className="mobile-menu-backdrop" aria-hidden="true" onClick={closeMenu} style={{display:menuOpen ? "block" : "none"}} />
         <nav id="mobile-navigation" className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
           <div className="mobile-menu-heading"><span>EXPLORE CROPPTECH</span><button type="button" className="mobile-menu-close" onClick={closeMenu} aria-label="Close menu"><X size={21} /></button></div>
           <a href="/shop?collection=men" onClick={closeMenu}>MEN<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
@@ -160,7 +162,7 @@ export default function HomePage() {
         <div className="collection-grid">
           {collections.map((item) => (
             <a className="collection-card" href={item.href} key={item.title}>
-              <div className="collection-image" style={{ backgroundImage: `url("${item.image}")` }}>
+              <div className="collection-image" style={{ backgroundImage: `url(\"${item.image}\")` }}>
                 <span className="round-arrow"><ArrowUpRight size={20} /></span>
               </div>
               <div className="collection-card-copy">
@@ -198,10 +200,10 @@ export default function HomePage() {
           {products.filter((product) => product.featured).map((product) => {
             const slug = productSlug(product.name);
             return <article className="home-featured-card" key={product.id}>
-              <a href={"/shop/" + slug} className="home-featured-image"><img src={product.image} alt={product.name} /><span>{product.tag}</span></a>
+              <a href={\"/shop/\" + slug} className="home-featured-image"><img src={product.image} alt={product.name} /><span>{product.tag}</span></a>
               <div className="home-featured-meta">
                 <p className="home-product-category">{product.audience} / {product.category}</p>
-                <h3><a href={"/shop/" + slug}>{product.name}</a></h3>
+                <h3><a href={\"/shop/\" + slug}>{product.name}</a></h3>
                 <span className="home-product-tone">{product.tone} colour direction</span>
                 <div className="home-product-price-row"><span>PRICE</span><ProductPrice amount={product.price} className="home-price" /></div>
               </div>
@@ -237,7 +239,7 @@ export default function HomePage() {
         <div className="category-grid">
           {categories.map((category) => (
             <a href={category.href} className="category-card" key={category.name}>
-              <div className="category-image" style={{ backgroundImage: `url("${category.image}")` }}>
+              <div className="category-image" style={{ backgroundImage: `url(\"${category.image}\")` }}>
               </div>
               <div className="category-meta">
                 <div><h3>{category.name}</h3><p>{category.detail}</p></div>
