@@ -5,7 +5,7 @@ import { CurrencyProvider } from "../components/CurrencyProvider";
 export const metadata = {
   title: "CroppTech Commerce Store | Business Moves With Commerce",
   description:
-    "Discover considered everyday fashion for men and women, led by the CroppTech linen collection.",
+    "Discover considered linen wear for men and women at CroppTech Commerce Store.",
   applicationName: "CroppTech Commerce Store",
   icons: { icon: "/brand/cropplogo.jpeg" }
 };
