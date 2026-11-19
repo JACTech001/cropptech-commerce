@@ -4,7 +4,8 @@ import { ArrowLeft, ArrowUpRight, Check } from "lucide-react";
 import StorePageShell from "../../../components/StorePageShell";
 import ProductAddButton from "../../../components/ProductAddButton";
 import { CartLink } from "../../../components/CartProvider";
-import { products, formatPrice, productSlug } from "../../../data/products";
+import { products, productSlug } from "../../../data/products";
+import { CurrencySelector, ProductPrice } from "../../../components/CurrencyProvider";
 
 const slugify = productSlug;
 
@@ -31,7 +32,7 @@ export default async function ProductDetailPage({ params }) {
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" />
         </Link>
-        <div className="shop-header-actions"><span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span><CartLink className="shop-cart-link" /></div>
+        <div className="shop-header-actions"><span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span><CurrencySelector /><CartLink className="shop-cart-link" /></div>
       </header>
 
       <div className="product-detail-wrap">
@@ -43,7 +44,7 @@ export default async function ProductDetailPage({ params }) {
           <p className="eyebrow">CROPPTECH COMMERCE STORE / {product.audience.toUpperCase()} / {product.category.toUpperCase()}</p>
           <h1>{product.name}</h1>
           <p className="product-detail-tone">{product.tone} colour direction</p>
-          <p className="product-detail-price">{formatPrice(product.price)}</p>
+          <ProductPrice amount={product.price} className="product-detail-price" />
           <div className="product-detail-rule" />
           <p className="product-detail-description">
             {product.isLinen
