@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "./CartProvider";
-const sizes = ["S","M","L","XL","2XL","3XL","4XL","5XL"];
 export default function ProductAddButton({ product, compact = false }) {
   const [size, setSize] = useState("");
   const [message, setMessage] = useState("");
+  const sizes = product.availableSizes?.length ? product.availableSizes : ["S", "M", "L", "XL"];
   const { addItem } = useCart();
   return <div className={compact ? "product-size-picker detail-add" : "product-size-picker"}>
     <span className="product-size-label">SELECT SIZE · TAP AGAIN TO UNSELECT</span>
