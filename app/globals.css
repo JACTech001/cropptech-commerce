@@ -505,7 +505,20 @@ h1, h2, h3, p { margin-top: 0; }
 
 /* Shopping bag and cart controls */
 .shop-header-actions { display:flex; align-items:center; gap:22px; }
-.shop-cart-link { color:var(--red); font-size:9px; font-weight:700; letter-spacing:1px; white-space:nowrap; }
+.shop-cart-link {
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 24px;
+  width:24px;
+  height:24px;
+  color:var(--red);
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:1px;
+  white-space:nowrap;
+}
 .cart-add-button { display:flex; align-items:center; justify-content:center; gap:9px; width:100%; min-height:38px; margin-top:10px; border:1px solid var(--red); background:var(--red); color:#fff; font:inherit; font-size:9px; font-weight:700; letter-spacing:1px; cursor:pointer; }
 .cart-add-button:disabled { opacity:.4; cursor:not-allowed; }
 .cart-added-message { margin:8px 0 0; color:var(--red); font-size:9px; line-height:1.5; }
@@ -605,8 +618,8 @@ h1, h2, h3, p { margin-top: 0; }
 .home-cart-link > svg { display:block; }
 .home-cart-count {
   position:absolute;
-  top:-5px;
-  right:-3px;
+  top:-3px;
+  right:-2px;
   display:block;
   min-width:0;
   height:auto;
