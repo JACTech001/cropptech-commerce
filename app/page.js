@@ -176,7 +176,12 @@ export default function HomePage() {
             const slug = productSlug(product.name);
             return <article className="home-featured-card" key={product.id}>
               <a href={"/shop/" + slug} className="home-featured-image"><img src={product.image} alt={product.name} /><span>{product.tag}</span></a>
-              <div className="home-featured-meta"><div><p>{product.audience} / {product.category}</p><h3><a href={"/shop/" + slug}>{product.name}</a></h3><span>{product.tone} colour direction</span></div><ProductPrice amount={product.price} className="home-price" /></div>
+              <div className="home-featured-meta">
+                <p className="home-product-category">{product.audience} / {product.category}</p>
+                <h3><a href={"/shop/" + slug}>{product.name}</a></h3>
+                <span className="home-product-tone">{product.tone} colour direction</span>
+                <div className="home-product-price-row"><span>PRICE</span><ProductPrice amount={product.price} className="home-price" /></div>
+              </div>
               <ProductAddButton product={{ ...product, slug }} />
             </article>;
           })}
