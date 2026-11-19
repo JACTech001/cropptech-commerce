@@ -109,7 +109,6 @@ export default function HomePage() {
           <a href="/shop?collection=men" onClick={closeMenu}>MEN<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
           <a href="/shop?collection=women" onClick={closeMenu}>WOMEN<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
           <a href="/shop?collection=linen" onClick={closeMenu}>LINEN WEAR<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
-          <a href="/shop" onClick={closeMenu}>SHOP ALL<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
           <div className="mobile-menu-divider" />
           <a href="/about" onClick={closeMenu}>OUR STORY<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
           <a href="/contact" onClick={closeMenu}>CONTACT<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
