@@ -101,9 +101,7 @@ export function ProductPrice({ amount, className = "" }) {
   return (
     <span className={className}>
       {formatPrice(amount)}
-      {amount != null && currency !== "NGN" ? (
-        <small className="currency-estimate">{ratesReady ? "EST. REFERENCE RATE" : "LOADING RATE"}{rateDate ? ` · ${rateDate}` : ""}</small>
-      ) : null}
+
     </span>
   );
 }
