@@ -185,6 +185,7 @@ model Product {
 
   variants        ProductVariant[]
   images          ProductImage[]
+  orderItems      OrderItem[]
 
   @@index([status, category])
   @@index([isFeatured, status])
