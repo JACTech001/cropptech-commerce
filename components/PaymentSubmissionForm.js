@@ -16,8 +16,9 @@ export default function PaymentSubmissionForm({ orderNumber, amountDue }) {
     setBusy(true);
     setMessage("");
     setError("");
+    const formElement = event.currentTarget;
     try {
-      const formData = new FormData(event.currentTarget);
+      const formData = new FormData(formElement);
       const response = await fetch(`/api/orders/${encodeURIComponent(orderNumber)}/payment-submissions`, {
         method: "POST",
         body: formData,
@@ -25,7 +26,7 @@ export default function PaymentSubmissionForm({ orderNumber, amountDue }) {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "We could not submit your payment details.");
       setMessage(data.message || "Your payment submission has been received.");
-      event.currentTarget.reset();
+      formElement.reset();
       router.refresh();
     } catch (submitError) {
       setError(submitError.message || "We could not submit your payment details. Please try again.");
