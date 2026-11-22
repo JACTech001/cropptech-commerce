@@ -115,7 +115,7 @@ function AuthFormContent({ mode }) {
         result = await authClient.signIn.email({
           email: email.trim(),
           password,
-          callbackURL: safeRedirectTo,
+          callbackURL: new URL(safeRedirectTo, window.location.origin).toString(),
         });
       } else if (isForgot) {
         result = await authClient.requestPasswordReset({
