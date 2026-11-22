@@ -13,8 +13,31 @@ export default function AuthAccountControl() {
   useEffect(() => {
     let active = true;
     authClient.getSession()
-      .then(({ data }) => {
-        if (active) setUser(data?.user || null);
+      .then(async ({ data }) => {
+        const authUser = data?.user || null;
+        if (!authUser) {
+          if (active) setUser(null);
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/account/me", { cache: "no-store" });
+          if (response.ok) {
+            const profile = await response.json();
+            if (active) {
+              setUser({
+                ...authUser,
+                name: profile.user?.fullName || authUser.name,
+                email: profile.user?.email || authUser.email,
+              });
+            }
+            return;
+          }
+        } catch {
+          // Keep the authenticated identity visible; protected server actions still enforce access.
+        }
+
+        if (active) setUser(authUser);
       })
       .catch(() => {
         if (active) setUser(null);
@@ -28,7 +51,8 @@ export default function AuthAccountControl() {
   async function signOut() {
     setSigningOut(true);
     try {
-      await authClient.signOut();
+      const result = await authClient.signOut();
+      if (result?.error) throw new Error(result.error.message || "Sign out failed.");
       setUser(null);
       window.location.assign("/");
     } catch {
