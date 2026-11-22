@@ -1,11 +1,44 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, LoaderCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, LoaderCircle } from "lucide-react";
 import { authClient } from "../lib/auth/client";
+
+const linenSlides = [
+  {
+    image: "https://images.pexels.com/photos/32825460/pexels-photo-32825460/free-photo-of-stylish-male-model-in-beige-linen-outfit-outdoors.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    title: "Everyday linen,",
+    accent: "effortlessly worn.",
+    label: "THE MEN'S EDIT",
+  },
+  {
+    image: "https://images.pexels.com/photos/5393448/pexels-photo-5393448.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    title: "Soft silhouettes,",
+    accent: "made to move.",
+    label: "THE WOMEN'S EDIT",
+  },
+  {
+    image: "https://images.pexels.com/photos/15923917/pexels-photo-15923917/free-photo-of-linen-clothes-on-clothes-hangers.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    title: "A little more",
+    accent: "room to breathe.",
+    label: "LINEN CO-ORDS",
+  },
+  {
+    image: "https://images.pexels.com/photos/9637778/pexels-photo-9637778.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    title: "Comfort in",
+    accent: "every detail.",
+    label: "THE LINEN COLLECTION",
+  },
+  {
+    image: "https://images.pexels.com/photos/6996128/pexels-photo-6996128.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    title: "Find your",
+    accent: "everyday style.",
+    label: "EASY LINEN DRESSING",
+  },
+];
 
 function AuthFormContent({ mode }) {
   const searchParams = useSearchParams();
@@ -17,7 +50,7 @@ function AuthFormContent({ mode }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState(false);\n  const [activeSlide, setActiveSlide] = useState(0);\n\n  useEffect(() => {\n    const timer = window.setInterval(() => {\n      setActiveSlide((current) => (current + 1) % linenSlides.length);\n    }, 5500);\n    return () => window.clearInterval(timer);\n  }, []);
 
   const isSignUp = mode === "sign-up";
   const isSignIn = mode === "sign-in";
@@ -103,10 +136,36 @@ function AuthFormContent({ mode }) {
       </header>
 
       <section className="auth-layout">
-        <div className="auth-editorial">
-          <p className="eyebrow">CROPPTECH COMMERCE / CUSTOMER ACCOUNT</p>
-          <h1>Thoughtful linen.<br /><em>Simpler shopping.</em></h1>
-          <p>Your CroppTech account keeps your orders and delivery details together, so you can return to the pieces you love.</p>
+        <div className="auth-editorial auth-carousel" aria-label="CroppTech linen collection">
+          <div className="auth-carousel-image-wrap">
+            {linenSlides.map((slide, index) => (
+              <img
+                key={slide.label}
+                src={slide.image}
+                alt={slide.label.toLowerCase().replaceAll(" ", " ")}
+                className={index === activeSlide ? "auth-carousel-image is-active" : "auth-carousel-image"}
+                aria-hidden={index !== activeSlide}
+              />
+            ))}
+            <div className="auth-carousel-shade" />
+            <div className="auth-carousel-copy" aria-live="polite">
+              <p className="eyebrow">{linenSlides[activeSlide].label}</p>
+              <h1>{linenSlides[activeSlide].title}<br /><em>{linenSlides[activeSlide].accent}</em></h1>
+              <p>Breathable linen pieces for the way you move through every day.</p>
+            </div>
+            <div className="auth-carousel-controls">
+              <span className="auth-carousel-count">{String(activeSlide + 1).padStart(2, "0")} <i /> {String(linenSlides.length).padStart(2, "0")}</span>
+              <div className="auth-carousel-buttons">
+                <button type="button" aria-label="Previous linen slide" onClick={() => setActiveSlide((activeSlide - 1 + linenSlides.length) % linenSlides.length)}><ChevronLeft size={18} /></button>
+                <button type="button" aria-label="Next linen slide" onClick={() => setActiveSlide((activeSlide + 1) % linenSlides.length)}><ChevronRight size={18} /></button>
+              </div>
+            </div>
+            <div className="auth-carousel-dots" aria-label="Choose a slide">
+              {linenSlides.map((slide, index) => (
+                <button key={slide.label} type="button" aria-label={`Show slide ${index + 1}: ${slide.label}`} aria-current={index === activeSlide ? "true" : undefined} className={index === activeSlide ? "is-active" : ""} onClick={() => setActiveSlide(index)} />
+              ))}
+            </div>
+          </div>
           <span className="auth-editorial-foot">BUSINESS MOVES WITH COMMERCE.</span>
         </div>
 
