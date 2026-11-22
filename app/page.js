@@ -14,6 +14,7 @@ import ProductAddButton from "../components/ProductAddButton";
 import { CartLink } from "../components/CartProvider";
 import { products, productSlug } from "../data/products";
 import { CurrencySelector, ProductPrice } from "../components/CurrencyProvider";
+import AuthAccountControl from "../components/AuthAccountControl";
 
 const collections = [
   {
@@ -137,6 +138,7 @@ export default function HomePage() {
             <Search size={19} strokeWidth={1.6} />
           </button>
           <CurrencySelector />
+          <AuthAccountControl />
           <CartLink className="home-cart-link" />
         </div>
       </header>
