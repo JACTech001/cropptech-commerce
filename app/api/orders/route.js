@@ -17,6 +17,8 @@ export async function POST(request) {
   let body;
   try { body = await request.json(); } catch { return jsonError("Please check the checkout form and try again.", 400); }
 
+  if (!body || typeof body !== "object" || Array.isArray(body)) return jsonError("Invalid checkout details.", 400);
+
   const recipientName = text(body.recipientName, 120);
   const recipientPhone = text(body.recipientPhone, 40);
   const state = text(body.state, 100);
@@ -27,7 +29,7 @@ export async function POST(request) {
   const customerNote = text(body.customerNote, 1000);
   const items = Array.isArray(body.items) ? body.items : [];
 
-  if (!recipientName || !recipientPhone || !state || !city || !deliveryAddress) {
+  if (!recipientName || !recipientPhone || !/^[+0-9()\\s-]{8,24}$/.test(recipientPhone) || !state || !city || !deliveryAddress) {
     return jsonError("Complete your name, phone number and Nigerian delivery address.", 400);
   }
   if (text(body.country, 40).toLowerCase() !== "nigeria") return jsonError("We currently deliver within Nigeria only.", 400);
