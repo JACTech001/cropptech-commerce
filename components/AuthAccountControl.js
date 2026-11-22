@@ -9,6 +9,7 @@ export default function AuthAccountControl() {
   const [user, setUser] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const [signOutError, setSignOutError] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -50,12 +51,14 @@ export default function AuthAccountControl() {
 
   async function signOut() {
     setSigningOut(true);
+    setSignOutError("");
     try {
       const result = await authClient.signOut();
       if (result?.error) throw new Error(result.error.message || "Sign out failed.");
       setUser(null);
       window.location.assign("/");
     } catch {
+      setSignOutError("Could not sign out. Please try again.");
       setSigningOut(false);
     }
   }
@@ -68,6 +71,7 @@ export default function AuthAccountControl() {
   return (
     <div className="auth-account-control">
       <span className="auth-account-name" title={user.email}>{user.name || "MY ACCOUNT"}</span>
+      {signOutError && <span className="auth-account-error" role="alert">{signOutError}</span>}
       <button type="button" className="auth-account-signout" onClick={signOut} disabled={signingOut} aria-label="Sign out">
         <LogOut size={16} /><span>{signingOut ? "..." : "SIGN OUT"}</span>
       </button>
