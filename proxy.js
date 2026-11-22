@@ -12,7 +12,6 @@ export default auth.middleware({
     "/faq",
     "/privacy",
     "/terms",
-    "/auth",
     "/auth/sign-in",
     "/auth/sign-up",
     "/auth/forgot-password",
