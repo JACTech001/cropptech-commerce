@@ -13,9 +13,13 @@ export default auth.middleware({
     "/privacy",
     "/terms",
     "/auth",
+    "/auth/sign-in",
+    "/auth/sign-up",
+    "/auth/forgot-password",
+    "/auth/reset-password",
   ],
 });
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|brand/).*)"],
 };
