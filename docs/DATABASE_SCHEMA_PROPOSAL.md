@@ -1,6 +1,6 @@
 # CroppTech Commerce Store — Database Schema Proposal
 
-**Status:** Design proposal only. This document does not create a database, connect Neon, run migrations, or enable checkout.
+**Status:** Design and implementation reference. The Prisma schema and two initial migrations have been applied to the Neon development branch. This document does not mean checkout or production is enabled.
 
 ## 1. Confirmed business rules
 
@@ -96,7 +96,7 @@ Keep account details out of source code and ordinary public settings. Encrypt th
 | `shipping_zone_locations` | Nigerian state/city/locality coverage | zone_id, state, city, locality |
 | `shipping_rates` | Fee and delivery estimate by zone | zone_id, fee, min_days, max_days, is_active |
 | `shipments` | Fulfilment and tracking; supports multiple parcels for one order | order_id, carrier, tracking_number, tracking_url, status, shipped_at, delivered_at |
-| `return_requests` | Customer return/refund request | order_id, customer_id, reason, description, status, admin_note, reviewed_by |
+| `return_requests` | Customer return/refund request | order_id, reason, customer_note, status, admin_note, reviewed_by |
 | `return_items` | Items and quantities in a return | return_request_id, order_item_id, quantity, condition_note |
 | `stock_reservations` | Temporary stock held for unpaid orders | order_id, variant_id, quantity, expires_at, released_at |
 | `inventory_transactions` | Stock movement ledger | variant_id, type, quantity_delta, reference_type, reference_id, performed_by |
@@ -159,7 +159,7 @@ These are separate because an order can be awaiting fulfilment after payment is 
 9. Only import products after actual images, prices, sizes, colours, SKUs and stock quantities are approved.
 10. Test end-to-end in staging before enabling production checkout.
 
-**No database or migration has been created/applied as part of this proposal.**
+**Development database:** The initial schema and payment-audit hardening migrations have been applied to the development branch. Production remains untouched; the next schema changes must be validated and migrated in development first.
 
 ## 8. Decisions still needed
 
@@ -176,4 +176,4 @@ These are separate because an order can be awaiting fulfilment after payment is 
 
 ## 9. Scope boundary
 
-This is a reviewable schema proposal. It does not change the existing storefront, enable authentication, activate checkout, provision Neon, upload receipts, or mark any product as ready for sale. Those changes should be implemented in separate reviewed steps after the open decisions are resolved.
+This document records the current schema design and implementation decisions. It does not mean authentication is integrated, checkout is active, receipt uploads are configured, or any product is ready for sale. Those features should be implemented in separate reviewed steps after the open decisions are resolved.
