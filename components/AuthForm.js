@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, LoaderCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, LoaderCircle } from "lucide-react";
 import { authClient } from "../lib/auth/client";
 
 const linenSlides = [
@@ -52,6 +52,8 @@ function AuthFormContent({ mode }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [completion, setCompletion] = useState("");
+  const resetLinkError = searchParams.get("error") || "";
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -65,10 +67,33 @@ function AuthFormContent({ mode }) {
   const isForgot = mode === "forgot-password";
   const isReset = mode === "reset-password";
 
+  function getSafeRedirectTo() {
+    const redirectTarget = new URL(requestedRedirectTo, window.location.origin);
+    return redirectTarget.origin === window.location.origin
+      ? `${redirectTarget.pathname}${redirectTarget.search}${redirectTarget.hash}`
+      : "/checkout";
+  }
+
+  async function retryAccountSetup() {
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch("/api/account/me", { cache: "no-store" });
+      const profileResult = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(profileResult.error || "We could not finish setting up your store account.");
+      window.location.assign(getSafeRedirectTo());
+    } catch (requestError) {
+      setError(requestError?.message || "Please try again. Your sign-in session may still be active.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function submit(event) {
     event.preventDefault();
     setError("");
     setMessage("");
+    setCompletion("");
 
     if (isReset && password !== confirmPassword) {
       setError("Your passwords do not match.");
@@ -77,10 +102,7 @@ function AuthFormContent({ mode }) {
 
     setBusy(true);
     try {
-      const redirectTarget = new URL(requestedRedirectTo, window.location.origin);
-      const safeRedirectTo = redirectTarget.origin === window.location.origin
-        ? `${redirectTarget.pathname}${redirectTarget.search}${redirectTarget.hash}`
-        : "/checkout";
+      const safeRedirectTo = getSafeRedirectTo();
       let result;
       if (isSignUp) {
         result = await authClient.signUp.email({
@@ -98,7 +120,7 @@ function AuthFormContent({ mode }) {
       } else if (isForgot) {
         result = await authClient.requestPasswordReset({
           email: email.trim(),
-          redirectTo: "/auth/reset-password",
+          redirectTo: new URL("/auth/reset-password", window.location.origin).toString(),
         });
       } else if (isReset) {
         if (!token) {
@@ -114,20 +136,25 @@ function AuthFormContent({ mode }) {
         const profileResponse = await fetch("/api/account/me", { cache: "no-store" });
 
         if (profileResponse.status === 401) {
-          setMessage("Your account is ready. If email verification is requested, follow the instructions sent to your inbox, then sign in.");
+          setCompletion("verification");
+          setMessage("Your account has been created. Check your inbox for any verification instructions, then sign in to continue.");
           return;
         }
 
         const profileResult = await profileResponse.json().catch(() => ({}));
         if (!profileResponse.ok) {
-          throw new Error(profileResult.error || "Your sign-in worked, but we could not finish setting up your store account.");
+          setCompletion("profile-error");
+          setMessage(profileResult.error || "Your sign-in was accepted, but we could not finish setting up your store account. Please retry.");
+          return;
         }
 
         window.location.assign(safeRedirectTo);
       } else if (isForgot) {
-        setMessage("If an account exists for that email, password-reset instructions will be sent.");
+        setCompletion("forgot");
+        setMessage("If an account exists for that email, password-reset instructions have been requested. Check your inbox and spam folder.");
       } else if (isReset) {
-        setMessage("Your password has been updated. You can now sign in.");
+        setCompletion("reset");
+        setMessage("Your password has been updated successfully. You can now sign in with your new password.");
       }
     } catch (requestError) {
       setError(requestError?.message || "Something went wrong. Please try again.");
@@ -195,6 +222,33 @@ function AuthFormContent({ mode }) {
           <h2>{isSignUp ? "Create account" : isSignIn ? "Sign in" : isForgot ? "Forgot password" : "New password"}</h2>
           <p className="auth-panel-intro">{intro}</p>
 
+          {completion ? (
+            <div className="auth-completion" role="status" aria-live="polite">
+              <div className="auth-completion-mark"><CheckCircle2 size={25} /></div>
+              <h3>{completion === "forgot" ? "Check your inbox" : completion === "reset" ? "Password updated" : completion === "verification" ? "Finish creating your account" : "You're signed in"}</h3>
+              <p>{message}</p>
+              {completion === "forgot" && (
+                <>
+                  <p className="auth-completion-note">For your security, we show the same confirmation whether or not an account exists for that email. If no email arrives after a few minutes, check the address and spam folder.</p>
+                  <button type="button" className="auth-secondary" onClick={() => { setCompletion(""); setMessage(""); setError(""); }}>TRY ANOTHER EMAIL</button>
+                </>
+              )}
+              {(completion === "reset" || completion === "verification") && <Link href="/auth/sign-in" className="auth-completion-action">RETURN TO SIGN IN <ArrowRight size={15} /></Link>}
+              {completion === "profile-error" && (
+                <button type="button" className="auth-secondary" onClick={retryAccountSetup} disabled={busy}>
+                  {busy ? "PLEASE WAIT…" : "RETRY ACCOUNT SETUP"}
+                </button>
+              )}
+              {error && <p className="auth-feedback auth-error" role="alert">{error}</p>}
+            </div>
+          ) : isReset && (!token || resetLinkError) ? (
+            <div className="auth-completion" role="alert">
+              <div className="auth-completion-mark auth-completion-warning">!</div>
+              <h3>Reset link unavailable</h3>
+              <p>{resetLinkError ? "This password-reset link is invalid or has expired." : "This page needs the password-reset link from your email."} Request a fresh reset email to continue.</p>
+              <Link href="/auth/forgot-password" className="auth-completion-action">REQUEST A NEW RESET LINK <ArrowRight size={15} /></Link>
+            </div>
+          ) : (
           <form className="auth-form" onSubmit={submit}>
             {isSignUp && (
               <label>FULL NAME
@@ -225,6 +279,7 @@ function AuthFormContent({ mode }) {
               {busy ? <><LoaderCircle className="auth-spinner" size={16} /> PLEASE WAIT</> : <>{isSignUp ? "CREATE ACCOUNT" : isSignIn ? "SIGN IN" : isForgot ? "SEND RESET INSTRUCTIONS" : "UPDATE PASSWORD"} <ArrowRight size={16} /></>}
             </button>
           </form>
+          )}
 
           <div className="auth-switch">
             {isSignIn && <>New to CroppTech? <Link href="/auth/sign-up">Create an account</Link></>}
