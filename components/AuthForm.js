@@ -136,7 +136,6 @@ function AuthFormContent({ mode }) {
     }
   }
 
-  const title = isSignUp ? "Create your account." : isSignIn ? "Welcome back." : isForgot ? "Reset your password." : "Choose a new password.";
   const intro = isSignUp
     ? "Create an account to manage your orders and complete purchases."
     : isSignIn
