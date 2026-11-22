@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import { Prisma } from "@prisma/client";
-import { requireAppRole } from "../../../../../../lib/auth/user";
-import { prisma } from "../../../../../../lib/db";
+import { requireAppRole } from "../../../../../lib/auth/user";
+import { prisma } from "../../../../../lib/db";
 
 export const runtime = "nodejs";
 
