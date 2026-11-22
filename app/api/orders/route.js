@@ -1,4 +1,5 @@
 import { randomBytes } from "node:crypto";
+import { Prisma } from "@prisma/client";
 import { decryptBankAccountNumber } from "../../../lib/security/bank-account-encryption";
 import { requireAppRole } from "../../../lib/auth/user";
 import { prisma } from "../../../lib/db";
@@ -68,6 +69,7 @@ export async function POST(request) {
       const bankAccounts = await tx.bankAccount.findMany({ where: { isActive: true }, orderBy: { createdAt: "desc" } });
       if (bankAccounts.length !== 1) throw new Error(bankAccounts.length === 0 ? "PAYMENT_ACCOUNT_NOT_CONFIGURED" : "PAYMENT_ACCOUNT_AMBIGUOUS");
       const bankAccount = bankAccounts[0];
+      const accountNumber = decryptBankAccountNumber(bankAccount.accountNumberEncrypted);
 
       const products = await tx.product.findMany({
         where: { slug: { in: [...new Set(normalizedItems.map((item) => item.slug))] }, status: "ACTIVE" },
@@ -86,7 +88,7 @@ export async function POST(request) {
       });
 
       const orderNumber = `CTS-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-${randomBytes(4).toString("hex").toUpperCase()}`;
-      let subtotal = new (await import("@prisma/client")).Prisma.Decimal(0);
+      let subtotal = new Prisma.Decimal(0);
       const orderItems = [];
       for (const line of resolved) {
         const updated = await tx.productVariant.updateMany({
@@ -163,12 +165,8 @@ export async function POST(request) {
         })),
       });
 
-      return { order, bankAccount };
+      return { order, accountNumber };
     });
-
-    let accountNumber;
-    try { accountNumber = decryptBankAccountNumber(result.order.payment.accountNumberSnapshotEncrypted); }
-    catch { return jsonError("Your order could not be completed because the payment account is not configured correctly. No order was created. Please contact the store.", 503); }
 
     return Response.json({
       order: {
@@ -187,7 +185,7 @@ export async function POST(request) {
       payment: {
         bankName: result.order.payment.bankNameSnapshot,
         accountName: result.order.payment.accountNameSnapshot,
-        accountNumber,
+        accountNumber: result.accountNumber,
         instructions: result.order.payment.paymentInstructionsSnapshot,
         amountDue: result.order.payment.amountDue.toString(),
       },
