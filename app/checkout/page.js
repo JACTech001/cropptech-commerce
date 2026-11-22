@@ -72,12 +72,12 @@ export default function CheckoutPage() {
 
     <div className="checkout-wrap">
       <div className="checkout-heading">
-        <p className="eyebrow">CROPPTECH COMMERCE STORE / CHECKOUT</p>
-        <h1>Delivery <em>details.</em></h1>
+        <p className="eyebrow">CROPPTECH COMMERCE STORE / YOUR ORDER</p>
+        <h1>Complete <em>your order.</em></h1>
         <p>Share your contact and delivery information. Our team will review your order and confirm availability, delivery cost and payment details.</p>
       </div>
 
-      {!lines.length ? <section className="checkout-empty"><h2>Your bag is waiting.</h2><p>Add a linen piece to your cart before checking out.</p><Link href="/shop" className="checkout-primary">EXPLORE LINEN WEAR <ArrowUpRight size={16}/></Link></section> :
+      {!lines.length ? <section className="checkout-empty"><h2>Your bag is waiting.</h2><p>Add a linen piece to your bag before completing your order.</p><Link href="/shop" className="checkout-primary">EXPLORE LINEN WEAR <ArrowUpRight size={16}/></Link></section> :
       <div className="checkout-layout">
         <form className="checkout-form" onSubmit={placeOrder}>
           <section className="checkout-form-section">
@@ -100,7 +100,7 @@ export default function CheckoutPage() {
             </div>
           </section>
           {error && <p className="checkout-error" role="alert">{error}</p>}
-          <button className="checkout-primary checkout-submit" type="submit">SEND ORDER REQUEST <ArrowUpRight size={17}/></button>
+          <button className="checkout-primary checkout-submit" type="submit">SUBMIT ORDER REQUEST <ArrowUpRight size={17}/></button>
           <p className="checkout-disclaimer">This submits an order request by email. No payment is collected at this stage. Your order is not confirmed until our team contacts you.</p>
           {submitted && <p className="checkout-success"><CheckCircle2 size={16}/> Your email app should open with your order details. Send the email to complete your request.</p>}
         </form>
