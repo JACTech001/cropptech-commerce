@@ -84,6 +84,8 @@ export async function POST(request, { params }) {
   try {
     const amountTransferred = new Prisma.Decimal(amountRaw);
     await prisma.$transaction(async (tx) => {
+      const pending = await tx.paymentSubmission.findFirst({ where: { paymentId: order.payment.id, status: "PENDING" }, select: { id: true } });
+      if (pending) throw new Error("PAYMENT_ALREADY_PENDING");
       await tx.paymentSubmission.create({
         data: {
           paymentId: order.payment.id,
@@ -123,12 +125,13 @@ export async function POST(request, { params }) {
           status: "QUEUED",
         },
       });
-    });
+    }, { isolationLevel: "Serializable" });
     return Response.json({ message: "Your payment details and receipt have been submitted. We will update your order after verification." }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (submitError) {
     try {
       await cloudinary.uploader.destroy(uploaded.public_id, { resource_type: resourceType, type: "authenticated" });
     } catch {}
+    if (submitError?.message === "PAYMENT_ALREADY_PENDING" || submitError?.code === "P2034") return error("A payment submission is already being processed for this order. Refresh the page and check its status.", 409);
     if (submitError?.code === "P2002") return error("This bank transaction reference has already been submitted. Check the reference and try again.", 409);
     console.error("Payment submission failed:", submitError);
     return error("We could not save your payment submission. Please try again.", 500);
