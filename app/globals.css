@@ -1426,3 +1426,10 @@ h1, h2, h3, p { margin-top: 0; }
 .admin-shipping-days { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .admin-setting-hint { margin:0; color:var(--muted); font-size:8px; line-height:1.7; }
 @media(max-width:760px) { .admin-settings-grid { grid-template-columns:1fr; } .admin-settings-section { padding:16px; } }
+
+.admin-zone-list { display:grid; gap:8px; padding-top:13px; border-top:1px solid var(--line); }
+.admin-zone-list > strong { color:var(--muted); font-size:8px; letter-spacing:.8px; }
+.admin-zone-list > div { display:flex; justify-content:space-between; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:9px; }
+.admin-zone-list > div span { color:var(--ink); }
+.admin-zone-list > div b { white-space:nowrap; font-weight:600; }
+.admin-zone-list > small { color:var(--muted); font-size:9px; }
