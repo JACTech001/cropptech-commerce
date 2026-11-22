@@ -109,7 +109,7 @@ function AuthFormContent({ mode }) {
           name: name.trim(),
           email: email.trim(),
           password,
-          callbackURL: safeRedirectTo,
+          callbackURL: new URL(safeRedirectTo, window.location.origin).toString(),
         });
       } else if (isSignIn) {
         result = await authClient.signIn.email({
