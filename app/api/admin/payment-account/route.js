@@ -9,7 +9,17 @@ export async function GET() {
   if (access.status !== 200) return fail("You are not authorized to view payment settings.", access.status);
   const account = await prisma.bankAccount.findFirst({ where: { isActive: true }, orderBy: { createdAt: "desc" } });
   if (!account) return Response.json({ account: null }, { headers: { "Cache-Control": "no-store" } });
-  let lastFour;\n  try { lastFour = decryptBankAccountNumber(account.accountNumberEncrypted).slice(-4); }\n  catch { return fail("The saved bank account cannot be decrypted. Check the server encryption key.", 503); }\n  return Response.json({\n    account: {\n      bankName: account.bankName,\n      accountName: account.accountName,\n      accountNumberMasked: "••••••" + lastFour,\n      instructions: account.instructions,\n    },\n  }, { headers: { "Cache-Control": "no-store" } });
+  let lastFour;
+  try { lastFour = decryptBankAccountNumber(account.accountNumberEncrypted).slice(-4); }
+  catch { return fail("The saved bank account cannot be decrypted. Check the server encryption key.", 503); }
+  return Response.json({
+    account: {
+      bankName: account.bankName,
+      accountName: account.accountName,
+      accountNumberMasked: "••••••" + lastFour,
+      instructions: account.instructions,
+    },
+  }, { headers: { "Cache-Control": "no-store" } });
 }
 
 export async function POST(request) {
