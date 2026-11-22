@@ -77,12 +77,13 @@ export async function POST(request) {
 
       const products = await tx.product.findMany({
         where: { slug: { in: [...new Set(normalizedItems.map((item) => item.slug))] }, status: "ACTIVE" },
-        include: { variants: { where: { isActive: true } } },
+        include: { variants: { where: { isActive: true } }, images: true },
       });
 
       const resolved = normalizedItems.map((item) => {
         const product = products.find((entry) => entry.slug === item.slug);
         if (!product) throw new Error("PRODUCT_UNAVAILABLE");
+        if (!product.images.length) throw new Error("PRODUCT_IMAGE_UNAVAILABLE");
         const variant = product.variants.find((entry) =>
           entry.size.toLowerCase() === item.size.toLowerCase() &&
           entry.colour.toLowerCase() === item.colour.toLowerCase()
@@ -196,6 +197,7 @@ export async function POST(request) {
       PAYMENT_ACCOUNT_AMBIGUOUS: [503, "The store payment settings need review. Please try again later."],
       BANK_ACCOUNT_ENCRYPTION_INVALID: [503, "The store payment account is not configured correctly. Please contact the store."],
       PRODUCT_UNAVAILABLE: [409, "One of the selected products is not currently available. Please return to the shop and refresh your cart."],
+      PRODUCT_IMAGE_UNAVAILABLE: [409, "A selected product is waiting for an approved product photo. Please contact the store before ordering."],
       VARIANT_UNAVAILABLE: [409, "One of the selected sizes or colours is not currently available. Please update your cart."],
       INSUFFICIENT_STOCK: [409, "There is not enough stock for one of the selected items. Please reduce the quantity or contact the store."],
     };
