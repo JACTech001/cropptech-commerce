@@ -48,7 +48,7 @@ export async function POST(request) {
     where: {
       state: { equals: state, mode: "insensitive" },
       city: { equals: city, mode: "insensitive" },
-      zone: { isActive: true },
+      zone: { is: { isActive: true } },
     },
     select: { id: true },
   });
