@@ -8,7 +8,7 @@ import { authClient } from "../lib/auth/client";
 
 function AuthFormContent({ mode }) {
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/checkout";
+  const requestedRedirectTo = searchParams.get("redirectTo") || "/checkout";
   const token = searchParams.get("token") || "";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,19 +35,23 @@ function AuthFormContent({ mode }) {
 
     setBusy(true);
     try {
+      const redirectTarget = new URL(requestedRedirectTo, window.location.origin);
+      const safeRedirectTo = redirectTarget.origin === window.location.origin
+        ? `${redirectTarget.pathname}${redirectTarget.search}${redirectTarget.hash}`
+        : "/checkout";
       let result;
       if (isSignUp) {
         result = await authClient.signUp.email({
           name: name.trim(),
           email: email.trim(),
           password,
-          callbackURL: redirectTo,
+          callbackURL: safeRedirectTo,
         });
       } else if (isSignIn) {
         result = await authClient.signIn.email({
           email: email.trim(),
           password,
-          callbackURL: redirectTo,
+          callbackURL: safeRedirectTo,
         });
       } else if (isForgot) {
         result = await authClient.requestPasswordReset({
@@ -65,7 +69,7 @@ function AuthFormContent({ mode }) {
       if (result?.error) {
         setError(result.error.message || "We could not complete that request. Please try again.");
       } else if (isSignIn || isSignUp) {
-        window.location.assign(redirectTo);
+        window.location.assign(safeRedirectTo);
       } else if (isForgot) {
         setMessage("If an account exists for that email, password-reset instructions will be sent.");
       } else if (isReset) {
