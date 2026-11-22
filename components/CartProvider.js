@@ -19,6 +19,7 @@ export function CartProvider({ children }) {
   });
   const changeQuantity = (key, quantity) => setItems(current => current.map(item => item.key === key ? { ...item, quantity: Math.max(1, quantity) } : item));
   const removeItem = key => setItems(current => current.filter(item => item.key !== key));
+  const clearSelectedItems = () => setItems(current => current.filter(item => item.selected === false));
   const toggleItem = key => setItems(current => current.map(item => item.key === key ? { ...item, selected: item.selected === false } : item));
   const changeSize = (key, size) => setItems(current => {
     const item = current.find(entry => entry.key === key);
@@ -31,7 +32,7 @@ export function CartProvider({ children }) {
   const count = items.reduce((sum, item) => sum + item.quantity, 0);
   const selectedItems = items.filter(item => item.selected !== false);
   const selectedCount = selectedItems.reduce((sum, item) => sum + item.quantity, 0);
-  const value = useMemo(() => ({ items, addItem, changeQuantity, removeItem, toggleItem, changeSize, selectedItems, selectedCount, count, ready }), [items, count, ready]);
+  const value = useMemo(() => ({ items, addItem, changeQuantity, removeItem, clearSelectedItems, toggleItem, changeSize, selectedItems, selectedCount, count, ready }), [items, count, ready]);
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 export function useCart() {
