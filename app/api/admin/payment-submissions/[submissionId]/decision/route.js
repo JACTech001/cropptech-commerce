@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { requireAppRole } from "../../../../../../lib/auth/user";
 import { prisma } from "../../../../../../lib/db";
 
