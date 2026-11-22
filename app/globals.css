@@ -1176,3 +1176,27 @@ h1, h2, h3, p { margin-top: 0; }
   .auth-carousel-copy h1 { font-size:40px; }
   .auth-carousel-copy > p:last-child { max-width:250px; font-size:10px; }
 }
+
+
+/* Mobile account layout: prioritise the form, keep the linen carousel as a compact visual below it. */
+@media (max-width:760px) {
+  .auth-layout { display:flex; flex-direction:column; align-items:stretch; gap:26px; padding-top:30px; }
+  .auth-panel { order:0; width:100%; }
+  .auth-carousel { order:1; width:100%; }
+  .auth-carousel-image-wrap { height:220px; min-height:220px; }
+  .auth-carousel-copy { left:20px; right:20px; bottom:52px; }
+  .auth-carousel-copy .eyebrow { margin-bottom:8px; font-size:8px; }
+  .auth-carousel-copy h1 { font-size:clamp(27px,7vw,38px); line-height:1.02; margin-bottom:7px; }
+  .auth-carousel-copy > p:last-child { max-width:280px; font-size:9px; line-height:1.45; margin:0; }
+  .auth-carousel-controls { left:20px; right:20px; bottom:12px; }
+  .auth-carousel-count { font-size:8px; }
+  .auth-carousel-buttons button { width:30px; height:30px; }
+  .auth-carousel-dots { left:20px; bottom:19px; }
+  .auth-carousel .auth-editorial-foot { display:none; }
+}
+@media (max-width:420px) {
+  .auth-layout { padding-top:22px; gap:22px; }
+  .auth-carousel-image-wrap { height:195px; min-height:195px; }
+  .auth-carousel-copy { bottom:48px; }
+  .auth-carousel-copy h1 { font-size:27px; }
+}
