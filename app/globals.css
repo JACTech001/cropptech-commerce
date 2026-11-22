@@ -1406,3 +1406,23 @@ h1, h2, h3, p { margin-top: 0; }
   .admin-submission-facts { grid-template-columns:1fr; }
   .admin-review-actions { display:grid; grid-template-columns:1fr; }
 }
+
+
+/* Admin checkout configuration */
+.admin-settings-section { margin:30px 0 42px; padding:24px; background:var(--cream); border:1px solid var(--line); }
+.admin-settings-heading { display:flex; align-items:flex-start; gap:12px; margin-bottom:20px; }
+.admin-settings-heading > svg { color:var(--red); flex:0 0 auto; margin-top:3px; }
+.admin-settings-heading h2 { margin:0 0 6px; font-size:18px; font-weight:600; }
+.admin-settings-heading p { max-width:650px; margin:0; color:var(--muted); font-size:10px; line-height:1.7; }
+.admin-settings-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.admin-settings-card { display:grid; align-content:start; gap:13px; padding:20px; background:#fff; border:1px solid var(--line); min-width:0; }
+.admin-settings-card > .eyebrow { margin:0 0 3px; color:var(--red); font-size:8px; letter-spacing:1px; }
+.admin-settings-card .checkout-primary { width:100%; }
+.admin-current-account { display:grid; gap:5px; padding:13px; margin-bottom:3px; background:var(--cream); }
+.admin-current-account strong { font-size:12px; }
+.admin-current-account span { color:var(--muted); font-size:10px; }
+.admin-current-account b { font-size:16px; letter-spacing:1px; }
+.admin-current-account small,.admin-setting-status { color:var(--muted); font-size:9px; }
+.admin-shipping-days { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.admin-setting-hint { margin:0; color:var(--muted); font-size:8px; line-height:1.7; }
+@media(max-width:760px) { .admin-settings-grid { grid-template-columns:1fr; } .admin-settings-section { padding:16px; } }
