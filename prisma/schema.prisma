@@ -343,14 +343,14 @@ model OrderStatusHistory {
 }
 
 model BankAccount {
-  id            String   @id @default(cuid())
-  bankName      String
-  accountName   String
+  id                     String   @id @default(cuid())
+  bankName               String
+  accountName            String
   accountNumberEncrypted String
-  instructions  String?  @db.Text
-  isActive      Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  instructions           String?  @db.Text
+  isActive               Boolean  @default(false)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 
   payments Payment[]
 
@@ -368,10 +368,10 @@ model Payment {
 
   // Snapshot of the destination account shown when the order was placed. Encrypt the account number before persistence.
   // Decrypt the account number only in authorized server-side workflows.
-  bankNameSnapshot            String
-  accountNameSnapshot         String
+  bankNameSnapshot               String
+  accountNameSnapshot            String
   accountNumberSnapshotEncrypted String
-  paymentInstructionsSnapshot String? @db.Text
+  paymentInstructionsSnapshot    String? @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -386,19 +386,19 @@ model Payment {
 }
 
 model PaymentSubmission {
-  id                   String                  @id @default(cuid())
-  paymentId            String
-  submittedById        String
-  accountNameUsed      String
-  amountTransferred    Decimal                 @db.Decimal(12, 2)
-  bankName             String
-  transactionReference String
+  id                     String                  @id @default(cuid())
+  paymentId              String
+  submittedById          String
+  accountNameUsed        String
+  amountTransferred      Decimal                 @db.Decimal(12, 2)
+  bankName               String
+  transactionReference   String
   receiptStorageProvider String?
   receiptStorageKey      String?
-  customerNote         String?                 @db.Text
-  status               PaymentSubmissionStatus @default(PENDING)
-  submittedAt          DateTime                @default(now())
-  updatedAt            DateTime                @updatedAt
+  customerNote           String?                 @db.Text
+  status                 PaymentSubmissionStatus @default(PENDING)
+  submittedAt            DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
 
   payment       Payment               @relation(fields: [paymentId], references: [id], onDelete: Restrict)
   submittedBy   User                  @relation(fields: [submittedById], references: [id], onDelete: Restrict)
