@@ -93,7 +93,7 @@ export async function POST(request, { params }) {
           bankName,
           transactionReference,
           receiptStorageProvider: "cloudinary",
-          receiptStorageKey: uploaded.public_id,
+          receiptStorageKey: `${resourceType}:${uploaded.format || (resourceType === "raw" ? "pdf" : "jpg")}:${uploaded.public_id}`,
           customerNote: customerNote || null,
           status: "PENDING",
         },
