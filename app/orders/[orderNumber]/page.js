@@ -35,7 +35,7 @@ export default async function OrderDetailsPage({ params }) {
       items: { orderBy: { createdAt: "asc" } },
       payment: {
         include: {
-          submissions: { orderBy: { submittedAt: "desc" }, select: { id: true, status: true, submittedAt: true } },
+          submissions: { orderBy: { submittedAt: "desc" }, include: { verifications: { orderBy: { verifiedAt: "desc" }, select: { decision: true, note: true, verifiedAt: true } } } },
         },
       },
       statusHistory: { orderBy: { createdAt: "desc" }, take: 8 },
@@ -130,6 +130,7 @@ export default async function OrderDetailsPage({ params }) {
                   <div><span>AMOUNT TO TRANSFER</span><strong className="order-amount">{money(order.payment.amountDue)}</strong></div>
                 </div>
                 {order.payment.paymentInstructionsSnapshot && <p className="order-payment-intro">{order.payment.paymentInstructionsSnapshot}</p>}
+                {order.payment.submissions.flatMap((submission) => submission.verifications).slice(0, 1).map((review) => review.note ? <p className="order-payment-warning" key={review.verifiedAt.toISOString()}>Store update ({review.decision.replaceAll("_", " ").toLowerCase()}): {review.note}</p> : null)}
                 <p className="order-payment-warning">Do not send cash to a personal account or a different account supplied outside this website. A receipt alone does not confirm payment.</p>
                 {canSubmitPayment && <PaymentSubmissionForm orderNumber={order.orderNumber} amountDue={order.payment.amountDue.toString()}/>}
               </>
