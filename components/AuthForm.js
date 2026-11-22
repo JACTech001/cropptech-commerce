@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight, LoaderCircle } from "lucide-react";
 import { authClient } from "../lib/auth/client";
 
@@ -84,9 +85,9 @@ function AuthFormContent({ mode }) {
 
   const title = isSignUp ? "Create your account." : isSignIn ? "Welcome back." : isForgot ? "Reset your password." : "Choose a new password.";
   const intro = isSignUp
-    ? "Create an account to continue to checkout and keep track of your orders."
+    ? "Create an account to manage your orders and complete purchases."
     : isSignIn
-      ? "Sign in to continue to your CroppTech checkout."
+      ? "Sign in to continue with your CroppTech order."
       : isForgot
         ? "Enter the email address connected to your account and we’ll send reset instructions."
         : "Enter a new password for your CroppTech account.";
@@ -95,16 +96,18 @@ function AuthFormContent({ mode }) {
     <main className="auth-page">
       <header className="auth-topbar">
         <Link href="/" className="auth-back"><ArrowLeft size={15} /> BACK TO STORE</Link>
-        <Link href="/" className="auth-wordmark" aria-label="CroppTech Commerce home">CROPPTECH <span>COMMERCE STORE</span></Link>
-        <span className="auth-top-note">BUSINESS MOVES WITH COMMERCE.</span>
+        <Link href="/" className="auth-wordmark" aria-label="CroppTech Commerce home">
+          <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce Store" width={210} height={60} priority className="auth-brand-image" />
+        </Link>
+        <span className="auth-top-spacer" aria-hidden="true" />
       </header>
 
       <section className="auth-layout">
         <div className="auth-editorial">
-          <p className="eyebrow">CROPPTECH COMMERCE / YOUR ACCOUNT</p>
-          <h1>{title.split(" ")[0]}<br /><em>{title.split(" ").slice(1).join(" ")}</em></h1>
-          <p>{intro}</p>
-          <span className="auth-editorial-foot">A CONSIDERED LINEN COLLECTION FOR EVERYDAY LIVING.</span>
+          <p className="eyebrow">CROPPTECH COMMERCE / CUSTOMER ACCOUNT</p>
+          <h1>Thoughtful linen.<br /><em>Simpler shopping.</em></h1>
+          <p>Your CroppTech account keeps your orders and delivery details together, so you can return to the pieces you love.</p>
+          <span className="auth-editorial-foot">BUSINESS MOVES WITH COMMERCE.</span>
         </div>
 
         <div className="auth-panel">
@@ -152,7 +155,7 @@ function AuthFormContent({ mode }) {
           <p className="auth-legal">By continuing, you agree to our <Link href="/terms">Terms</Link> and <Link href="/privacy">Privacy Policy</Link>.</p>
         </div>
       </section>
-      <footer className="auth-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><span>BUSINESS MOVES WITH COMMERCE.</span></footer>
+      <footer className="auth-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span></footer>
     </main>
   );
 }
