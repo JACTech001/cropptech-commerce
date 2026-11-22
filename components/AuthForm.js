@@ -136,8 +136,10 @@ function AuthFormContent({ mode }) {
         const profileResponse = await fetch("/api/account/me", { cache: "no-store" });
 
         if (profileResponse.status === 401) {
-          setCompletion("verification");
-          setMessage("Your account has been created. Check your inbox for any verification instructions, then sign in to continue.");
+          setCompletion(isSignUp ? "verification" : "profile-error");
+          setMessage(isSignUp
+            ? "Your account was created, but we could not confirm your sign-in session. Try signing in. If the store asks you to verify your email, check your inbox."
+            : "Your credentials were accepted, but we could not confirm your sign-in session. Please try signing in again.");
           return;
         }
 
@@ -233,7 +235,7 @@ function AuthFormContent({ mode }) {
                   <button type="button" className="auth-secondary" onClick={() => { setCompletion(""); setMessage(""); setError(""); }}>TRY ANOTHER EMAIL</button>
                 </>
               )}
-              {(completion === "reset" || completion === "verification") && <Link href="/auth/sign-in" className="auth-completion-action">RETURN TO SIGN IN <ArrowRight size={15} /></Link>}
+              {(completion === "reset" || completion === "verification" || completion === "profile-error") && <Link href="/auth/sign-in" className="auth-completion-action">RETURN TO SIGN IN <ArrowRight size={15} /></Link>}
               {completion === "profile-error" && (
                 <button type="button" className="auth-secondary" onClick={retryAccountSetup} disabled={busy}>
                   {busy ? "PLEASE WAIT…" : "RETRY ACCOUNT SETUP"}
