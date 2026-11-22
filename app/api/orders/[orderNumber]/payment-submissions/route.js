@@ -40,7 +40,7 @@ export async function POST(request, { params }) {
   const customerNote = String(form.get("customerNote") || "").trim().slice(0, 1000);
   const receipt = form.get("receipt");
 
-  if (!accountNameUsed || !bankName || !transactionReference || !/^(?:\d+)(?:\.\d{1,2})?$/.test(amountRaw)) {
+  if (!accountNameUsed || !bankName || !transactionReference || !/^(?:\d+)(?:\.\d{1,2})?$/.test(amountRaw) || Number(amountRaw) <= 0) {
     return error("Complete the account name, amount, bank and transaction reference.", 400);
   }
   if (!receipt || typeof receipt.arrayBuffer !== "function" || receipt.size < 1 || receipt.size > 5 * 1024 * 1024) {
