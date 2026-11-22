@@ -1290,3 +1290,5 @@ h1, h2, h3, p { margin-top: 0; }
   color:var(--red);
 }
 .auth-secondary:disabled { opacity:.6; cursor:wait; }
+
+.auth-account-error { color:#8c1717; font-size:9px; max-width:150px; line-height:1.4; }
