@@ -29,10 +29,11 @@ export async function POST(request, { params }) {
         throw new Error("AMOUNT_MISMATCH");
       }
 
-      await tx.paymentSubmission.update({
-        where: { id: submission.id },
+      const claimed = await tx.paymentSubmission.updateMany({
+        where: { id: submission.id, status: "PENDING" },
         data: { status: decision },
       });
+      if (claimed.count !== 1) throw new Error("SUBMISSION_ALREADY_REVIEWED");
       await tx.paymentVerification.create({
         data: {
           submissionId: submission.id,
