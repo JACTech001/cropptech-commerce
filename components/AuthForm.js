@@ -50,7 +50,15 @@ function AuthFormContent({ mode }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);\n  const [activeSlide, setActiveSlide] = useState(0);\n\n  useEffect(() => {\n    const timer = window.setInterval(() => {\n      setActiveSlide((current) => (current + 1) % linenSlides.length);\n    }, 5500);\n    return () => window.clearInterval(timer);\n  }, []);
+  const [busy, setBusy] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % linenSlides.length);
+    }, 5500);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const isSignUp = mode === "sign-up";
   const isSignIn = mode === "sign-in";
