@@ -44,7 +44,7 @@ The current development database has no Product or ProductVariant records. The p
 Before accepting real orders, the store must have approved database products with:
 - `Product.status = ACTIVE`
 - active `ProductVariant` records with approved SKU, size, colour, NGN price and actual stock quantity
-- approved product images and product descriptions
+- at least one approved `ProductImage` record per product, with a real approved product photo and product description
 
 Checkout ignores browser-supplied prices and refuses inactive/missing variants or insufficient stock. Do not activate the provisional catalogue or invent stock values just to make checkout pass.
 
