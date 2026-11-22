@@ -16,6 +16,7 @@ export default auth.middleware({
     "/auth/sign-up",
     "/auth/forgot-password",
     "/auth/reset-password",
+    "/api/account/me",
   ],
 });
 
