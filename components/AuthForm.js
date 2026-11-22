@@ -143,7 +143,8 @@ function AuthFormContent({ mode }) {
         <span className="auth-top-spacer" aria-hidden="true" />
       </header>
 
-      <section className="auth-layout">
+      <section className={isForgot ? "auth-layout auth-layout-no-carousel" : "auth-layout"}>
+        {!isForgot && (
         <div className="auth-editorial auth-carousel" aria-label="CroppTech linen collection">
           <div className="auth-carousel-image-wrap">
             {linenSlides.map((slide, index) => (
@@ -176,6 +177,7 @@ function AuthFormContent({ mode }) {
           </div>
           <span className="auth-editorial-foot">BUSINESS MOVES WITH COMMERCE.</span>
         </div>
+        )}
 
         <div className="auth-panel">
           <p className="eyebrow">{isSignUp ? "NEW CUSTOMER" : isSignIn ? "CUSTOMER SIGN IN" : "ACCOUNT SECURITY"}</p>
