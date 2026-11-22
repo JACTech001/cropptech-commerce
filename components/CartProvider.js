@@ -3,19 +3,21 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { ShoppingBag } from "lucide-react";
 const CartContext = createContext(null);
 const STORAGE_KEY = "cropptech-cart";
+const makeSlug = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    try { setItems(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]").map(item => ({ ...item, selected: item.selected !== false }))); } catch { setItems([]); }
+    try { setItems(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]").map(item => ({ ...item, slug: item.slug || makeSlug(item.name), selected: item.selected !== false }))); } catch { setItems([]); }
     setReady(true);
   }, []);
   useEffect(() => { if (ready) localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }, [items, ready]);
   const addItem = (product, size) => setItems(current => {
     const key = product.id + "-" + size;
+    const slug = product.slug || makeSlug(product.name);
     const found = current.find(item => item.key === key);
     return found ? current.map(item => item.key === key ? { ...item, quantity: item.quantity + 1, selected: true } : item)
-      : [...current, { key, id: product.id, name: product.name, slug: product.slug, image: product.image, audience: product.audience, category: product.category, tone: product.tone, availableSizes: product.availableSizes || ["S", "M", "L", "XL"], size, quantity: 1, selected: true }];
+      : [...current, { key, id: product.id, name: product.name, slug, image: product.image, audience: product.audience, category: product.category, tone: product.tone, availableSizes: product.availableSizes || ["S", "M", "L", "XL"], size, quantity: 1, selected: true }];
   });
   const changeQuantity = (key, quantity) => setItems(current => current.map(item => item.key === key ? { ...item, quantity: Math.max(1, quantity) } : item));
   const removeItem = key => setItems(current => current.filter(item => item.key !== key));
