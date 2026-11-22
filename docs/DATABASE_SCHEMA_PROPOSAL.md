@@ -81,13 +81,13 @@ Order items snapshot product and variant details so later catalogue edits or arc
 ### Payment and bank-transfer verification
 | Table | Purpose | Important fields |
 |---|---|---|
-| `bank_accounts` | Admin-configurable transfer destination | bank_name, account_name, account_number_encrypted_or_secret_reference, currency, is_active |
+| `bank_accounts` | Admin-configurable transfer destination | bank_name, account_name, account_number_encrypted, currency, is_active |
 | `payments` | Payment obligation for an order | order_id, bank_account_id, amount_due, currency, status |
-| `payment_submissions` | Customer's transfer claim | payment_id, submitted_by, amount_claimed, sender_account_name, sender_bank, transaction_reference, receipt_private_key, status, submitted_at |
+| `payment_submissions` | Customer's transfer claim | payment_id, submitted_by, amount_claimed, sender_account_name, sender_bank, transaction_reference, receipt_storage_provider, receipt_storage_key, status, submitted_at |
 | `payment_verifications` | Admin decision and evidence | submission_id, reviewed_by, decision, note, verified_transaction_reference, created_at |
-| `refunds` | Refund decision and execution record | order_id, return_request_id (optional), amount, status, reason, reviewed_by, processed_at |
+| `refunds` | Refund decision and execution record | payment_id, return_request_id (optional), amount, status, reason, reviewed_by, processed_at |
 
-Keep account details out of source code and ordinary public settings. Protect the account number at rest (or store a secret reference), and restrict access to authorized payment-instruction/admin routes. A receipt is supporting evidence only. The customer submission must never update payment status to paid. An admin verification transaction should atomically approve the submission, mark the payment paid, update the order payment status, write order history and audit the action.
+Keep account details out of source code and ordinary public settings. Encrypt the bank account number before storing it in `account_number_encrypted`; never persist plaintext account numbers. Restrict decryption to authorized server-side payment-instruction/admin workflows. Snapshot the encrypted account number on each payment record. A receipt is supporting evidence only. The customer submission must never update payment status to paid. An admin verification transaction should atomically approve the submission, mark the payment paid, update the order payment status, write order history and audit the action.
 
 ### Delivery, returns and operations
 | Table | Purpose | Important fields |
@@ -95,7 +95,7 @@ Keep account details out of source code and ordinary public settings. Protect th
 | `shipping_zones` | Named configurable delivery zones | name, is_active |
 | `shipping_zone_locations` | Nigerian state/city/locality coverage | zone_id, state, city, locality |
 | `shipping_rates` | Fee and delivery estimate by zone | zone_id, fee, min_days, max_days, is_active |
-| `shipments` | Fulfilment and tracking | order_id (unique), carrier, tracking_number, tracking_url, status, shipped_at, delivered_at |
+| `shipments` | Fulfilment and tracking; supports multiple parcels for one order | order_id, carrier, tracking_number, tracking_url, status, shipped_at, delivered_at |
 | `return_requests` | Customer return/refund request | order_id, customer_id, reason, description, status, admin_note, reviewed_by |
 | `return_items` | Items and quantities in a return | return_request_id, order_item_id, quantity, condition_note |
 | `stock_reservations` | Temporary stock held for unpaid orders | order_id, variant_id, quantity, expires_at, released_at |
@@ -103,7 +103,7 @@ Keep account details out of source code and ordinary public settings. Protect th
 | `admin_audit_logs` | Sensitive admin action history | actor_id, action, entity_type, entity_id, metadata, created_at |
 | `customer_notifications` | Delivery status of customer notifications | user_id, order_id, channel, template, status, sent_at |
 
-Shipping fee and delivery estimate are copied to the order at checkout. Zone coverage and rates can change later without altering historical orders. Reserve stock atomically at checkout; release reservations on expiry/cancellation and convert the reservation into a sale movement after payment approval. The proposed 24-hour payment expiry is not yet confirmed and must remain configurable.
+Shipping fee and delivery estimate are copied to the order at checkout. Zone coverage and rates can change later without altering historical orders. Reserve stock atomically at checkout; release reservations on expiry/cancellation and convert the reservation into a sale movement after payment approval. The proposed 24-hour payment expiry is not yet confirmed and must remain configurable. A return request can be associated with multiple refund records, each linked to its payment. An order may have multiple shipment records when fulfilled in separate parcels.
 
 ## 4. Status separation
 
@@ -128,7 +128,7 @@ These are separate because an order can be awaiting fulfilment after payment is 
 7. Enforce customer ownership on every cart, order, address, payment-submission and return endpoint.
 8. Only authorized admin roles may edit stock, bank details, shipping rates, payment decisions, refunds or order fulfilment.
 9. Archive/deactivate products and variants instead of deleting records referenced by order history.
-10. Keep private receipt objects in private storage; validate file size/type, use randomized object keys and signed access, and never expose a public receipt URL.
+10. Keep receipt objects in private storage. Store only the provider name and opaque storage key (`receipt_storage_provider`, `receipt_storage_key`); do not store public receipt URLs. Validate file size/type, use randomized object keys and short-lived signed access, and authorize every receipt download.
 11. Do not store card details or bank login credentials.
 12. Log admin changes to bank accounts, stock, payment decisions, refunds, delivery fees and roles.
 
@@ -165,7 +165,7 @@ These are separate because an order can be awaiting fulfilment after payment is 
 
 - Authentication provider: Clerk is a candidate, not yet selected.
 - Email provider for verification, order and delivery notifications.
-- Private receipt storage provider and retention period.
+- Private receipt storage provider and retention period.\n- Encryption key-management approach for bank account numbers (managed secret/KMS key; never commit keys).
 - Delivery zones, covered Nigerian locations, rates and delivery estimates.
 - Payment expiry window (24 hours was suggested, not confirmed).
 - Return eligibility window, item condition rules and exchange/refund policy.
