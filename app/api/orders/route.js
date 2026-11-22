@@ -69,7 +69,7 @@ export async function POST(request) {
       const bankAccounts = await tx.bankAccount.findMany({ where: { isActive: true }, orderBy: { createdAt: "desc" } });
       if (bankAccounts.length !== 1) throw new Error(bankAccounts.length === 0 ? "PAYMENT_ACCOUNT_NOT_CONFIGURED" : "PAYMENT_ACCOUNT_AMBIGUOUS");
       const bankAccount = bankAccounts[0];
-      const accountNumber = decryptBankAccountNumber(bankAccount.accountNumberEncrypted);
+      let accountNumber;\n      try { accountNumber = decryptBankAccountNumber(bankAccount.accountNumberEncrypted); }\n      catch { throw new Error("BANK_ACCOUNT_ENCRYPTION_INVALID"); }
 
       const products = await tx.product.findMany({
         where: { slug: { in: [...new Set(normalizedItems.map((item) => item.slug))] }, status: "ACTIVE" },
@@ -195,7 +195,7 @@ export async function POST(request) {
       DELIVERY_NOT_CONFIGURED: [409, "Delivery is not yet configured for this location. Please contact the store before placing your order."],
       DELIVERY_RATE_AMBIGUOUS: [409, "The delivery rate for this location needs store review. Please contact the store."],
       PAYMENT_ACCOUNT_NOT_CONFIGURED: [503, "The store has not configured a payment account yet. Please try again later."],
-      PAYMENT_ACCOUNT_AMBIGUOUS: [503, "The store payment settings need review. Please try again later."],
+      PAYMENT_ACCOUNT_AMBIGUOUS: [503, "The store payment settings need review. Please try again later."],\n      BANK_ACCOUNT_ENCRYPTION_INVALID: [503, "The store payment account is not configured correctly. Please contact the store."],
       PRODUCT_UNAVAILABLE: [409, "One of the selected products is not currently available. Please return to the shop and refresh your cart."],
       VARIANT_UNAVAILABLE: [409, "One of the selected sizes or colours is not currently available. Please update your cart."],
       INSUFFICIENT_STOCK: [409, "There is not enough stock for one of the selected items. Please reduce the quantity or contact the store."],
