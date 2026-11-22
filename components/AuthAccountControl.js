@@ -38,7 +38,7 @@ export default function AuthAccountControl() {
 
   if (!loaded) return <span className="auth-account-placeholder" aria-hidden="true" />;
   if (!user) {
-    return <Link href="/auth/sign-in" className="auth-account-link"><UserRound size={17} strokeWidth={1.7} /><span>SIGN IN</span></Link>;
+    return <Link href="/auth/sign-in" className="auth-account-link"><UserRound size={17} strokeWidth={1.7} /><span>ACCOUNT</span></Link>;
   }
 
   return (
