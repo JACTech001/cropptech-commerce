@@ -1200,3 +1200,27 @@ h1, h2, h3, p { margin-top: 0; }
   .auth-carousel-copy { bottom:48px; }
   .auth-carousel-copy h1 { font-size:27px; }
 }
+
+
+/* Desktop-only refinement: give the account form slightly more room and clearer type. */
+@media (min-width:761px) {
+  .auth-layout:not(.auth-layout-no-carousel) {
+    grid-template-columns:minmax(0,1fr) minmax(390px,500px);
+    gap:clamp(48px,7vw,105px);
+  }
+  .auth-layout-no-carousel {
+    grid-template-columns:minmax(420px,500px);
+    justify-content:center;
+  }
+  .auth-panel {
+    padding:clamp(34px,4.2vw,54px);
+  }
+  .auth-panel h2 { font-size:33px; }
+  .auth-panel-intro { font-size:12px; line-height:1.85; margin-bottom:32px; }
+  .auth-form { gap:21px; }
+  .auth-form label { font-size:9px; gap:10px; }
+  .auth-form input { height:51px; padding:0 14px; font-size:13px; }
+  .auth-submit { min-height:53px; font-size:10px; }
+  .auth-switch { font-size:11px; }
+  .auth-legal { font-size:10px; }
+}
