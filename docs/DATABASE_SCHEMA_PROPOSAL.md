@@ -40,7 +40,7 @@ erDiagram
   BANK_ACCOUNT ||--o{ PAYMENT : destination
   SHIPPING_ZONE ||--o{ SHIPPING_RATE : prices
   SHIPPING_ZONE ||--o{ SHIPPING_ZONE_LOCATION : covers
-  ORDER o|--o| SHIPMENT : fulfils
+  ORDER ||--o{ SHIPMENT : fulfils
   ORDER ||--o{ RETURN_REQUEST : return_claim
   RETURN_REQUEST ||--o{ RETURN_ITEM : includes
   RETURN_REQUEST ||--o{ REFUND : may_result_in
@@ -150,7 +150,7 @@ These are separate because an order can be awaiting fulfilment after payment is 
 
 1. Confirm the remaining business decisions below and select the managed auth, email and private receipt-storage providers.
 2. Add Prisma and create the schema/enums with PostgreSQL mappings, indexes, constraints and deletion rules.
-3. Provision a **new dedicated CroppTech Neon database** through the Vercel-managed Neon integration or an independently authorized Neon organization. Do not reuse another project's database.
+3. Use the existing dedicated CroppTech Neon project (`cropptech-store`): apply and test migrations on its `development` branch first; keep the `main` production branch untouched until staging checks and approval are complete.
 4. Add environment variables only in local environment files and Vercel project settings; never commit secrets.
 5. Run schema validation and generate Prisma Client locally; review migration SQL.
 6. Apply the initial migration to a fresh development database only; inspect the resulting tables and constraints.
