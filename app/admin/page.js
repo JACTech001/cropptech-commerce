@@ -4,6 +4,7 @@ import { ArrowUpRight, ClipboardList, ShieldCheck } from "lucide-react";
 import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import PaymentReviewControls from "../../components/PaymentReviewControls";
+import AdminStoreSettings from "../../components/AdminStoreSettings";
 
 export const dynamic = "force-dynamic";
 
@@ -64,6 +65,8 @@ export default async function AdminPage() {
           <div><ClipboardList size={20}/><span>RECENT ORDERS</span><strong>{orders.length}</strong></div>
           <div><ShieldCheck size={20}/><span>PAYMENTS AWAITING REVIEW</span><strong>{pendingCount}</strong></div>
         </div>
+
+        <AdminStoreSettings />
 
         {!orders.length ? <section className="admin-empty"><h2>No orders yet</h2><p>Customer orders will appear here after the catalogue, shipping zones and payment account are configured.</p></section> :
           <div className="admin-order-list">
