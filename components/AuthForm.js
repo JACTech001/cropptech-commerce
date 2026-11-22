@@ -111,6 +111,18 @@ function AuthFormContent({ mode }) {
       if (result?.error) {
         setError(result.error.message || "We could not complete that request. Please try again.");
       } else if (isSignIn || isSignUp) {
+        const profileResponse = await fetch("/api/account/me", { cache: "no-store" });
+
+        if (profileResponse.status === 401) {
+          setMessage("Your account is ready. If email verification is requested, follow the instructions sent to your inbox, then sign in.");
+          return;
+        }
+
+        const profileResult = await profileResponse.json().catch(() => ({}));
+        if (!profileResponse.ok) {
+          throw new Error(profileResult.error || "Your sign-in worked, but we could not finish setting up your store account.");
+        }
+
         window.location.assign(safeRedirectTo);
       } else if (isForgot) {
         setMessage("If an account exists for that email, password-reset instructions will be sent.");
