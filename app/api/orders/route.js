@@ -184,13 +184,7 @@ export async function POST(request) {
           quantity: item.quantity, lineTotal: item.lineTotal.toString(),
         })),
       },
-      payment: {
-        bankName: result.order.payment.bankNameSnapshot,
-        accountName: result.order.payment.accountNameSnapshot,
-        accountNumber: result.accountNumber,
-        instructions: result.order.payment.paymentInstructionsSnapshot,
-        amountDue: result.order.payment.amountDue.toString(),
-      },
+
     }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     const known = {
