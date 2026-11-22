@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, CheckCircle2, Clock3, PackageCheck } from "lucide-react";
 import { getCurrentAppUser } from "../../../lib/auth/user";
@@ -58,7 +59,7 @@ export default async function OrderDetailsPage({ params }) {
       <header className="shop-topbar">
         <Link href="/shop" className="shop-back"><ArrowLeft size={16}/> CONTINUE SHOPPING</Link>
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
-          <img src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" className="brand-text-logo"/>
+          <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo"/>
         </Link>
         <span className="order-header-label">MY ORDER</span>
       </header>
