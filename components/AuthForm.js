@@ -226,8 +226,8 @@ function AuthFormContent({ mode }) {
 
           {completion ? (
             <div className="auth-completion" role="status" aria-live="polite">
-              <div className="auth-completion-mark"><CheckCircle2 size={25} /></div>
-              <h3>{completion === "forgot" ? "Check your inbox" : completion === "reset" ? "Password updated" : completion === "verification" ? "Finish creating your account" : "You're signed in"}</h3>
+              <div className={completion === "profile-error" ? "auth-completion-mark auth-completion-warning" : "auth-completion-mark"}>{completion === "profile-error" ? "!" : <CheckCircle2 size={25} />}</div>
+              <h3>{completion === "forgot" ? "Check your inbox" : completion === "reset" ? "Password updated" : completion === "verification" ? "Finish creating your account" : completion === "profile-error" ? "Sign-in needs another step" : "You're signed in"}</h3>
               <p>{message}</p>
               {completion === "forgot" && (
                 <>
