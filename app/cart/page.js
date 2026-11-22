@@ -24,7 +24,7 @@ export default function CartPage() {
         </div><button className="cart-remove" onClick={() => removeItem(item.key)} aria-label={"Remove " + item.name}><Trash2 size={16}/></button>
       </article>)}</div>
       <div className="cart-summary"><div><span>SELECTED ITEMS / {count} IN BAG</span><strong>{selectedCount}</strong></div><div className="cart-subtotal"><span>SELECTED SUBTOTAL</span><strong><ProductPrice amount={selectedSubtotal} /></strong></div><p>Delivery is calculated separately. Our team will confirm stock availability, final pricing and payment details with you.</p>
-      {selectedItems.length ? <Link href="/checkout" className="cart-buy-link"><ShoppingBag size={17} strokeWidth={1.7}/> PROCEED TO BUY <ArrowUpRight size={16}/></Link> : <p className="cart-no-selection">Select at least one item to continue.</p>}</div></>}
+      {selectedItems.length ? <Link href="/checkout" className="cart-buy-link"><ShoppingBag size={17} strokeWidth={1.7}/> COMPLETE YOUR ORDER <ArrowUpRight size={16}/></Link> : <p className="cart-no-selection">Select at least one item to continue.</p>}</div></>}
     </section>
     <footer className="shop-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><span>BUSINESS MOVES WITH COMMERCE.</span><Link href="/contact">CONTACT</Link></footer>
   </main>;
