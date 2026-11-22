@@ -5,6 +5,7 @@ import { CheckCircle2, LoaderCircle, PlusCircle, ShieldCheck } from "lucide-reac
 
 export default function AdminStoreSettings() {
   const [account, setAccount] = useState(null);
+  const [zones, setZones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bankBusy, setBankBusy] = useState(false);
   const [shippingBusy, setShippingBusy] = useState(false);
@@ -23,6 +24,9 @@ export default function AdminStoreSettings() {
       })
       .catch((error) => { if (active) setBankError(error.message); })
       .finally(() => { if (active) setLoading(false); });
+    fetch("/api/admin/shipping-zones", { cache: "no-store" })
+      .then(async (response) => { const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.error || "Could not load delivery zones."); if (active) setZones(data.zones || []); })
+      .catch((error) => { if (active) setShippingError(error.message); });
     return () => { active = false; };
   }, []);
 
@@ -58,6 +62,9 @@ export default function AdminStoreSettings() {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "Could not save delivery zone.");
       form.reset();
+      const zonesResponse = await fetch("/api/admin/shipping-zones", { cache: "no-store" });
+      const zonesData = await zonesResponse.json().catch(() => ({}));
+      if (zonesResponse.ok) setZones(zonesData.zones || []);
       setShippingMessage(data.message || "Delivery zone saved.");
     } catch (error) { setShippingError(error.message); }
     finally { setShippingBusy(false); }
@@ -95,7 +102,8 @@ export default function AdminStoreSettings() {
           {shippingError && <p className="checkout-error" role="alert">{shippingError}</p>}
           {shippingMessage && <p className="checkout-success" role="status"><CheckCircle2 size={15}/>{shippingMessage}</p>}
           <button className="checkout-primary" type="submit" disabled={shippingBusy}>{shippingBusy ? <LoaderCircle size={15}/> : <PlusCircle size={15}/>} ADD DELIVERY ZONE</button>
-          <p className="admin-setting-hint">Create a separate rate for each city or delivery area. Checkout is blocked for locations without one unambiguous active rate.</p>
+          <div className="admin-zone-list"><strong>ACTIVE DELIVERY ZONES ({zones.length})</strong>{zones.length ? zones.map((zone, index) => <div key={zone.id + "-" + index}><span>{zone.name} · {zone.city}, {zone.state}</span><b>₦{Number(zone.fee).toLocaleString("en-NG")}</b></div>) : <small>No delivery zones configured yet.</small>}</div>
+          <p className="admin-setting-hint">Create one rate per city or delivery area. Duplicate state/city zones are blocked so checkout can calculate one unambiguous fee.</p>
         </form>
       </div>
     </section>
