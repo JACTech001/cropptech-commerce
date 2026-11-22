@@ -1057,3 +1057,17 @@ h1, h2, h3, p { margin-top: 0; }
   .auth-panel { padding: 28px 22px; }
   .auth-footer { padding: 19px 6%; flex-direction: column; font-size: 7px; }
 }
+
+.auth-account-link, .auth-account-control { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); }
+.auth-account-link { font-size: 8px; font-weight: 700; letter-spacing: 1px; white-space: nowrap; }
+.auth-account-link:hover { color: var(--red); }
+.auth-account-control { gap: 10px; }
+.auth-account-name { max-width: 105px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: 8px; letter-spacing: .6px; }
+.auth-account-signout { display: inline-flex; align-items: center; gap: 5px; border: 0; padding: 4px 0; background: transparent; cursor: pointer; color: var(--red); font-size: 8px; font-weight: 700; letter-spacing: .8px; white-space: nowrap; }
+.auth-account-signout:disabled { opacity: .6; cursor: wait; }
+.auth-account-placeholder { width: 44px; }
+@media (max-width: 640px) {
+  .auth-account-name, .auth-account-signout span, .auth-account-link span { display: none; }
+  .auth-account-control { gap: 0; }
+  .auth-account-link, .auth-account-signout { padding: 5px; }
+}
