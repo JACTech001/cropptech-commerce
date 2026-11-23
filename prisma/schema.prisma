@@ -179,6 +179,7 @@ model Product {
   slug        String          @unique
   description String          @db.Text
   category    ProductCategory
+  productType String          @default("OTHER")
   status      ProductStatus   @default(DRAFT)
   isFeatured  Boolean         @default(false)
   createdAt   DateTime        @default(now())
@@ -190,6 +191,7 @@ model Product {
   orderItems OrderItem[]
 
   @@index([status, category])
+  @@index([status, productType])
   @@index([isFeatured, status])
 }
 
