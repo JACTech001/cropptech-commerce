@@ -158,7 +158,7 @@ export default function HomePage() {
               <div className="home-search-results-heading"><span>{searchQuery.trim() ? "SEARCH RESULTS" : "POPULAR IN THE COLLECTION"}</span><span>{searchResults.length} {searchResults.length === 1 ? "ITEM" : "ITEMS"}</span></div>
               {searchResults.length ? searchResults.map((product) => (
                 <Link className="home-search-result" href={"/shop/" + productSlug(product.name)} key={product.id}>
-                  <img src={product.image} alt="" />
+                  <Image src={product.image} alt="" width={48} height={58} />
                   <span className="home-search-result-copy"><strong>{product.name}</strong><small>{product.audience} / {product.category} · {product.tone}</small></span>
                   <span className="home-search-result-price">{product.price == null ? "Price to be confirmed" : "₦" + product.price.toLocaleString("en-NG")}</span>
                   <ArrowUpRight size={16} />
@@ -242,7 +242,7 @@ export default function HomePage() {
           {products.filter((product) => product.featured).map((product) => {
             const slug = productSlug(product.name);
             return <article className="home-featured-card" key={product.id}>
-              <Link href={"/shop/" + slug} className="home-featured-image"><img src={product.image} alt={product.name} /><span>{product.tag}</span></Link>
+              <Link href={"/shop/" + slug} className="home-featured-image"><Image src={product.image} alt={product.name} fill sizes="(max-width: 800px) 100vw, 33vw" /><span>{product.tag}</span></Link>
               <div className="home-featured-meta">
                 <p className="home-product-category">{product.audience} / {product.category}</p>
                 <h3><Link href={"/shop/" + slug}>{product.name}</Link></h3>
@@ -262,10 +262,10 @@ export default function HomePage() {
           <Link href="/shop?collection=linen" className="text-link">EXPLORE LINEN WEAR <ArrowUpRight size={16} /></Link>
         </div>
         <div className="moodboard-grid">
-          <Link href="/shop?collection=linen" className="moodboard-tile moodboard-tile-tall"><img src="https://images.pexels.com/photos/32825460/pexels-photo-32825460.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Men's beige linen outfit" /><span>THE MEN&apos;S LINEN EDIT</span></Link>
-          <Link href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/5393448/pexels-photo-5393448.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Woman wearing a relaxed linen outfit" /><span>SOFT, RELAXED SILHOUETTES</span></Link>
-          <Link href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/15923917/pexels-photo-15923917.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Neutral linen garments on wooden hangers" /><span>THE DETAILS</span></Link>
-          <Link href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/9637778/pexels-photo-9637778.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Men's white linen outfit" /><span>MADE FOR EVERYDAY</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile moodboard-tile-tall"><Image src="https://images.pexels.com/photos/32825460/pexels-photo-32825460.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Men's beige linen outfit" fill sizes="(max-width: 640px) 100vw, 40vw" /><span>THE MEN&apos;S LINEN EDIT</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile"><Image src="https://images.pexels.com/photos/5393448/pexels-photo-5393448.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Woman wearing a relaxed linen outfit" fill sizes="(max-width: 640px) 50vw, 30vw" /><span>SOFT, RELAXED SILHOUETTES</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile"><Image src="https://images.pexels.com/photos/15923917/pexels-photo-15923917.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Neutral linen garments on wooden hangers" fill sizes="(max-width: 640px) 50vw, 30vw" /><span>THE DETAILS</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile"><Image src="https://images.pexels.com/photos/9637778/pexels-photo-9637778.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Men's white linen outfit" fill sizes="(max-width: 640px) 50vw, 30vw" /><span>MADE FOR EVERYDAY</span></Link>
         </div>
         <p className="moodboard-note">A visual style edit for inspiration. Product fabrics, styles and availability will be confirmed in the store catalogue.</p>
       </section>
