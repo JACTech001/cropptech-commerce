@@ -228,6 +228,7 @@ export default function AdminProductsManager() {
                   <label>Colour<input required value={variant.colour} onChange={(event) => updateVariant(index, "colour", event.target.value)} placeholder="Natural"/></label>
                   <label>Price (₦)<input required type="number" min="1" step="0.01" value={variant.price} onChange={(event) => updateVariant(index, "price", event.target.value)} placeholder="40000"/></label>
                   <label>Stock<input required type="number" min="0" step="1" value={variant.stockQuantity} onChange={(event) => updateVariant(index, "stockQuantity", event.target.value)}/></label>
+                  <label className="admin-variant-active">Sellable<input type="checkbox" checked={variant.isActive !== false} onChange={(event) => updateVariant(index, "isActive", event.target.checked)}/></label>
                   <button type="button" className="admin-remove-variant" aria-label="Remove variant from this edit" onClick={() => removeVariant(index)}><Trash2 size={15}/></button>
                 </div>
               ))}
