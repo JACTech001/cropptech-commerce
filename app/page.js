@@ -109,7 +109,7 @@ export default function HomePage() {
           <button
             className="icon-button mobile-menu-button"
             aria-label="Open menu"
-            aria-expanded={false}
+            aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
             onClick={() => setMenuOpen(true)}
           >
