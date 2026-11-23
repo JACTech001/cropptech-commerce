@@ -11,6 +11,7 @@ const blankProduct = () => ({
   slug: "",
   description: "",
   category: "MEN",
+  productType: "OTHER",
   status: "DRAFT",
   isFeatured: false,
   variants: [],
@@ -61,6 +62,7 @@ export default function AdminProductsManager() {
       slug: product.slug,
       description: product.description,
       category: product.category,
+      productType: product.productType || "OTHER",
       status: product.status,
       isFeatured: product.isFeatured,
       variants: product.variants.map((variant) => ({ ...variant, price: String(variant.price), stockQuantity: String(variant.stockQuantity) })),
@@ -154,7 +156,7 @@ export default function AdminProductsManager() {
     if (!window.confirm("Archive “" + product.name + "”? It will no longer be available for new purchases.")) return;
     const payload = {
       id: product.id, name: product.name, slug: product.slug, description: product.description,
-      category: product.category, status: "ARCHIVED", isFeatured: false,
+      category: product.category, productType: product.productType || "OTHER", status: "ARCHIVED", isFeatured: false,
       variants: product.variants.map((variant) => ({ ...variant, price: String(variant.price), stockQuantity: variant.stockQuantity })),
       images: product.images,
     };
@@ -210,6 +212,7 @@ export default function AdminProductsManager() {
               <label>Product name<input required maxLength={160} value={draft.name} onChange={(event) => update("name", event.target.value)} placeholder="e.g. Relaxed linen shirt"/></label>
               <label>URL slug<input value={draft.slug} onChange={(event) => update("slug", event.target.value)} placeholder="Generated from product name if blank"/></label>
               <label>Collection<select value={draft.category} onChange={(event) => update("category", event.target.value)}><option value="MEN">Men</option><option value="WOMEN">Women</option><option value="UNISEX">Unisex</option></select></label>
+              <label>Garment type<select value={draft.productType} onChange={(event) => update("productType", event.target.value)}><option value="SHIRTS">Shirts</option><option value="TROUSERS">Trousers</option><option value="SHORTS">Shorts</option><option value="SETS">Co-ord sets</option><option value="DRESSES">Dresses</option><option value="SKIRTS">Skirts</option><option value="OTHER">Other</option></select></label>
               <label>Publication status<select value={draft.status} onChange={(event) => update("status", event.target.value)}><option value="DRAFT">Draft — not for sale</option><option value="ACTIVE">Active — publish</option><option value="ARCHIVED">Archived</option></select></label>
               <label className="admin-product-description">Description<textarea required rows={4} maxLength={5000} value={draft.description} onChange={(event) => update("description", event.target.value)} placeholder="Describe the actual garment, fabric, fit and details."/></label>
               <label className="admin-feature-toggle"><input type="checkbox" checked={draft.isFeatured} onChange={(event) => update("isFeatured", event.target.checked)}/> Feature this product on the storefront</label>
