@@ -112,7 +112,7 @@ function AuthFormContent({ mode }) {
       let result;
       if (isSignUp) {
         result = await authClient.signUp.email({
-          name: `${firstName.trim()} ${lastName.trim()}`.replace(/\\s+/g, " "),
+          name: `${firstName.trim()} ${lastName.trim()}`.replace(/\s+/g, " "),
           email: email.trim(),
           password,
           callbackURL: new URL(safeRedirectTo, window.location.origin).toString(),
