@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -116,22 +117,22 @@ export default function HomePage() {
           </button>
         )}
 
-        <a href="/" className="brand-lockup brand-wordmark" aria-label="CROPPTECH COMMERCE home">
+        <Link href="/" className="brand-lockup brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={170} height={49} priority className="brand-text-logo" />
-        </a>
+        </Link>
 
         <div className="mobile-menu-backdrop" aria-hidden="true" onClick={closeMenu} style={{display:menuOpen ? "block" : "none"}} />
         <nav id="mobile-navigation" className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
           <div className="mobile-menu-heading"><span>EXPLORE CROPPTECH</span><button type="button" className="mobile-menu-close" onClick={closeMenu} aria-label="Close menu"><X size={21} /></button></div>
-          <a href="/shop?collection=men" onClick={closeMenu}>MEN<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
-          <a href="/shop?collection=women" onClick={closeMenu}>WOMEN<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
-          <a href="/shop?collection=linen" onClick={closeMenu}>LINEN WEAR<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
+          <Link href="/shop?collection=men" onClick={closeMenu}>MEN<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></Link>
+          <Link href="/shop?collection=women" onClick={closeMenu}>WOMEN<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></Link>
+          <Link href="/shop?collection=linen" onClick={closeMenu}>LINEN WEAR<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></Link>
           <div className="mobile-menu-divider" />
-          <a href="/about" onClick={closeMenu}>OUR STORY<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
-          <a href="/contact" onClick={closeMenu}>CONTACT<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
-          <a href="/faq" onClick={closeMenu}>HELP & FAQ<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
-          <a href="/account" onClick={closeMenu}>MY ACCOUNT<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
-          <div className="mobile-menu-footer"><span>BUSINESS MOVES WITH COMMERCE.</span><a href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>FOLLOW ON TIKTOK</a></div>
+          <Link href="/about" onClick={closeMenu}>OUR STORY<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></Link>
+          <Link href="/contact" onClick={closeMenu}>CONTACT<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></Link>
+          <Link href="/faq" onClick={closeMenu}>HELP & FAQ<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></Link>
+          <Link href="/account" onClick={closeMenu}>MY ACCOUNT<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></Link>
+          <div className="mobile-menu-footer"><span>BUSINESS MOVES WITH COMMERCE.</span><Link href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>FOLLOW ON TIKTOK</Link></div>
         </nav>
 
         <div className="header-actions">
@@ -156,12 +157,12 @@ export default function HomePage() {
             <div className="home-search-results" aria-live="polite">
               <div className="home-search-results-heading"><span>{searchQuery.trim() ? "SEARCH RESULTS" : "POPULAR IN THE COLLECTION"}</span><span>{searchResults.length} {searchResults.length === 1 ? "ITEM" : "ITEMS"}</span></div>
               {searchResults.length ? searchResults.map((product) => (
-                <a className="home-search-result" href={"/shop/" + productSlug(product.name)} key={product.id}>
+                <Link className="home-search-result" href={"/shop/" + productSlug(product.name)} key={product.id}>
                   <img src={product.image} alt="" />
                   <span className="home-search-result-copy"><strong>{product.name}</strong><small>{product.audience} / {product.category} · {product.tone}</small></span>
                   <span className="home-search-result-price">{product.price == null ? "Price to be confirmed" : "₦" + product.price.toLocaleString("en-NG")}</span>
                   <ArrowUpRight size={16} />
-                </a>
+                </Link>
               )) : <p className="home-search-empty">No products match “{searchQuery}”. Try a different style, category or colour.</p>}
             </div>
           </div>
@@ -177,9 +178,9 @@ export default function HomePage() {
           <p className="hero-copy">
             Discover breathable linen wear for men and women. Explore relaxed shirts, considered sets and effortless pieces made for everyday living.
           </p>
-          <a className="light-button" href="/shop?collection=linen">
+          <Link className="light-button" href="/shop?collection=linen">
             SHOP LINEN WEAR <ArrowUpRight size={16} />
-          </a>
+          </Link>
         </div>
         <p className="hero-side-note">A NEW PERSPECTIVE ON EVERYDAY STYLE</p>
       </section>
@@ -202,7 +203,7 @@ export default function HomePage() {
 
         <div className="collection-grid">
           {collections.map((item) => (
-            <a className="collection-card" href={item.href} key={item.title}>
+            <Link className="collection-card" href={item.href} key={item.title}>
               <div className="collection-image" style={{ backgroundImage: `url(\"${item.image}\")` }}>
                 <span className="round-arrow"><ArrowUpRight size={20} /></span>
               </div>
@@ -213,7 +214,7 @@ export default function HomePage() {
                 </div>
                 <ArrowRight size={19} strokeWidth={1.5} />
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </section>
@@ -227,7 +228,7 @@ export default function HomePage() {
             Linen wear designed for breathable comfort,
             relaxed movement and easy styling, season after season.
           </p>
-          <a href="/shop?collection=linen" className="text-link">SHOP LINEN WEAR <ArrowUpRight size={16} /></a>
+          <Link href="/shop?collection=linen" className="text-link">SHOP LINEN WEAR <ArrowUpRight size={16} /></Link>
           <span className="linen-caption">TEXTURE · MOVEMENT · SIMPLICITY</span>
         </div>
       </section>
@@ -241,10 +242,10 @@ export default function HomePage() {
           {products.filter((product) => product.featured).map((product) => {
             const slug = productSlug(product.name);
             return <article className="home-featured-card" key={product.id}>
-              <a href={"/shop/" + slug} className="home-featured-image"><img src={product.image} alt={product.name} /><span>{product.tag}</span></a>
+              <Link href={"/shop/" + slug} className="home-featured-image"><img src={product.image} alt={product.name} /><span>{product.tag}</span></Link>
               <div className="home-featured-meta">
                 <p className="home-product-category">{product.audience} / {product.category}</p>
-                <h3><a href={"/shop/" + slug}>{product.name}</a></h3>
+                <h3><Link href={"/shop/" + slug}>{product.name}</Link></h3>
                 <span className="home-product-tone">{product.tone} colour direction</span>
                 <div className="home-product-price-row"><span>PRICE</span><ProductPrice amount={product.price} className="home-price" /></div>
               </div>
@@ -252,19 +253,19 @@ export default function HomePage() {
             </article>;
           })}
         </div>
-        <div className="home-featured-footer"><a href="/shop" className="text-link">VIEW ALL COLLECTIONS <ArrowUpRight size={16} /></a></div>
+        <div className="home-featured-footer"><Link href="/shop" className="text-link">VIEW ALL COLLECTIONS <ArrowUpRight size={16} /></Link></div>
       </section>
 
       <section className="linen-moodboard section-pad">
         <div className="moodboard-heading">
           <div><p className="eyebrow">LINEN, IN GOOD COMPANY</p><h2>Natural texture.<br /><em>Effortless presence.</em></h2></div>
-          <a href="/shop?collection=linen" className="text-link">EXPLORE LINEN WEAR <ArrowUpRight size={16} /></a>
+          <Link href="/shop?collection=linen" className="text-link">EXPLORE LINEN WEAR <ArrowUpRight size={16} /></Link>
         </div>
         <div className="moodboard-grid">
-          <a href="/shop?collection=linen" className="moodboard-tile moodboard-tile-tall"><img src="https://images.pexels.com/photos/32825460/pexels-photo-32825460.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Men's beige linen outfit" /><span>THE MEN'S LINEN EDIT</span></a>
-          <a href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/5393448/pexels-photo-5393448.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Woman wearing a relaxed linen outfit" /><span>SOFT, RELAXED SILHOUETTES</span></a>
-          <a href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/15923917/pexels-photo-15923917.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Neutral linen garments on wooden hangers" /><span>THE DETAILS</span></a>
-          <a href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/9637778/pexels-photo-9637778.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Men's white linen outfit" /><span>MADE FOR EVERYDAY</span></a>
+          <Link href="/shop?collection=linen" className="moodboard-tile moodboard-tile-tall"><img src="https://images.pexels.com/photos/32825460/pexels-photo-32825460.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Men's beige linen outfit" /><span>THE MEN'S LINEN EDIT</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/5393448/pexels-photo-5393448.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Woman wearing a relaxed linen outfit" /><span>SOFT, RELAXED SILHOUETTES</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/15923917/pexels-photo-15923917.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Neutral linen garments on wooden hangers" /><span>THE DETAILS</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile"><img src="https://images.pexels.com/photos/9637778/pexels-photo-9637778.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Men's white linen outfit" /><span>MADE FOR EVERYDAY</span></Link>
         </div>
         <p className="moodboard-note">A visual style edit for inspiration. Product fabrics, styles and availability will be confirmed in the store catalogue.</p>
       </section>
@@ -275,18 +276,18 @@ export default function HomePage() {
             <p className="eyebrow">THE LINEN WARDROBE</p>
             <h2>More ways to<br /><em>wear linen.</em></h2>
           </div>
-          <a href="/shop" className="text-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></a>
+          <Link href="/shop" className="text-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></Link>
         </div>
         <div className="category-grid">
           {categories.map((category) => (
-            <a href={category.href} className="category-card" key={category.name}>
+            <Link href={category.href} className="category-card" key={category.name}>
               <div className="category-image" style={{ backgroundImage: `url(\"${category.image}\")` }}>
               </div>
               <div className="category-meta">
                 <div><h3>{category.name}</h3><p>{category.detail}</p></div>
                 <ArrowUpRight size={18} />
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </section>
@@ -298,7 +299,7 @@ export default function HomePage() {
         <p className="eyebrow">THE CROPPTECH POINT OF VIEW</p>
         <h2>Less noise.<br /><em>More feeling.</em></h2>
         <p>Good style is not complicated. It is the confidence to keep things simple.</p>
-        <a href="#story" className="light-button">GET TO KNOW US <ArrowUpRight size={16} /></a>
+        <Link href="#story" className="light-button">GET TO KNOW US <ArrowUpRight size={16} /></Link>
       </section>
 
       <section className="newsletter section-pad">
@@ -325,17 +326,17 @@ export default function HomePage() {
 
       <footer className="site-footer">
         <div className="footer-top">
-          <a href="/" className="brand-lockup footer-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
+          <Link href="/" className="brand-lockup footer-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
             <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={170} height={49} className="brand-text-logo" />
-          </a>
+          </Link>
           <p>BUSINESS MOVES WITH COMMERCE.</p>
           <div className="social-links">
-            <a href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><Music2 size={18} /></a>
+            <Link href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><Music2 size={18} /></Link>
           </div>
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE. ALL RIGHTS RESERVED.</span>
-          <div><a href="/about">ABOUT</a><a href="/contact">CONTACT</a><a href="/delivery-returns">DELIVERY & RETURNS</a><a href="/faq">FAQS</a><a href="/privacy">PRIVACY</a><a href="/terms">TERMS</a></div>
+          <div><Link href="/about">ABOUT</Link><Link href="/contact">CONTACT</Link><Link href="/delivery-returns">DELIVERY & RETURNS</Link><Link href="/faq">FAQS</Link><Link href="/privacy">PRIVACY</Link><Link href="/terms">TERMS</Link></div>
           <span>MADE TO MOVE WITH YOU.</span>
         </div>
       </footer>
