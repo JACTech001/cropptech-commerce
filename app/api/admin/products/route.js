@@ -166,6 +166,18 @@ export async function PATCH(request) {
         },
       });
 
+      const removeVariantIds = Array.isArray(body.removeVariantIds) ? body.removeVariantIds.filter((value) => typeof value === "string") : [];
+      if (removeVariantIds.length) {
+        await tx.productVariant.updateMany({
+          where: { id: { in: removeVariantIds }, productId: id },
+          data: { isActive: false },
+        });
+      }
+      const removeImageIds = Array.isArray(body.removeImageIds) ? body.removeImageIds.filter((value) => typeof value === "string") : [];
+      if (removeImageIds.length) {
+        await tx.productImage.deleteMany({ where: { id: { in: removeImageIds }, productId: id } });
+      }
+
       for (const variant of variants) {
         const { id: variantId, ...values } = variant;
         if (variantId) {
