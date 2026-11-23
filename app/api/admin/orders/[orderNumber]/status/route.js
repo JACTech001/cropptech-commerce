@@ -1,5 +1,5 @@
-import { requireAppRole } from "../../../../../lib/auth/user";
-import { prisma } from "../../../../../lib/db";
+import { requireAppRole } from "../../../../../../lib/auth/user";
+import { prisma } from "../../../../../../lib/db";
 
 const fail = (message, status) => Response.json(
   { error: message },
