@@ -1514,3 +1514,9 @@ h1, h2, h3, p { margin-top: 0; }
  .admin-product-editor,.admin-catalogue-list { padding:14px; }
  .admin-editor-section-head { align-items:flex-start; flex-direction:column; }
 }
+
+.product-gallery { display:grid; gap:10px; min-width:0; }
+.product-gallery-main { width:100%; }
+.product-gallery-thumbnails { display:flex; gap:8px; overflow-x:auto; padding:2px 0 6px; }
+.product-gallery-thumbnails button { position:relative; width:72px; height:88px; flex:0 0 auto; overflow:hidden; border:1px solid var(--line); background:var(--cream); cursor:pointer; opacity:.72; }
+.product-gallery-thumbnails button.active { border:2px solid var(--red); opacity:1; }
