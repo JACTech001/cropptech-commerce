@@ -2434,3 +2434,105 @@ h1, h2, h3, p { margin-top: 0; }
   .product-back-link { margin-top:19px; font-size:8px; }
   .product-detail-page .shop-footer { flex-direction:column; gap:9px; padding:20px 17px; background:#fff; color:#777; font-size:7px; }
 }
+
+
+/* CROPPTECH mobile bag and checkout */
+@media (max-width:760px) {
+  .cart-page .shop-topbar,
+  .checkout-page .shop-topbar {
+    position:sticky;
+    top:0;
+    z-index:35;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    height:62px;
+    min-height:62px;
+    padding:0 16px;
+    background:#fff;
+  }
+  .cart-page .shop-back,
+  .checkout-page .shop-back { display:none; }
+  .cart-page .shop-brand-wordmark,
+  .checkout-page .shop-brand-wordmark {
+    justify-self:start;
+    width:158px;
+    height:auto;
+    min-width:0;
+  }
+  .cart-page .shop-brand-wordmark .brand-text-logo,
+  .checkout-page .shop-brand-wordmark .brand-text-logo { width:100%; height:auto; object-fit:contain; }
+  .cart-page .shop-topbar > .shop-cart-link { color:#202020; }
+  .cart-content { padding:31px 16px 48px; }
+  .cart-content > .eyebrow { color:#777; font-size:8px; letter-spacing:1px; }
+  .cart-page-title { gap:9px; margin:10px 0; font-size:38px !important; letter-spacing:-1.5px !important; }
+  .cart-page-title > svg { width:24px; height:24px; color:#202020; }
+  .cart-intro { margin-bottom:23px; color:#666; font-size:11px; line-height:1.6; }
+  .cart-list { border-top:1px solid #e9e9e9; }
+  .cart-item { display:grid; grid-template-columns:18px 78px minmax(0,1fr) 30px; align-items:start; gap:9px; padding:15px 0; }
+  .cart-item-check { padding-top:4px; }
+  .cart-item-image { width:78px; height:98px; border-radius:4px; }
+  .cart-item-details { min-width:0; }
+  .cart-item-details > p { margin-bottom:5px; font-size:7px; letter-spacing:.5px; }
+  .cart-item-details h2 { margin-bottom:4px; font-size:12px; line-height:1.35; }
+  .cart-item-details > span { font-size:9px; }
+  .cart-item-price { margin-top:6px; font-size:10px; }
+  .cart-size-change { display:flex; align-items:center; gap:7px; margin-top:7px; color:#777; font-size:7px; letter-spacing:.7px; }
+  .cart-size-change select { min-height:29px; padding:0 6px; border:1px solid #e5e5e5; border-radius:4px; background:#fff; color:#222; font-size:9px; }
+  .cart-quantity { gap:12px; margin-top:8px; }
+  .cart-quantity button { width:28px; height:28px; border-radius:4px; }
+  .cart-quantity span { font-size:10px; }
+  .cart-remove { width:28px; height:28px; border-radius:4px; }
+  .cart-summary { max-width:none; margin:20px 0 0; padding:18px; border:1px solid #e8e8e8; border-radius:7px; background:#fafafa; }
+  .cart-summary > div { font-size:8px; letter-spacing:.6px; }
+  .cart-summary > div strong { font-size:13px; }
+  .cart-subtotal { padding-top:13px; margin-top:13px; }
+  .cart-summary p { margin:13px 0 16px; font-size:9px; line-height:1.6; }
+  .cart-buy-link { min-height:48px; border-radius:5px; background:#202020; color:#fff; font-size:9px; }
+  .cart-empty { padding:34px 20px; border-radius:6px; background:#f7f7f7; }
+  .cart-empty h2 { font-size:22px; }
+  .cart-empty p { font-size:10px; line-height:1.6; }
+  .cart-empty .product-enquire-link { min-height:46px; border-radius:5px; background:#202020; font-size:8px; }
+  .cart-page .shop-footer,
+  .checkout-page .shop-footer { flex-direction:column; gap:9px; padding:20px 17px; background:#fff; color:#777; font-size:7px; }
+
+  .checkout-page { background:#fff; }
+  .checkout-wrap { padding:31px 16px 48px; }
+  .checkout-heading { margin-bottom:23px; }
+  .checkout-heading .eyebrow { color:#777; font-size:8px; letter-spacing:1px; }
+  .checkout-heading h1 { margin:10px 0; font-size:clamp(37px,10vw,47px); line-height:1.03; letter-spacing:-1.7px; }
+  .checkout-heading > p:last-child { color:#666; font-size:10px; line-height:1.65; }
+  .checkout-layout { grid-template-columns:minmax(0,1fr); gap:22px; }
+  .checkout-summary { grid-row:1; position:static; padding:16px; border:1px solid #e8e8e8; border-radius:6px; background:#fafafa; }
+  .checkout-summary > .eyebrow { margin-bottom:13px; color:#777; font-size:8px; }
+  .checkout-summary-items { gap:11px; }
+  .checkout-summary-item { gap:10px; padding-bottom:11px; }
+  .checkout-summary-image { width:55px; height:67px; border-radius:3px; }
+  .checkout-summary-copy h3 { font-size:10px; }
+  .checkout-summary-copy p { font-size:8px; }
+  .checkout-summary-foot { padding-top:11px; font-size:7px; }
+  .checkout-summary-foot strong { font-size:8px; }
+  .checkout-edit-link { margin-top:14px; font-size:8px; }
+  .checkout-form-section { padding:19px 0 22px; }
+  .checkout-form-section > .eyebrow { margin-bottom:14px; color:#777; font-size:8px; }
+  .checkout-fields { grid-template-columns:minmax(0,1fr); gap:13px; }
+  .checkout-field,.checkout-field-wide { grid-column:auto; gap:6px; font-size:8px; }
+  .checkout-field input,.checkout-field textarea {
+    min-height:47px;
+    padding:12px;
+    border:1px solid #dedede;
+    border-radius:5px;
+    background:#fff;
+    font-size:14px;
+  }
+  .checkout-field textarea { min-height:94px; }
+  .checkout-field input:focus,.checkout-field textarea:focus { border-color:#777; }
+  .checkout-primary { min-height:49px; border-radius:5px; background:#202020; font-size:9px; }
+  .checkout-primary:hover { background:#333; }
+  .checkout-submit { margin-top:10px; }
+  .checkout-disclaimer { font-size:8px; line-height:1.65; }
+  .checkout-error { border-radius:5px; font-size:9px; }
+  .checkout-empty { padding:27px 20px; border-radius:6px; background:#f7f7f7; }
+  .checkout-empty h2 { font-size:22px; }
+  .checkout-empty p { font-size:10px; line-height:1.6; }
+  .checkout-loading { padding:55px 18px; }
+}
