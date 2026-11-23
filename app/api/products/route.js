@@ -22,7 +22,7 @@ export async function GET() {
         name: product.name,
         slug: product.slug,
         description: product.description,
-        category: product.category === "MEN" ? "Men" : product.category === "WOMEN" ? "Women" : "Unisex",
+        category: product.productType === "SETS" ? "Sets" : product.productType.charAt(0) + product.productType.slice(1).toLowerCase(),
         audience: product.category === "MEN" ? "Men" : product.category === "WOMEN" ? "Women" : "Unisex",
         tone: colours[0] || "Natural",
         image: product.images[0].secureUrl,
