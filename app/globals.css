@@ -1433,3 +1433,19 @@ h1, h2, h3, p { margin-top: 0; }
 .admin-zone-list > div span { color:var(--ink); }
 .admin-zone-list > div b { white-space:nowrap; font-weight:600; }
 .admin-zone-list > small { color:var(--muted); font-size:9px; }
+
+
+/* Admin order fulfilment */
+.admin-overview-four { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.admin-overview-icon { grid-row:span 2; display:grid; place-items:center; width:24px; height:24px; border:1px solid var(--red); border-radius:50%; color:var(--red); font-size:14px; font-weight:700; }
+.admin-fulfillment { display:grid; gap:12px; padding:17px 0; margin:5px 0 12px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.admin-fulfillment > .eyebrow { margin:0; color:var(--red); font-size:8px; letter-spacing:1px; }
+.admin-fulfillment-fields { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.admin-fulfillment-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; width:max-content; min-height:39px; padding:0 15px; border:1px solid var(--red); background:var(--red); color:#fff; cursor:pointer; font-size:8px; font-weight:700; letter-spacing:.8px; }
+.admin-fulfillment-button:disabled { opacity:.6; cursor:wait; }
+.admin-shipment-summary { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; padding:12px 14px; background:var(--cream); font-size:9px; }
+.admin-shipment-summary strong { color:var(--ink); }
+.admin-shipment-summary span { color:var(--muted); }
+.admin-shipment-summary a { display:inline-flex; align-items:center; gap:5px; color:var(--red); font-size:8px; font-weight:700; letter-spacing:.6px; }
+@media(max-width:760px) { .admin-overview-four { grid-template-columns:repeat(2,minmax(0,1fr)); } .admin-fulfillment-fields { grid-template-columns:1fr; } }
+@media(max-width:560px) { .admin-fulfillment-button { width:100%; } }
