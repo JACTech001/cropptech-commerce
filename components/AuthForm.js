@@ -84,8 +84,8 @@ function AuthFormContent({ mode }) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            firstName: firstName.trim().replace(/\\s+/g, " "),
-            lastName: lastName.trim().replace(/\\s+/g, " "),
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
           }),
         });
         if (!nameResponse.ok) {
