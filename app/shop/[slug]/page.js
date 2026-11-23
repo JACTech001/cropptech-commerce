@@ -4,20 +4,24 @@ import { ArrowLeft, ArrowUpRight, Check, Info } from "lucide-react";
 import StorePageShell from "../../../components/StorePageShell";
 import ProductAddButton from "../../../components/ProductAddButton";
 import { CartLink } from "../../../components/CartProvider";
-import { products, productSlug } from "../../../data/products";
 import { CurrencySelector, ProductPrice } from "../../../components/CurrencyProvider";
+import { prisma } from "../../../lib/db";
 
-const slugify = productSlug;
+export const dynamic = "force-dynamic";
 
-export function generateStaticParams() {
-  return products.map((product) => ({ slug: slugify(product.name) }));
-}
+const titleCase = (value) => value === "SETS" ? "Sets" : value.charAt(0) + value.slice(1).toLowerCase();
 
 export default async function ProductDetailPage({ params }) {
   const { slug } = await params;
-  const product = products.find((item) => slugify(item.name) === slug);
+  const record = await prisma.product.findFirst({
+    where: { slug, status: "ACTIVE" },
+    include: {
+      variants: { where: { isActive: true }, orderBy: [{ colour: "asc" }, { size: "asc" }] },
+      images: { orderBy: { sortOrder: "asc" } },
+    },
+  });
 
-  if (!product) {
+  if (!record || !record.variants.length || !record.images.length) {
     return (
       <StorePageShell eyebrow="CROPPTECH COMMERCE STORE / PRODUCT" title={<>Piece not <em>found.</em></>} intro="This product may have moved or is no longer in this collection.">
         <Link href="/shop" className="text-link">RETURN TO SHOP <ArrowUpRight size={16} /></Link>
@@ -25,7 +29,26 @@ export default async function ProductDetailPage({ params }) {
     );
   }
 
-  const sizes = product.availableSizes || [];
+  const colours = [...new Set(record.variants.map((variant) => variant.colour))];
+  const product = {
+    id: record.id,
+    name: record.name,
+    slug: record.slug,
+    description: record.description,
+    audience: record.category === "MEN" ? "Men" : record.category === "WOMEN" ? "Women" : "Unisex",
+    category: titleCase(record.productType),
+    tone: colours[0] || "Natural",
+    image: record.images[0].secureUrl,
+    images: record.images,
+    tag: record.isFeatured ? "FEATURED LINEN" : "LINEN COLLECTION",
+    price: Math.min(...record.variants.map((variant) => Number(variant.price))),
+    colours,
+    availableSizes: [...new Set(record.variants.map((variant) => variant.size))],
+    variants: record.variants.map((variant) => ({
+      id: variant.id, sku: variant.sku, size: variant.size, colour: variant.colour,
+      price: Number(variant.price), stockQuantity: variant.stockQuantity, isActive: variant.isActive,
+    })),
+  };
 
   return (
     <main className="product-detail-page">
@@ -45,25 +68,25 @@ export default async function ProductDetailPage({ params }) {
         <section className="product-detail-copy">
           <p className="eyebrow">CROPPTECH COMMERCE STORE / {product.audience.toUpperCase()} / {product.category.toUpperCase()}</p>
           <h1>{product.name}</h1>
-          <p className="product-detail-tone">{product.tone} colour direction</p>
+          <p className="product-detail-tone">{product.colours.join(" · ")} colour options</p>
           <ProductPrice amount={product.price} className="product-detail-price" />
           <div className="product-detail-rule" />
 
           <div className="product-detail-description-block">
             <p className="eyebrow">ABOUT THIS PIECE</p>
-            <p className="product-detail-description">{product.description || "A considered piece from our linen collection, designed for relaxed everyday styling."}</p>
+            <p className="product-detail-description">{product.description}</p>
           </div>
 
           <div className="product-detail-specs">
             <div><span>COLLECTION</span><strong>{product.audience} linen wear</strong></div>
-            <div><span>COLOUR DIRECTION</span><strong>{product.tone}</strong></div>
-            <div><span>SUGGESTED SIZE RANGE</span><strong>{sizes.length ? sizes.join(" · ") : "To be confirmed"}</strong></div>
+            <div><span>GARMENT TYPE</span><strong>{product.category}</strong></div>
+            <div><span>AVAILABLE SIZES</span><strong>{product.availableSizes.join(" · ")}</strong></div>
           </div>
 
-          <ProductAddButton compact product={{ ...product, slug: slugify(product.name) }} />
+          <ProductAddButton compact product={product} />
 
-          <p className="product-detail-note"><Check size={15} /> Choose a size to add this piece to your shopping bag.</p>
-          <div className="product-detail-availability"><Info size={15} /><span>Product availability and final measurements will be confirmed when your order is reviewed. Product imagery is currently a style reference.</span></div>
+          <p className="product-detail-note"><Check size={15} /> Choose a colour and available size to add this piece to your shopping bag.</p>
+          <div className="product-detail-availability"><Info size={15} /><span>Availability and pricing are checked again against the store database when you place your order.</span></div>
           <Link href="/shop" className="product-back-link"><ArrowLeft size={14} /> CONTINUE SHOPPING</Link>
         </section>
       </div>
