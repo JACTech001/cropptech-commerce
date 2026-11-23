@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Search, SlidersHorizontal } from "lucide-react";
 import ProductAddButton from "../../components/ProductAddButton";
 import { CartLink } from "../../components/CartProvider";
-import { products, productSlug } from "../../data/products";
+import { productSlug } from "../../data/products";
 import { CurrencySelector, ProductPrice } from "../../components/CurrencyProvider";
 
 const audiences = ["All", "Men", "Women"];
@@ -18,7 +18,18 @@ export default function ShopPage() {
   const [category, setCategory] = useState("All categories");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("featured");
-  const [selectedSizes, setSelectedSizes] = useState({});
+  const [products, setProducts] = useState([]);
+  const [catalogueLoading, setCatalogueLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/products", { cache: "no-store" })
+      .then((response) => { if (!response.ok) throw new Error("Catalogue unavailable"); return response.json(); })
+      .then((data) => { if (active) setProducts(data.products || []); })
+      .catch(() => { if (active) setProducts([]); })
+      .finally(() => { if (active) setCatalogueLoading(false); });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -82,7 +93,7 @@ export default function ShopPage() {
           </div>
         </div>
         <div className="shop-product-grid">
-          {visibleProducts.map((product) => (
+          {catalogueLoading ? <div className="shop-empty"><p>Loading the current collection…</p></div> : visibleProducts.map((product) => (
             <article className="shop-product-card" key={product.id}>
               <div className="shop-product-image">
                 <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 50vw, (max-width: 900px) 33vw, 25vw" style={{ objectFit: "cover" }} />
@@ -91,15 +102,15 @@ export default function ShopPage() {
               </div>
               <div className="shop-product-info">
                 <p className="shop-product-category">{product.audience} / {product.category}</p>
-                <h3><Link href={`/shop/${productSlug(product.name)}`}>{product.name}</Link></h3>
+                <h3><Link href={`/shop/${product.slug || productSlug(product.name)}`}>{product.name}</Link></h3>
                 <span className="shop-product-tone">{product.tone} colour direction</span>
                 <div className="shop-product-price-row"><span className="shop-product-price-label">PRICE</span><ProductPrice amount={product.price} className="product-price-note" /></div>
               </div>
-              <ProductAddButton product={{ ...product, slug: productSlug(product.name) }} />
+              <ProductAddButton product={{ ...product, slug: product.slug || productSlug(product.name) }} />
 
             </article>
           ))}
-          {visibleProducts.length === 0 && <div className="shop-empty"><h3>No styles found.</h3><p>Try another search or clear your filters.</p><button onClick={() => { setAudience("All"); setCategory("All categories"); setSearch(""); }}>CLEAR FILTERS</button></div>}
+          {!catalogueLoading && visibleProducts.length === 0 && <div className="shop-empty"><h3>No styles found.</h3><p>Try another search or clear your filters.</p><button onClick={() => { setAudience("All"); setCategory("All categories"); setSearch(""); }}>CLEAR FILTERS</button></div>}
         </div>
         <p className="catalogue-disclaimer">Choose a size for each piece. Every piece in this collection is selected as linen wear. Product details and availability are being completed.</p>
       </section>
