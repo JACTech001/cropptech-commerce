@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { LogOut, LoaderCircle } from "lucide-react";
 import { authClient } from "../lib/auth/client";
 
 export default function AccountSignOutButton() {
+  const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -14,7 +16,7 @@ export default function AccountSignOutButton() {
     try {
       const result = await authClient.signOut();
       if (result?.error) throw new Error(result.error.message || "Sign out failed.");
-      window.location.assign("/");
+      router.replace("/");
     } catch {
       setError("We could not sign you out. Please try again.");
       setBusy(false);
