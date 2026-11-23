@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { startTransition, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Search, SlidersHorizontal } from "lucide-react";
@@ -33,11 +33,11 @@ export default function ShopPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const collection = (params.get("collection") || "all").toLowerCase();
-    if (["men", "women"].includes(collection)) setAudience(collection.charAt(0).toUpperCase() + collection.slice(1));
+    if (["men", "women"].includes(collection)) startTransition(() => setAudience(collection.charAt(0).toUpperCase() + collection.slice(1)));
     const selectedCategory = params.get("category");
-    if (selectedCategory && categories.includes(selectedCategory)) setCategory(selectedCategory);
+    if (selectedCategory && categories.includes(selectedCategory)) startTransition(() => setCategory(selectedCategory));
     const initialSearch = params.get("search");
-    if (initialSearch) setSearch(initialSearch);
+    if (initialSearch) startTransition(() => setSearch(initialSearch));
   }, []);
 
   const visibleProducts = useMemo(() => {
@@ -50,7 +50,7 @@ export default function ShopPage() {
     if (sort === "name") list = [...list].sort((a, b) => a.name.localeCompare(b.name));
     if (sort === "audience") list = [...list].sort((a, b) => a.audience.localeCompare(b.audience));
     return list;
-  }, [audience, category, search, sort]);
+  }, [products, audience, category, search, sort]);
 
   const chooseAudience = (value) => {
     setAudience(value);
