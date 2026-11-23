@@ -126,6 +126,8 @@ model User {
   authProvider String
   authSubject  String
   email        String   @unique
+  firstName    String?
+  lastName     String?
   fullName     String?
   phone        String?
   role         UserRole @default(CUSTOMER)
