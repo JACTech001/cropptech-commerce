@@ -5,6 +5,7 @@ import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import PaymentReviewControls from "../../components/PaymentReviewControls";
 import AdminStoreSettings from "../../components/AdminStoreSettings";
+import FulfillmentControls from "../../components/FulfillmentControls";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +35,7 @@ export default async function AdminPage() {
     include: {
       customer: { select: { email: true, fullName: true } },
       items: true,
+      shipments: { orderBy: { createdAt: "desc" }, take: 1 },
       payment: {
         include: {
           submissions: {
@@ -47,6 +49,8 @@ export default async function AdminPage() {
 
   const pendingCount = orders.reduce((total, order) =>
     total + (order.payment?.submissions.filter((submission) => submission.status === "PENDING").length || 0), 0);
+  const paidCount = orders.filter((order) => order.paymentStatus === "PAID").length;
+  const fulfilmentCount = orders.filter((order) => ["CONFIRMED", "PROCESSING", "SHIPPED"].includes(order.status)).length;
 
   return (
     <main className="admin-page">
@@ -58,57 +62,74 @@ export default async function AdminPage() {
         <div className="admin-heading">
           <p className="eyebrow">STORE MANAGEMENT / ADMINISTRATION</p>
           <h1>Order <em>management.</em></h1>
-          <p>Review orders and verify bank transfers against the actual transactions in the store's bank account. Never approve a payment based on a receipt alone.</p>
+          <p>Review orders, verify bank transfers against actual bank transactions, and manage fulfilment through delivery.</p>
         </div>
 
-        <div className="admin-overview">
+        <div className="admin-overview admin-overview-four">
           <div><ClipboardList size={20}/><span>RECENT ORDERS</span><strong>{orders.length}</strong></div>
           <div><ShieldCheck size={20}/><span>PAYMENTS AWAITING REVIEW</span><strong>{pendingCount}</strong></div>
+          <div><ClipboardList size={20}/><span>PAID ORDERS</span><strong>{paidCount}</strong></div>
+          <div><PackageCheckIcon /><span>IN FULFILMENT</span><strong>{fulfilmentCount}</strong></div>
         </div>
 
         <AdminStoreSettings />
 
         {!orders.length ? <section className="admin-empty"><h2>No orders yet</h2><p>Customer orders will appear here after the catalogue, shipping zones and payment account are configured.</p></section> :
           <div className="admin-order-list">
-            {orders.map((order) => (
-              <article className="admin-order-card" key={order.id}>
-                <div className="admin-order-head">
-                  <div><p className="eyebrow">{order.orderNumber}</p><h2>{order.customer.fullName || order.customer.email}</h2><span>{order.customer.email}</span></div>
-                  <div className="admin-order-total"><strong>{money(order.total)}</strong><span>{labels[order.status] || order.status}</span></div>
-                </div>
-                <div className="admin-order-facts">
-                  <span>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(order.createdAt)}</span>
-                  <span>{order.items.reduce((sum, item) => sum + item.quantity, 0)} item(s)</span>
-                  <span>{order.deliveryCity}, {order.deliveryState}</span>
-                  <span>Payment: {order.paymentStatus.replaceAll("_", " ")}</span>
-                </div>
-                <div className="admin-order-items">
-                  {order.items.map((item) => <p key={item.id}>{item.quantity} × {item.productName} — {item.size}, {item.colour}</p>)}
-                </div>
-                {order.payment?.submissions.length ? (
-                  <div className="admin-submission-list">
-                    <p className="eyebrow">TRANSFER SUBMISSIONS</p>
-                    {order.payment.submissions.map((submission) => (
-                      <section className="admin-submission" key={submission.id}>
-                        <div className="admin-submission-facts">
-                          <span><b>Sender</b>{submission.accountNameUsed}</span>
-                          <span><b>Bank</b>{submission.bankName}</span>
-                          <span><b>Amount stated</b>{money(submission.amountTransferred)}</span>
-                          <span><b>Reference</b>{submission.transactionReference}</span>
-                          <span><b>Submitted</b>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(submission.submittedAt)}</span>
-                        </div>
-                        {submission.customerNote && <p className="admin-customer-note">Customer note: {submission.customerNote}</p>}
-                        {submission.receiptStorageKey && <a className="admin-receipt-link" href={"/api/admin/payment-submissions/" + submission.id + "/receipt"} target="_blank" rel="noreferrer">VIEW PRIVATE RECEIPT <ArrowUpRight size={14}/></a>}
-                        <PaymentReviewControls submissionId={submission.id} status={submission.status}/>
-                      </section>
-                    ))}
+            {orders.map((order) => {
+              const shipment = order.shipments[0] || null;
+              return (
+                <article className="admin-order-card" key={order.id}>
+                  <div className="admin-order-head">
+                    <div><p className="eyebrow">{order.orderNumber}</p><h2>{order.customer.fullName || order.customer.email}</h2><span>{order.customer.email}</span></div>
+                    <div className="admin-order-total"><strong>{money(order.total)}</strong><span>{labels[order.status] || order.status}</span></div>
                   </div>
-                ) : <p className="admin-no-submission">No transfer details submitted yet.</p>}
-              </article>
-            ))}
+                  <div className="admin-order-facts">
+                    <span>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(order.createdAt)}</span>
+                    <span>{order.items.reduce((sum, item) => sum + item.quantity, 0)} item(s)</span>
+                    <span>{order.deliveryCity}, {order.deliveryState}</span>
+                    <span>Payment: {order.paymentStatus.replaceAll("_", " ")}</span>
+                  </div>
+                  <div className="admin-order-items">
+                    {order.items.map((item) => <p key={item.id}>{item.quantity} × {item.productName} — {item.size}, {item.colour}</p>)}
+                  </div>
+                  {shipment && (
+                    <div className="admin-shipment-summary">
+                      <strong>Latest shipment</strong>
+                      <span>{shipment.provider || "Courier not specified"}{shipment.trackingNumber ? " · " + shipment.trackingNumber : ""}</span>
+                      {shipment.trackingUrl && <a href={shipment.trackingUrl} target="_blank" rel="noreferrer">TRACK SHIPMENT <ArrowUpRight size={13}/></a>}
+                    </div>
+                  )}
+                  <FulfillmentControls orderNumber={order.orderNumber} status={order.status} shipment={shipment}/>
+                  {order.payment?.submissions.length ? (
+                    <div className="admin-submission-list">
+                      <p className="eyebrow">TRANSFER SUBMISSIONS</p>
+                      {order.payment.submissions.map((submission) => (
+                        <section className="admin-submission" key={submission.id}>
+                          <div className="admin-submission-facts">
+                            <span><b>Sender</b>{submission.accountNameUsed}</span>
+                            <span><b>Bank</b>{submission.bankName}</span>
+                            <span><b>Amount stated</b>{money(submission.amountTransferred)}</span>
+                            <span><b>Reference</b>{submission.transactionReference}</span>
+                            <span><b>Submitted</b>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(submission.submittedAt)}</span>
+                          </div>
+                          {submission.customerNote && <p className="admin-customer-note">Customer note: {submission.customerNote}</p>}
+                          {submission.receiptStorageKey && <a className="admin-receipt-link" href={"/api/admin/payment-submissions/" + submission.id + "/receipt"} target="_blank" rel="noreferrer">VIEW PRIVATE RECEIPT <ArrowUpRight size={14}/></a>}
+                          <PaymentReviewControls submissionId={submission.id} status={submission.status}/>
+                        </section>
+                      ))}
+                    </div>
+                  ) : <p className="admin-no-submission">No transfer details submitted yet.</p>}
+                </article>
+              );
+            })}
           </div>
         }
       </div>
     </main>
   );
+}
+
+function PackageCheckIcon() {
+  return <span className="admin-overview-icon" aria-hidden="true">✓</span>;
 }
