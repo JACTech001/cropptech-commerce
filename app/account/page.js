@@ -60,7 +60,7 @@ export default async function AccountPage() {
     );
   }
 
-  const firstName = user.fullName?.trim().split(/\\s+/)[0] || "there";
+  const firstName = user.firstName?.trim() || user.fullName?.trim().split(/\\s+/)[0] || "there";
 
   const orders = await prisma.order.findMany({
     where: { customerId: user.id },
