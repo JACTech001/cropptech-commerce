@@ -44,7 +44,8 @@ function AuthFormContent({ mode }) {
   const searchParams = useSearchParams();
   const requestedRedirectTo = searchParams.get("redirectTo") || "/checkout";
   const token = searchParams.get("token") || "";
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -95,6 +96,11 @@ function AuthFormContent({ mode }) {
     setMessage("");
     setCompletion("");
 
+    if (isSignUp && (!firstName.trim() || !lastName.trim())) {
+      setError("Please enter both your first name and last name.");
+      return;
+    }
+
     if (isReset && password !== confirmPassword) {
       setError("Your passwords do not match.");
       return;
@@ -106,7 +112,7 @@ function AuthFormContent({ mode }) {
       let result;
       if (isSignUp) {
         result = await authClient.signUp.email({
-          name: name.trim(),
+          name: `${firstName.trim()} ${lastName.trim()}`.replace(/\\s+/g, " "),
           email: email.trim(),
           password,
           callbackURL: new URL(safeRedirectTo, window.location.origin).toString(),
@@ -253,9 +259,14 @@ function AuthFormContent({ mode }) {
           ) : (
           <form className="auth-form" onSubmit={submit}>
             {isSignUp && (
-              <label>FULL NAME
-                <input autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} required placeholder="Your full name" />
-              </label>
+              <>
+                <label>FIRST NAME
+                  <input autoComplete="given-name" value={firstName} onChange={(event) => setFirstName(event.target.value)} required maxLength={80} placeholder="Your first name" />
+                </label>
+                <label>LAST NAME
+                  <input autoComplete="family-name" value={lastName} onChange={(event) => setLastName(event.target.value)} required maxLength={80} placeholder="Your last name" />
+                </label>
+              </>
             )}
             {!isReset && (
               <label>EMAIL ADDRESS
