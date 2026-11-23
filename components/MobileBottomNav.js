@@ -48,6 +48,7 @@ export default function MobileBottomNav() {
           href={href}
           className={activeKey === key ? "mobile-bottom-nav-link is-active" : "mobile-bottom-nav-link"}
           aria-current={activeKey === key ? "page" : undefined}
+          onClick={() => setCollection(key === "categories" ? "linen" : "")}
         >
           <span className="mobile-bottom-nav-icon">
             <Icon size={20} strokeWidth={activeKey === key ? 2.1 : 1.7} />
