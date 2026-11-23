@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, Bell, ChevronLeft, ChevronRight, Command, ExternalLink, LayoutDashboard, Package, Search, Settings2, ShoppingBag, X } from "lucide-react";
+import { Bell, ChevronLeft, ChevronRight, Command, ExternalLink, LayoutDashboard, Package, Search, Settings2, ShoppingBag, X } from "lucide-react";
 
 const sections = [
   { label: "WORKSPACE", items: [
@@ -51,7 +51,7 @@ export default function AdminShell({ children, email }) {
         <div className="admin-sidebar-label">ADMIN WORKSPACE</div>
         {sections.map((section) => <nav className="admin-nav-group" aria-label={section.label} key={section.label}>
           <p>{section.label}</p>
-          {section.items.map((item) => { const Icon = item.icon; const active = item.href === "/admin" ? pathname === "/admin" : pathname === item.href.split("#")[0] && (pathname !== "/admin" || item.href.includes("#")); return (
+          {section.items.map((item) => { const Icon = item.icon; const active = item.href === "/admin" ? pathname === "/admin" : !item.href.includes("#") && pathname === item.href; return (
             <Link href={item.href} key={item.href} className={"admin-nav-link " + (active ? "active" : "")} onClick={() => setMobileOpen(false)} title={item.title}>
               <Icon size={17}/><span>{item.title}</span>
             </Link>
