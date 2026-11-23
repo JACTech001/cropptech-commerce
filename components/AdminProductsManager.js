@@ -1,9 +1,8 @@
 "use client";
 
 import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ImagePlus, Plus, Save, Search, Trash2 } from "lucide-react";
+import { ImagePlus, Plus, Save, Search, Trash2 } from "lucide-react";
 
 const blankProduct = () => ({
   id: "",
@@ -176,10 +175,6 @@ export default function AdminProductsManager() {
 
   return (
     <main className="admin-page admin-catalogue-page">
-      <header className="admin-topbar">
-        <Link href="/admin" className="admin-brand"><ArrowLeft size={15}/> CROPPTECH <span>COMMERCE STORE</span></Link>
-        <div><Link href="/shop">VIEW STORE ↗</Link></div>
-      </header>
       <div className="admin-wrap admin-catalogue-wrap">
         <div className="admin-heading">
           <p className="eyebrow">STORE MANAGEMENT / CATALOGUE</p>
