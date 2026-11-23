@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 function normalizeName(value) {
   return typeof value === "string"
-    ? value.trim().replace(/\\s+/g, " ")
+    ? value.trim().replace(/\s+/g, " ")
     : "";
 }
 
