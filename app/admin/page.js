@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowUpRight, ClipboardList, ShieldCheck } from "lucide-react";
 import { getCurrentAppUser } from "../../lib/auth/user";
@@ -51,99 +50,114 @@ export default async function AdminPage() {
   const pendingCount = orders.reduce((total, order) =>
     total + (order.payment?.submissions.filter((submission) => submission.status === "PENDING").length || 0), 0);
   const paidCount = orders.filter((order) => order.paymentStatus === "PAID").length;
-  const fulfilmentCount = orders.filter((order) => ["CONFIRMED", "PROCESSING", "SHIPPED"].includes(order.status)).length;\n  const attentionItems = orders.flatMap((order) => (order.payment?.submissions || [])\n    .filter((submission) => submission.status === "PENDING")\n    .map((submission) => ({ order, submission }))).slice(0, 5);\n  const chartDays = Array.from({ length: 7 }, (_, index) => {\n    const date = new Date(); date.setHours(0, 0, 0, 0); date.setDate(date.getDate() - (6 - index));\n    const count = orders.filter((order) => { const created = new Date(order.createdAt); return created >= date && created < new Date(date.getTime() + 86400000); }).length;\n    return { label: new Intl.DateTimeFormat("en-NG", { weekday: "short" }).format(date), count };\n  });\n  const chartMax = Math.max(1, ...chartDays.map((day) => day.count));
+  const fulfilmentCount = orders.filter((order) => ["CONFIRMED", "PROCESSING", "SHIPPED"].includes(order.status)).length;
+  const attentionItems = orders.flatMap((order) => (order.payment?.submissions || [])
+    .filter((submission) => submission.status === "PENDING")
+    .map((submission) => ({ order, submission }))).slice(0, 5);
+  const chartDays = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() - (6 - index));
+    const count = orders.filter((order) => {
+      const created = new Date(order.createdAt);
+      return created >= date && created < new Date(date.getTime() + 86400000);
+    }).length;
+    return { label: new Intl.DateTimeFormat("en-NG", { weekday: "short" }).format(date), count };
+  });
+  const chartMax = Math.max(1, ...chartDays.map((day) => day.count));
 
   return (
-    <main className="admin-page">
-      <header className="admin-topbar">
-        <Link href="/" className="admin-brand">CROPPTECH <span>COMMERCE STORE</span></Link>
-        <div><span>{user.email}</span><Link href="/admin/products">MANAGE CATALOGUE <ArrowUpRight size={14}/></Link><Link href="/shop">VIEW STORE <ArrowUpRight size={14}/></Link></div>
-      </header>
-      <div className="admin-wrap">
-        <div className="admin-heading">
-          <p className="eyebrow">STORE MANAGEMENT / ADMINISTRATION</p>
-          <h1>Order <em>management.</em></h1>
-          <p>Review orders, verify bank transfers against actual bank transactions, and manage fulfilment through delivery.</p>
-        </div>
+    <AdminShell email={user.email}>
+      <main className="admin-page">
+        <div className="admin-wrap">
+          <div className="admin-heading">
+            <p className="eyebrow">STORE MANAGEMENT / OVERVIEW</p>
+            <h1>Store <em>overview.</em></h1>
+            <p>A focused view of order activity, payments that need review and fulfilment in progress.</p>
+          </div>
 
-        <div className="admin-overview admin-overview-four">
-          <div><ClipboardList size={20}/><span>RECENT ORDERS</span><strong>{orders.length}</strong></div>
-          <div><ShieldCheck size={20}/><span>PAYMENTS AWAITING REVIEW</span><strong>{pendingCount}</strong></div>
-          <div><ClipboardList size={20}/><span>PAID ORDERS</span><strong>{paidCount}</strong></div>
-          <div><PackageCheckIcon /><span>IN FULFILMENT</span><strong>{fulfilmentCount}</strong></div>
-        </div>
+          <div className="admin-overview admin-overview-four">
+            <div><ClipboardList size={20}/><span>RECENT ORDERS</span><strong>{orders.length}</strong></div>
+            <div><ShieldCheck size={20}/><span>PAYMENTS AWAITING REVIEW</span><strong>{pendingCount}</strong></div>
+            <div><ClipboardList size={20}/><span>PAID ORDERS</span><strong>{paidCount}</strong></div>
+            <div><span className="admin-overview-icon" aria-hidden="true">✓</span><span>IN FULFILMENT</span><strong>{fulfilmentCount}</strong></div>
+          </div>
 
-        <section className="admin-insights-grid" aria-label="Store activity and items needing attention">
-          <div className="admin-insight-panel admin-trend-panel">
-            <div className="admin-panel-heading"><div><p className="eyebrow">ORDER ACTIVITY</p><h2>Last 7 days</h2></div><span className="admin-panel-meta">Orders received</span></div>
-            <div className="admin-trend-chart" role="img" aria-label={chartDays.map((day) => day.label + ": " + day.count + " orders").join(", ")}>
-              {chartDays.map((day) => <div className="admin-trend-column" key={day.label}><strong>{day.count || ""}</strong><div className="admin-trend-track"><i style={{ height: ((day.count / chartMax) * 100) + "%" }}/></div><span>{day.label}</span></div>)}
+          <section className="admin-insights-grid" aria-label="Store activity and items needing attention">
+            <div className="admin-insight-panel admin-trend-panel">
+              <div className="admin-panel-heading"><div><p className="eyebrow">ORDER ACTIVITY</p><h2>Last 7 days</h2></div><span className="admin-panel-meta">Orders received</span></div>
+              <div className="admin-trend-chart" role="img" aria-label={chartDays.map((day) => day.label + ": " + day.count + " orders").join(", ")}>
+                {chartDays.map((day, index) => <div className="admin-trend-column" key={day.label + index}><strong>{day.count || ""}</strong><div className="admin-trend-track"><i style={{ height: ((day.count / chartMax) * 100) + "%" }}/></div><span>{day.label}</span></div>)}
+              </div>
+              <p className="admin-panel-footnote">Daily order count from the latest 60 orders loaded for this dashboard.</p>
             </div>
-            <p className="admin-panel-footnote">Daily order count based on the latest 60 orders loaded for this dashboard.</p>
-          </div>
-          <div className="admin-insight-panel admin-attention-panel" id="payments">
-            <div className="admin-panel-heading"><div><p className="eyebrow">ACTION QUEUE</p><h2>Needs attention</h2></div><span className="admin-attention-count">{pendingCount}</span></div>
-            {attentionItems.length ? <div className="admin-attention-list">{attentionItems.map(({ order, submission }) => <a className="admin-attention-item" href={"#payment-" + submission.id} key={submission.id}><span className="admin-attention-mark">!</span><span><b>{order.orderNumber}</b><small>{order.customer.fullName || order.customer.email} · transfer submitted</small></span><span className="admin-attention-action">Review →</span></a>)}</div> : <div className="admin-attention-empty"><span>✓</span><p>No pending payment reviews</p><small>New customer transfer submissions will appear here.</small></div>}
-          </div>
-        </section>
-        <div id="settings"><AdminStoreSettings /></div>
+            <div className="admin-insight-panel admin-attention-panel" id="payments">
+              <div className="admin-panel-heading"><div><p className="eyebrow">ACTION QUEUE</p><h2>Needs attention</h2></div><span className="admin-attention-count">{pendingCount}</span></div>
+              {attentionItems.length ? <div className="admin-attention-list">{attentionItems.map(({ order, submission }) => <a className="admin-attention-item" href={"#payment-" + submission.id} key={submission.id}><span className="admin-attention-mark">!</span><span><b>{order.orderNumber}</b><small>{order.customer.fullName || order.customer.email} · transfer submitted</small></span><span className="admin-attention-action">Review →</span></a>)}</div> : <div className="admin-attention-empty"><span>✓</span><p>No pending payment reviews</p><small>New customer transfer submissions will appear here.</small></div>}
+            </div>
+          </section>
 
-        {!orders.length ? <section className="admin-empty"><h2>No orders yet</h2><p>Customer orders will appear here after the catalogue, shipping zones and payment account are configured.</p></section> :
-          <div className="admin-order-list" id="orders">
-            {orders.map((order) => {
-              const shipment = order.shipments[0] || null;
-              return (
-                <article className="admin-order-card" key={order.id}>
-                  <div className="admin-order-head">
-                    <div><p className="eyebrow">{order.orderNumber}</p><h2>{order.customer.fullName || order.customer.email}</h2><span>{order.customer.email}</span></div>
-                    <div className="admin-order-total"><strong>{money(order.total)}</strong><span>{labels[order.status] || order.status}</span></div>
-                  </div>
-                  <div className="admin-order-facts">
-                    <span>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(order.createdAt)}</span>
-                    <span>{order.items.reduce((sum, item) => sum + item.quantity, 0)} item(s)</span>
-                    <span>{order.deliveryCity}, {order.deliveryState}</span>
-                    <span>Payment: {order.paymentStatus.replaceAll("_", " ")}</span>
-                  </div>
-                  <div className="admin-order-items">
-                    {order.items.map((item) => <p key={item.id}>{item.quantity} × {item.productName} — {item.size}, {item.colour}</p>)}
-                  </div>
-                  {shipment && (
-                    <div className="admin-shipment-summary">
-                      <strong>Latest shipment</strong>
-                      <span>{shipment.provider || "Courier not specified"}{shipment.trackingNumber ? " · " + shipment.trackingNumber : ""}</span>
-                      {shipment.trackingUrl && <a href={shipment.trackingUrl} target="_blank" rel="noreferrer">TRACK SHIPMENT <ArrowUpRight size={13}/></a>}
-                    </div>
-                  )}
-                  <FulfillmentControls orderNumber={order.orderNumber} status={order.status} shipment={shipment}/>
-                  {order.payment?.submissions.length ? (
-                    <div className="admin-submission-list">
-                      <p className="eyebrow">TRANSFER SUBMISSIONS</p>
-                      {order.payment.submissions.map((submission) => (
-                        <section className="admin-submission" id={"payment-" + submission.id} key={submission.id}>
-                          <div className="admin-submission-facts">
-                            <span><b>Sender</b>{submission.accountNameUsed}</span>
-                            <span><b>Bank</b>{submission.bankName}</span>
-                            <span><b>Amount stated</b>{money(submission.amountTransferred)}</span>
-                            <span><b>Reference</b>{submission.transactionReference}</span>
-                            <span><b>Submitted</b>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(submission.submittedAt)}</span>
-                          </div>
-                          {submission.customerNote && <p className="admin-customer-note">Customer note: {submission.customerNote}</p>}
-                          {submission.receiptStorageKey && <a className="admin-receipt-link" href={"/api/admin/payment-submissions/" + submission.id + "/receipt"} target="_blank" rel="noreferrer">VIEW PRIVATE RECEIPT <ArrowUpRight size={14}/></a>}
-                          <PaymentReviewControls submissionId={submission.id} status={submission.status}/>
-                        </section>
-                      ))}
-                    </div>
-                  ) : <p className="admin-no-submission">No transfer details submitted yet.</p>}
-                </article>
-              );
-            })}
-          </div>
-        }
-      </div>
-    </main>
+          <section className="admin-orders-section" id="orders">
+            <div className="admin-section-heading"><div><p className="eyebrow">ORDER OPERATIONS</p><h2>Recent orders <span>({orders.length})</span></h2></div></div>
+            {!orders.length ? <section className="admin-empty"><h2>No orders yet</h2><p>Customer orders will appear here after the catalogue, shipping zones and payment account are configured.</p></section> :
+              <div className="admin-order-list">
+                {orders.map((order) => {
+                  const shipment = order.shipments[0] || null;
+                  return (
+                    <article className="admin-order-card" key={order.id}>
+                      <div className="admin-order-head">
+                        <div><p className="eyebrow">{order.orderNumber}</p><h2>{order.customer.fullName || order.customer.email}</h2><span>{order.customer.email}</span></div>
+                        <div className="admin-order-total"><strong>{money(order.total)}</strong><span>{labels[order.status] || order.status}</span></div>
+                      </div>
+                      <div className="admin-order-facts">
+                        <span>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(order.createdAt)}</span>
+                        <span>{order.items.reduce((sum, item) => sum + item.quantity, 0)} item(s)</span>
+                        <span>{order.deliveryCity}, {order.deliveryState}</span>
+                        <span>Payment: {order.paymentStatus.replaceAll("_", " ")}</span>
+                      </div>
+                      <div className="admin-order-items">
+                        {order.items.map((item) => <p key={item.id}>{item.quantity} × {item.productName} — {item.size}, {item.colour}</p>)}
+                      </div>
+                      {shipment && (
+                        <div className="admin-shipment-summary">
+                          <strong>Latest shipment</strong>
+                          <span>{shipment.provider || "Courier not specified"}{shipment.trackingNumber ? " · " + shipment.trackingNumber : ""}</span>
+                          {shipment.trackingUrl && <a href={shipment.trackingUrl} target="_blank" rel="noreferrer">TRACK SHIPMENT <ArrowUpRight size={13}/></a>}
+                        </div>
+                      )}
+                      <FulfillmentControls orderNumber={order.orderNumber} status={order.status} shipment={shipment}/>
+                      {order.payment?.submissions.length ? (
+                        <div className="admin-submission-list">
+                          <p className="eyebrow">TRANSFER SUBMISSIONS</p>
+                          {order.payment.submissions.map((submission) => (
+                            <section className="admin-submission" id={"payment-" + submission.id} key={submission.id}>
+                              <div className="admin-submission-facts">
+                                <span><b>Sender</b>{submission.accountNameUsed}</span>
+                                <span><b>Bank</b>{submission.bankName}</span>
+                                <span><b>Amount stated</b>{money(submission.amountTransferred)}</span>
+                                <span><b>Reference</b>{submission.transactionReference}</span>
+                                <span><b>Submitted</b>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(submission.submittedAt)}</span>
+                              </div>
+                              {submission.customerNote && <p className="admin-customer-note">Customer note: {submission.customerNote}</p>}
+                              {submission.receiptStorageKey && <a className="admin-receipt-link" href={"/api/admin/payment-submissions/" + submission.id + "/receipt"} target="_blank" rel="noreferrer">VIEW PRIVATE RECEIPT <ArrowUpRight size={14}/></a>}
+                              <PaymentReviewControls submissionId={submission.id} status={submission.status}/>
+                            </section>
+                          ))}
+                        </div>
+                      ) : <p className="admin-no-submission">No transfer details submitted yet.</p>}
+                    </article>
+                  );
+                })}
+              </div>
+            }
+          </section>
+
+          <section id="settings" className="admin-settings-route">
+            <div className="admin-section-heading"><div><p className="eyebrow">STORE CONFIGURATION</p><h2>Delivery & payment settings</h2></div></div>
+            <AdminStoreSettings />
+          </section>
+        </div>
+      </main>
+    </AdminShell>
   );
-}
-
-function PackageCheckIcon() {
-  return <span className="admin-overview-icon" aria-hidden="true">✓</span>;
 }
