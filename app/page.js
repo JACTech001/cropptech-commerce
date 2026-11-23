@@ -130,6 +130,7 @@ export default function HomePage() {
           <a href="/about" onClick={closeMenu}>OUR STORY<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
           <a href="/contact" onClick={closeMenu}>CONTACT<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
           <a href="/faq" onClick={closeMenu}>HELP & FAQ<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
+          <a href="/account" onClick={closeMenu}>MY ACCOUNT<span className="mobile-nav-arrow"><ArrowUpRight size={15} strokeWidth={1.8} /></span></a>
           <div className="mobile-menu-footer"><span>BUSINESS MOVES WITH COMMERCE.</span><a href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>FOLLOW ON TIKTOK</a></div>
         </nav>
 
