@@ -165,7 +165,9 @@ export async function PATCH(request) {
       new Set(variants.map((v) => v.size.toLowerCase() + "|" + v.colour.toLowerCase())).size !== variants.length) {
     return error("Each size and colour combination and each SKU must be unique.");
   }
-  const resultingImages = images.length ? images : current.images;
+  const removeVariantIds = Array.isArray(body.removeVariantIds) ? body.removeVariantIds.filter((value) => typeof value === "string") : [];
+  const removeImageIds = Array.isArray(body.removeImageIds) ? body.removeImageIds.filter((value) => typeof value === "string") : [];
+  const resultingImages = images.length ? images : current.images.filter((image) => !removeImageIds.includes(image.id));
   if (status === "ACTIVE" && (!variants.some((variant) => variant.isActive) || !resultingImages.length)) {
     return error("A published product needs at least one priced variant and one product image.");
   }
@@ -181,14 +183,12 @@ export async function PATCH(request) {
         },
       });
 
-      const removeVariantIds = Array.isArray(body.removeVariantIds) ? body.removeVariantIds.filter((value) => typeof value === "string") : [];
       if (removeVariantIds.length) {
         await tx.productVariant.updateMany({
           where: { id: { in: removeVariantIds }, productId: id },
           data: { isActive: false },
         });
       }
-      const removeImageIds = Array.isArray(body.removeImageIds) ? body.removeImageIds.filter((value) => typeof value === "string") : [];
       if (removeImageIds.length) {
         await tx.productImage.deleteMany({ where: { id: { in: removeImageIds }, productId: id } });
       }
