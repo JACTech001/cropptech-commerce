@@ -2536,3 +2536,62 @@ h1, h2, h3, p { margin-top: 0; }
   .checkout-empty p { font-size:10px; line-height:1.6; }
   .checkout-loading { padding:55px 18px; }
 }
+
+
+/* CROPPTECH mobile customer account */
+@media (max-width:760px) {
+  .account-page .shop-topbar {
+    position:sticky;
+    top:0;
+    z-index:35;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    height:62px;
+    min-height:62px;
+    padding:0 16px;
+    background:#fff;
+  }
+  .account-page .shop-back { display:none; }
+  .account-page .shop-brand-wordmark {
+    justify-self:start;
+    width:158px;
+    height:auto;
+    min-width:0;
+  }
+  .account-page .shop-brand-wordmark .brand-text-logo { width:100%; height:auto; object-fit:contain; }
+  .account-top-label { font-size:8px; letter-spacing:.7px; }
+  .account-wrap { padding:31px 16px 48px; }
+  .account-heading { margin-bottom:22px; }
+  .account-heading .eyebrow { color:#777; font-size:8px; letter-spacing:.9px; }
+  .account-heading h1 { margin:9px 0; font-size:clamp(37px,10vw,47px); letter-spacing:-1.6px; }
+  .account-heading h1 span { color:#202124; }
+  .account-heading > p:last-child { font-size:10px; line-height:1.65; }
+  .account-layout { grid-template-columns:minmax(0,1fr); gap:13px; }
+  .account-profile-panel,.account-orders-panel { padding:17px; border:1px solid #e7e8ea; border-radius:7px; box-shadow:none; }
+  .account-profile-icon { width:40px; height:40px; margin-bottom:15px; color:#30343a; }
+  .account-profile-panel > .eyebrow,.account-section-heading .eyebrow { color:#777; font-size:7px; letter-spacing:.8px; }
+  .account-profile-panel h2 { font-size:16px; }
+  .account-email { font-size:9px; }
+  .account-member-label { margin-top:13px; padding:6px 8px; background:#f3f4f5; color:#656b72; font-size:7px; }
+  .account-admin-link { color:#292d32; font-size:8px; }
+  .account-signout-wrap { padding-top:13px; margin-top:13px; }
+  .account-signout-button { min-height:42px; border-radius:5px; font-size:8px; }
+  .account-section-heading { align-items:flex-start; flex-direction:column; gap:10px; padding-bottom:13px; }
+  .account-section-heading h2 { font-size:19px; }
+  .account-section-heading h2 span { font-size:11px; }
+  .account-shop-link,.account-order-side a { color:#292d32; font-size:8px; }
+  .account-order-card { display:flex; align-items:flex-start; flex-direction:column; gap:11px; padding:14px 0; }
+  .account-order-main { gap:10px; }
+  .account-order-icon { width:34px; height:34px; background:#f3f4f5; color:#33383e; }
+  .account-order-date { font-size:8px; }
+  .account-order-main h3 { font-size:11px; }
+  .account-order-main p { font-size:8px; line-height:1.5; }
+  .account-order-side { display:flex; align-items:center; justify-items:initial; flex-wrap:wrap; gap:9px; padding-left:44px; }
+  .account-order-side > strong { font-size:11px; }
+  .account-order-status { padding:5px 7px; font-size:7px; }
+  .account-empty-orders { padding:30px 12px; }
+  .account-empty-orders > svg { color:#30343a; }
+  .account-empty-orders h3 { font-size:15px; }
+  .account-empty-orders p { font-size:9px; line-height:1.6; }
+  .account-page .shop-footer { flex-direction:column; gap:9px; padding:20px 17px; background:#fff; color:#777; font-size:7px; }
+}
