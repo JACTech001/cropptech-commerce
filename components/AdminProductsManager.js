@@ -30,6 +30,8 @@ export default function AdminProductsManager() {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [removedVariantIds, setRemovedVariantIds] = useState([]);
+  const [removedImageIds, setRemovedImageIds] = useState([]);
 
   const loadProducts = useCallback(async () => {
     setLoading(true);
@@ -51,8 +53,9 @@ export default function AdminProductsManager() {
     return matchesStatus && matchesSearch;
   }), [products, filter, search]);
 
-  const startNew = () => { setDraft(blankProduct()); setMessage(""); setError(""); };
+  const startNew = () => { setDraft(blankProduct()); setRemovedVariantIds([]); setRemovedImageIds([]); setMessage(""); setError(""); };
   const editProduct = (product) => {
+    setRemovedVariantIds([]); setRemovedImageIds([]);
     setDraft({
       id: product.id,
       name: product.name,
@@ -73,7 +76,11 @@ export default function AdminProductsManager() {
     variants: current.variants.map((variant, i) => i === index ? { ...variant, [key]: value } : variant),
   }));
   const addVariant = () => update("variants", [...draft.variants, blankVariant()]);
-  const removeVariant = (index) => update("variants", draft.variants.filter((_, i) => i !== index));
+  const removeVariant = (index) => {
+    const variant = draft.variants[index];
+    if (variant?.id) setRemovedVariantIds((current) => [...current, variant.id]);
+    update("variants", draft.variants.filter((_, i) => i !== index));
+  };
 
   async function uploadImages(event) {
     const files = Array.from(event.target.files || []);
@@ -120,6 +127,8 @@ export default function AdminProductsManager() {
     try {
       const payload = {
         ...draft,
+        removeVariantIds: removedVariantIds,
+        removeImageIds: removedImageIds,
         variants: draft.variants.map((variant) => ({
           ...variant,
           price: variant.price,
@@ -228,7 +237,7 @@ export default function AdminProductsManager() {
                 {draft.images.map((image, index) => <div className="admin-product-image-tile" key={image.cloudinaryPublicId}>
                   <Image src={image.secureUrl} alt={image.altText || "Product gallery image"} fill sizes="120px"/>
                   <span>{index === 0 ? "PRIMARY" : "GALLERY " + (index + 1)}</span>
-                  <button type="button" aria-label="Remove image from this draft" onClick={() => update("images", draft.images.filter((_, i) => i !== index))}><Trash2 size={13}/></button>
+                  <button type="button" aria-label="Remove image from this draft" onClick={() => { if (image.id) setRemovedImageIds((current) => [...current, image.id]); update("images", draft.images.filter((_, i) => i !== index)); }}><Trash2 size={13}/></button>
                 </div>)}
                 {!draft.images.length && <div className="admin-gallery-empty"><ImagePlus size={22}/><span>No product images added</span></div>}
               </div>
