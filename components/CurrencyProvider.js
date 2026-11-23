@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, startTransition, useContext, useEffect, useMemo, useState } from "react";
 
 const CurrencyContext = createContext(null);
 const STORAGE_KEY = "cropptech-currency";
@@ -22,12 +22,14 @@ export function CurrencyProvider({ children }) {
   useEffect(() => {
     try {
       const savedCurrency = localStorage.getItem(STORAGE_KEY);
-      if (CURRENCIES.some((item) => item.code === savedCurrency)) setCurrency(savedCurrency);
+      if (CURRENCIES.some((item) => item.code === savedCurrency)) startTransition(() => setCurrency(savedCurrency));
       const cached = JSON.parse(localStorage.getItem(RATE_CACHE_KEY) || "null");
       if (cached?.rates && cached?.savedAt && Date.now() - cached.savedAt < 12 * 60 * 60 * 1000) {
-        setRates(cached.rates);
-        setRateDate(cached.date || "");
-        setRatesReady(true);
+        startTransition(() => {
+          setRates(cached.rates);
+          setRateDate(cached.date || "");
+          setRatesReady(true);
+        });
         return;
       }
     } catch {}
