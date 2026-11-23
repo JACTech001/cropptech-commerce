@@ -12,12 +12,15 @@ export function CartProvider({ children }) {
     setReady(true);
   }, []);
   useEffect(() => { if (ready) localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }, [items, ready]);
-  const addItem = (product, size) => setItems(current => {
-    const key = product.id + "-" + size;
+  const addItem = (product, size, selectedColour = product.tone || "Natural") => setItems(current => {
+    const key = product.id + "-" + size + "-" + selectedColour.toLowerCase();
     const slug = product.slug || makeSlug(product.name);
+    const availableSizes = product.variants?.length
+      ? [...new Set(product.variants.filter(variant => variant.colour === selectedColour && variant.stockQuantity > 0).map(variant => variant.size))]
+      : (product.availableSizes || ["S", "M", "L", "XL"]);
     const found = current.find(item => item.key === key);
     return found ? current.map(item => item.key === key ? { ...item, quantity: item.quantity + 1, selected: true } : item)
-      : [...current, { key, id: product.id, name: product.name, slug, image: product.image, audience: product.audience, category: product.category, tone: product.tone, availableSizes: product.availableSizes || ["S", "M", "L", "XL"], size, quantity: 1, selected: true }];
+      : [...current, { key, id: product.id, name: product.name, slug, image: product.image, audience: product.audience, category: product.category, tone: selectedColour, price: product.price, availableSizes, size, quantity: 1, selected: true }];
   });
   const changeQuantity = (key, quantity) => setItems(current => current.map(item => item.key === key ? { ...item, quantity: Math.max(1, quantity) } : item));
   const removeItem = key => setItems(current => current.filter(item => item.key !== key));
@@ -26,7 +29,7 @@ export function CartProvider({ children }) {
   const changeSize = (key, size) => setItems(current => {
     const item = current.find(entry => entry.key === key);
     if (!item || item.size === size) return current;
-    const nextKey = item.id + "-" + size;
+    const nextKey = item.id + "-" + size + "-" + String(item.tone || "Natural").toLowerCase();
     const existing = current.find(entry => entry.key === nextKey);
     if (existing) return current.filter(entry => entry.key !== key).map(entry => entry.key === nextKey ? { ...entry, quantity: entry.quantity + item.quantity, selected: entry.selected || item.selected !== false } : entry);
     return current.map(entry => entry.key === key ? { ...entry, key: nextKey, size } : entry);
