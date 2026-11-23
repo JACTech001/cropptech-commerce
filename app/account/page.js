@@ -60,6 +60,8 @@ export default async function AccountPage() {
     );
   }
 
+  const firstName = user.fullName?.trim().split(/\\s+/)[0] || "there";
+
   const orders = await prisma.order.findMany({
     where: { customerId: user.id },
     orderBy: { placedAt: "desc" },
@@ -88,7 +90,7 @@ export default async function AccountPage() {
       <div className="account-wrap">
         <div className="account-heading">
           <p className="eyebrow">CROPPTECH COMMERCE STORE / CUSTOMER SPACE</p>
-          <h1>Your account<span>.</span></h1>
+          <h1>Hi, {firstName}<span>.</span></h1>
           <p>Manage your store activity and keep track of your orders in one place.</p>
         </div>
 
