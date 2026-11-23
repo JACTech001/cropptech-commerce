@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Bell, ChevronLeft, ChevronRight, Command, ExternalLink, LayoutDashboard, Package, Search, Settings2, ShoppingBag, X } from "lucide-react";
 
@@ -47,7 +48,7 @@ export default function AdminShell({ children, email }) {
   return (
     <div className={"admin-shell " + (collapsed ? "is-collapsed " : "") + (mobileOpen ? "mobile-nav-open" : "")}>
       <aside className="admin-sidebar">
-        <Link href="/admin" className="admin-shell-brand"><span className="admin-brand-mark">C</span><span className="admin-brand-copy"><b>CROPPTECH</b><small>COMMERCE STORE</small></span></Link>
+        <Link href="/admin" className="admin-shell-brand"><Image src="/brand/cropplogotextcommerce-transparent.png" alt="CROPPTECH COMMERCE STORE" width={190} height={54} priority className="admin-shell-logo"/></Link>
         <div className="admin-sidebar-label">ADMIN WORKSPACE</div>
         {sections.map((section) => <nav className="admin-nav-group" aria-label={section.label} key={section.label}>
           <p>{section.label}</p>
