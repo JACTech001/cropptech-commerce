@@ -47,7 +47,10 @@ export default function AdminProductsManager() {
   useEffect(() => { loadProducts(); }, [loadProducts]);
 
   const visibleProducts = useMemo(() => products.filter((product) => {
-    const matchesStatus = filter === "ALL" || product.status === filter;
+    const availability = product.status === "ACTIVE" && !product.variants.some((variant) => variant.isActive && variant.stockQuantity > 0)
+      ? "OUT_OF_STOCK"
+      : product.status;
+    const matchesStatus = filter === "ALL" || availability === filter;
     const term = search.trim().toLowerCase();
     const matchesSearch = !term || [product.name, product.slug, product.category].some((value) => String(value || "").toLowerCase().includes(term));
     return matchesStatus && matchesSearch;
@@ -187,7 +190,7 @@ export default function AdminProductsManager() {
         <div className="admin-catalogue-toolbar">
           <label className="admin-catalogue-search"><Search size={16}/><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search products" /></label>
           <select value={filter} onChange={(event) => setFilter(event.target.value)} aria-label="Filter products">
-            <option value="ALL">All products</option><option value="DRAFT">Draft</option><option value="ACTIVE">Active</option><option value="ARCHIVED">Archived</option>
+            <option value="ALL">All products</option><option value="DRAFT">Draft</option><option value="ACTIVE">Active</option><option value="OUT_OF_STOCK">Out of stock</option><option value="ARCHIVED">Archived</option>
           </select>
           <button type="button" className="admin-primary-button" onClick={startNew}><Plus size={16}/> NEW PRODUCT</button>
         </div>
@@ -199,7 +202,7 @@ export default function AdminProductsManager() {
               <article className={"admin-catalogue-item " + (draft.id === product.id ? "selected" : "")} key={product.id}>
                 <button type="button" className="admin-catalogue-item-main" onClick={() => editProduct(product)}>
                   <span className="admin-catalogue-thumb">{product.images[0] ? <Image src={product.images[0].secureUrl} alt="" fill sizes="64px" /> : <ImagePlus size={20}/>}</span>
-                  <span className="admin-catalogue-item-copy"><strong>{product.name}</strong><small>{product.category} · {product.variants.length} variant(s)</small><small>{product.images.length} image(s) · {product.status}</small></span>
+                  <span className="admin-catalogue-item-copy"><strong>{product.name}</strong><small>{product.category} · {product.variants.length} variant(s)</small><small>{product.images.length} image(s) · {product.status === "ACTIVE" && !product.variants.some((variant) => variant.isActive && variant.stockQuantity > 0) ? "OUT OF STOCK" : product.status}</small></span>
                 </button>
                 <button type="button" className="admin-catalogue-edit" onClick={() => editProduct(product)}>EDIT</button>
               </article>
