@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Check, Info } from "lucide-react";
 import StorePageShell from "../../../components/StorePageShell";
 import ProductAddButton from "../../../components/ProductAddButton";
+import ProductGallery from "../../../components/ProductGallery";
 import { CartLink } from "../../../components/CartProvider";
 import { CurrencySelector, ProductPrice } from "../../../components/CurrencyProvider";
 import { prisma } from "../../../lib/db";
@@ -61,10 +62,7 @@ export default async function ProductDetailPage({ params }) {
       </header>
 
       <div className="product-detail-wrap">
-        <div className="product-detail-image">
-          <Image src={product.image} alt={product.name} fill priority sizes="(max-width: 760px) 100vw, 55vw" style={{ objectFit: "cover" }} />
-          <span>{product.tag}</span>
-        </div>
+        <ProductGallery images={product.images} name={product.name} tag={product.tag} />
         <section className="product-detail-copy">
           <p className="eyebrow">CROPPTECH COMMERCE STORE / {product.audience.toUpperCase()} / {product.category.toUpperCase()}</p>
           <h1>{product.name}</h1>
