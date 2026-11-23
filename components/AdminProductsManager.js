@@ -175,7 +175,7 @@ export default function AdminProductsManager() {
   }
 
   return (
-    <main className="admin-page">
+    <main className="admin-page admin-catalogue-page">
       <header className="admin-topbar">
         <Link href="/admin" className="admin-brand"><ArrowLeft size={15}/> CROPPTECH <span>COMMERCE STORE</span></Link>
         <div><Link href="/shop">VIEW STORE ↗</Link></div>
