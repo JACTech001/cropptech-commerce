@@ -101,6 +101,8 @@ export default function AdminProductsManager() {
         form.append("api_key", signed.apiKey);
         form.append("timestamp", String(signed.timestamp));
         form.append("folder", signed.folder);
+        form.append("allowed_formats", signed.allowed_formats);
+        form.append("max_file_size", String(signed.max_file_size));
         form.append("signature", signed.signature);
         const response = await fetch("https://api.cloudinary.com/v1_1/" + encodeURIComponent(signed.cloudName) + "/image/upload", { method: "POST", body: form });
         const asset = await response.json();
