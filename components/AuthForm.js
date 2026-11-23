@@ -79,6 +79,21 @@ function AuthFormContent({ mode }) {
     setBusy(true);
     setError("");
     try {
+      if (isSignUp) {
+        const nameResponse = await fetch("/api/account/profile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            firstName: firstName.trim().replace(/\\s+/g, " "),
+            lastName: lastName.trim().replace(/\\s+/g, " "),
+          }),
+        });
+        if (!nameResponse.ok) {
+          const nameResult = await nameResponse.json().catch(() => ({}));
+          throw new Error(nameResult.error || "We could not save your name details.");
+        }
+      }
+
       const response = await fetch("/api/account/me", { cache: "no-store" });
       const profileResult = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(profileResult.error || "We could not finish setting up your store account.");
