@@ -5,6 +5,7 @@ import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import PaymentReviewControls from "../../components/PaymentReviewControls";
 import AdminStoreSettings from "../../components/AdminStoreSettings";
+import AdminShell from "../../components/AdminShell";
 import FulfillmentControls from "../../components/FulfillmentControls";
 
 export const dynamic = "force-dynamic";
@@ -72,10 +73,10 @@ export default async function AdminPage() {
           <div><PackageCheckIcon /><span>IN FULFILMENT</span><strong>{fulfilmentCount}</strong></div>
         </div>
 
-        <AdminStoreSettings />
+        <div id="settings"><AdminStoreSettings /></div>
 
         {!orders.length ? <section className="admin-empty"><h2>No orders yet</h2><p>Customer orders will appear here after the catalogue, shipping zones and payment account are configured.</p></section> :
-          <div className="admin-order-list">
+          <div className="admin-order-list" id="orders">
             {orders.map((order) => {
               const shipment = order.shipments[0] || null;
               return (
