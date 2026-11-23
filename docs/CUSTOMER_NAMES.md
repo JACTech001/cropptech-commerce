@@ -1,6 +1,6 @@
 # Customer first and last names
 
-Customer registration collects first name and last name separately. Neon Auth continues to receive a single display name, composed from those fields, while the CroppTech application stores `firstName`, `lastName`, and the existing `fullName`.
+Customer registration collects first name and last name separately. Neon Auth continues to receive a single display name, composed from those fields, while the CroppTech application stores `firstName`, `lastName`, and the existing `fullName`. After signup, an authenticated profile request saves the exact two fields separately, including multi-word first names. Later Neon Auth synchronization updates the display name without overwriting the saved split fields.
 
 ## Existing accounts
 
