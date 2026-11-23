@@ -56,7 +56,7 @@ export default async function AdminPage() {
     <main className="admin-page">
       <header className="admin-topbar">
         <Link href="/" className="admin-brand">CROPPTECH <span>COMMERCE STORE</span></Link>
-        <div><span>{user.email}</span><Link href="/shop">VIEW STORE <ArrowUpRight size={14}/></Link></div>
+        <div><span>{user.email}</span><Link href="/admin/products">MANAGE CATALOGUE <ArrowUpRight size={14}/></Link><Link href="/shop">VIEW STORE <ArrowUpRight size={14}/></Link></div>
       </header>
       <div className="admin-wrap">
         <div className="admin-heading">
