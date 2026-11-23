@@ -1520,3 +1520,8 @@ h1, h2, h3, p { margin-top: 0; }
 .product-gallery-thumbnails { display:flex; gap:8px; overflow-x:auto; padding:2px 0 6px; }
 .product-gallery-thumbnails button { position:relative; width:72px; height:88px; flex:0 0 auto; overflow:hidden; border:1px solid var(--line); background:var(--cream); cursor:pointer; opacity:.72; }
 .product-gallery-thumbnails button.active { border:2px solid var(--red); opacity:1; }
+
+.admin-variant-row { grid-template-columns:1.1fr .6fr .9fr .9fr .6fr .55fr 28px; }
+.admin-variant-active { display:flex !important; align-items:center; gap:6px !important; min-height:38px; color:var(--muted); font-size:8px; }
+.admin-variant-active input { width:15px; min-height:15px; }
+@media(max-width:650px) { .admin-variant-row { grid-template-columns:repeat(2,minmax(0,1fr)); } .admin-variant-active { min-height:36px; } }
