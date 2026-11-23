@@ -190,6 +190,13 @@ export default function HomePage() {
         <span>A considered linen collection for men and women, shaped around comfort, texture and timeless style.</span>
       </section>
 
+      <nav className="mobile-home-shortcuts" aria-label="Shop shortcuts">
+        <Link href="/shop">Shop all</Link>
+        <Link href="/shop?collection=men">Men</Link>
+        <Link href="/shop?collection=women">Women</Link>
+        <Link href="/shop?collection=linen&category=Sets">Linen sets</Link>
+      </nav>
+
       <section className="collection-section section-pad">
         <div className="section-heading">
           <div>
