@@ -11,7 +11,6 @@ import { CurrencySelector, ProductPrice } from "../../components/CurrencyProvide
 
 const audiences = ["All", "Men", "Women"];
 const categories = ["All categories", "Shirts", "Trousers", "Shorts", "Sets", "Dresses", "Skirts"];
-const sizes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];
 
 export default function ShopPage() {
   const [audience, setAudience] = useState("All");
