@@ -139,6 +139,23 @@ function AuthFormContent({ mode }) {
       if (result?.error) {
         setError(result.error.message || "We could not complete that request. Please try again.");
       } else if (isSignIn || isSignUp) {
+        if (isSignUp) {
+          const nameResponse = await fetch("/api/account/profile", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              firstName: firstName.trim().replace(/\\s+/g, " "),
+              lastName: lastName.trim().replace(/\\s+/g, " "),
+            }),
+          });
+          if (nameResponse.status !== 401 && !nameResponse.ok) {
+            const nameResult = await nameResponse.json().catch(() => ({}));
+            setCompletion("profile-error");
+            setMessage(nameResult.error || "Your account was created, but we could not save your name details. Please retry.");
+            return;
+          }
+        }
+
         const profileResponse = await fetch("/api/account/me", { cache: "no-store" });
 
         if (profileResponse.status === 401) {
