@@ -18,12 +18,12 @@ export default async function ContactPage({ searchParams }) {
   const emailHref = "mailto:Cropptechcommercestores@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
 
   return (
-    <StorePageShell eyebrow="CUSTOMER CARE / CONTACT" title={<>We're here to<br /><em>help you.</em></>} intro="Questions about a collection or an order? Reach CroppTech Commerce Store through our official contact channels.">
+    <StorePageShell eyebrow="CUSTOMER CARE / CONTACT" title={<>We&apos;re here to<br /><em>help you.</em></>} intro="Questions about a collection or an order? Reach CroppTech Commerce Store through our official contact channels.">
       <div className="contact-channel-grid">
         <article className="contact-channel-card">
           <span className="contact-channel-icon"><Mail size={22} /></span>
           <p className="eyebrow">EMAIL US</p>
-          <h2>Let's talk business.</h2>
+          <h2>Let&apos;s talk business.</h2>
           <p>Send us product questions, order enquiries or partnership requests. Your selected items are included in the pre-filled email.</p>
           <a className="contact-channel-link" href={emailHref}>Cropptechcommercestores@gmail.com <ArrowUpRight size={16} /></a>
         </article>
