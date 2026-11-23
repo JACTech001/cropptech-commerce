@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ImagePlus, Plus, Save, Search, Trash2 } from "lucide-react";
@@ -44,7 +44,7 @@ export default function AdminProductsManager() {
     finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { loadProducts(); }, [loadProducts]);
+  useEffect(() => { startTransition(() => { void loadProducts(); }); }, [loadProducts]);
 
   const visibleProducts = useMemo(() => products.filter((product) => {
     const availability = product.status === "ACTIVE" && !product.variants.some((variant) => variant.isActive && variant.stockQuantity > 0)
