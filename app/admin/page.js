@@ -51,7 +51,7 @@ export default async function AdminPage() {
   const pendingCount = orders.reduce((total, order) =>
     total + (order.payment?.submissions.filter((submission) => submission.status === "PENDING").length || 0), 0);
   const paidCount = orders.filter((order) => order.paymentStatus === "PAID").length;
-  const fulfilmentCount = orders.filter((order) => ["CONFIRMED", "PROCESSING", "SHIPPED"].includes(order.status)).length;
+  const fulfilmentCount = orders.filter((order) => ["CONFIRMED", "PROCESSING", "SHIPPED"].includes(order.status)).length;\n  const attentionItems = orders.flatMap((order) => (order.payment?.submissions || [])\n    .filter((submission) => submission.status === "PENDING")\n    .map((submission) => ({ order, submission }))).slice(0, 5);\n  const chartDays = Array.from({ length: 7 }, (_, index) => {\n    const date = new Date(); date.setHours(0, 0, 0, 0); date.setDate(date.getDate() - (6 - index));\n    const count = orders.filter((order) => { const created = new Date(order.createdAt); return created >= date && created < new Date(date.getTime() + 86400000); }).length;\n    return { label: new Intl.DateTimeFormat("en-NG", { weekday: "short" }).format(date), count };\n  });\n  const chartMax = Math.max(1, ...chartDays.map((day) => day.count));
 
   return (
     <main className="admin-page">
@@ -73,6 +73,19 @@ export default async function AdminPage() {
           <div><PackageCheckIcon /><span>IN FULFILMENT</span><strong>{fulfilmentCount}</strong></div>
         </div>
 
+        <section className="admin-insights-grid" aria-label="Store activity and items needing attention">
+          <div className="admin-insight-panel admin-trend-panel">
+            <div className="admin-panel-heading"><div><p className="eyebrow">ORDER ACTIVITY</p><h2>Last 7 days</h2></div><span className="admin-panel-meta">Orders received</span></div>
+            <div className="admin-trend-chart" role="img" aria-label={chartDays.map((day) => day.label + ": " + day.count + " orders").join(", ")}>
+              {chartDays.map((day) => <div className="admin-trend-column" key={day.label}><strong>{day.count || ""}</strong><div className="admin-trend-track"><i style={{ height: ((day.count / chartMax) * 100) + "%" }}/></div><span>{day.label}</span></div>)}
+            </div>
+            <p className="admin-panel-footnote">Daily order count based on the latest 60 orders loaded for this dashboard.</p>
+          </div>
+          <div className="admin-insight-panel admin-attention-panel" id="payments">
+            <div className="admin-panel-heading"><div><p className="eyebrow">ACTION QUEUE</p><h2>Needs attention</h2></div><span className="admin-attention-count">{pendingCount}</span></div>
+            {attentionItems.length ? <div className="admin-attention-list">{attentionItems.map(({ order, submission }) => <a className="admin-attention-item" href={"#payment-" + submission.id} key={submission.id}><span className="admin-attention-mark">!</span><span><b>{order.orderNumber}</b><small>{order.customer.fullName || order.customer.email} · transfer submitted</small></span><span className="admin-attention-action">Review →</span></a>)}</div> : <div className="admin-attention-empty"><span>✓</span><p>No pending payment reviews</p><small>New customer transfer submissions will appear here.</small></div>}
+          </div>
+        </section>
         <div id="settings"><AdminStoreSettings /></div>
 
         {!orders.length ? <section className="admin-empty"><h2>No orders yet</h2><p>Customer orders will appear here after the catalogue, shipping zones and payment account are configured.</p></section> :
@@ -106,7 +119,7 @@ export default async function AdminPage() {
                     <div className="admin-submission-list">
                       <p className="eyebrow">TRANSFER SUBMISSIONS</p>
                       {order.payment.submissions.map((submission) => (
-                        <section className="admin-submission" key={submission.id}>
+                        <section className="admin-submission" id={"payment-" + submission.id} key={submission.id}>
                           <div className="admin-submission-facts">
                             <span><b>Sender</b>{submission.accountNameUsed}</span>
                             <span><b>Bank</b>{submission.bankName}</span>
