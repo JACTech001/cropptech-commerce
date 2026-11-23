@@ -92,7 +92,7 @@ export async function POST(request) {
       new Set(variants.map((v) => v.size.toLowerCase() + "|" + v.colour.toLowerCase())).size !== variants.length) {
     return error("Each size and colour combination and each SKU must be unique.");
   }
-  if (status === "ACTIVE" && (!variants.length || !images.length)) {
+  if (status === "ACTIVE" && (!variants.some((variant) => variant.isActive) || !images.length)) {
     return error("Add at least one priced, stocked variant and one product image before publishing.");
   }
 
@@ -108,6 +108,18 @@ export async function POST(request) {
         },
         include: { variants: true, images: true },
       });
+      const stockedVariants = created.variants.filter((variant) => variant.stockQuantity > 0);
+      if (stockedVariants.length) {
+        await tx.inventoryTransaction.createMany({
+          data: stockedVariants.map((variant) => ({
+            variantId: variant.id,
+            adjustedById: access.user.id,
+            type: "STOCK_ADDED",
+            quantity: variant.stockQuantity,
+            reason: "Initial stock entered in catalogue manager.",
+          })),
+        });
+      }
       await tx.adminAuditLog.create({
         data: { actorId: access.user.id, action: "PRODUCT_CREATED", entityType: "Product", entityId: created.id, metadata: { name, status } },
       });
@@ -154,7 +166,7 @@ export async function PATCH(request) {
     return error("Each size and colour combination and each SKU must be unique.");
   }
   const resultingImages = images.length ? images : current.images;
-  if (status === "ACTIVE" && (!variants.length || !resultingImages.length)) {
+  if (status === "ACTIVE" && (!variants.some((variant) => variant.isActive) || !resultingImages.length)) {
     return error("A published product needs at least one priced variant and one product image.");
   }
 
