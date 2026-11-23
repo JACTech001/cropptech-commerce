@@ -1585,3 +1585,215 @@ h1, h2, h3, p { margin-top: 0; }
   .account-top-label { font-size:7px; }
   .auth-account-link { gap:5px; font-size:7px; }
 }
+
+/* Admin and customer account: clean monochrome interface */
+.admin-page,
+.account-page {
+  --red:#202124;
+  --red-dark:#111315;
+  --ink:#17191c;
+  --muted:#687078;
+  --cream:#f5f6f7;
+  --paper:#ffffff;
+  --line:#e4e7eb;
+  min-height:100vh;
+  background:#fff;
+  color:var(--ink);
+}
+
+.admin-page,
+.admin-page *,
+.account-page,
+.account-page * {
+  font-family:'DM Sans',sans-serif;
+}
+
+.admin-topbar {
+  min-height:72px;
+  padding:0 clamp(20px,5vw,72px);
+  background:#fff;
+  border-bottom:1px solid #e8eaed;
+}
+
+.admin-brand,
+.admin-topbar > div a,
+.admin-heading .eyebrow,
+.admin-order-head .eyebrow,
+.admin-submission-list > .eyebrow,
+.admin-settings-heading > svg,
+.admin-settings-card > .eyebrow,
+.admin-fulfillment > .eyebrow,
+.admin-receipt-link,
+.admin-editor-section-head .eyebrow,
+.admin-product-editor .eyebrow,
+.admin-catalogue-edit,
+.admin-empty h2 {
+  color:#202124;
+}
+
+.admin-brand { font-size:14px; letter-spacing:.4px; }
+.admin-brand span { color:#737980; font-size:8px; letter-spacing:1px; }
+.admin-topbar > div a { font-size:9px; letter-spacing:.4px; }
+.admin-wrap { max-width:1360px; padding:48px clamp(20px,5vw,72px) 88px; }
+.admin-heading { max-width:760px; margin-bottom:32px; }
+.admin-heading .eyebrow { font-size:10px; letter-spacing:1px; }
+.admin-heading h1,
+.account-heading h1 {
+  font-family:'DM Sans',sans-serif;
+  font-size:clamp(32px,4vw,46px);
+  font-weight:700;
+  line-height:1.12;
+  letter-spacing:-1.5px;
+}
+.admin-heading h1 em { font-family:'DM Sans',sans-serif; font-style:normal; font-weight:700; }
+.admin-heading > p:last-child { max-width:650px; color:#687078; font-size:13px; line-height:1.7; }
+
+.admin-overview { gap:14px; margin:24px 0 32px; }
+.admin-overview > div {
+  padding:20px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+}
+.admin-overview svg,
+.admin-overview-icon { color:#34383d; }
+.admin-overview-icon { border-color:#d5d9de; }
+.admin-overview span { font-size:10px; letter-spacing:.5px; }
+.admin-overview strong { font-size:24px; }
+
+.admin-order-card,
+.admin-settings-section,
+.admin-settings-card,
+.admin-catalogue-list,
+.admin-product-editor,
+.account-profile-panel,
+.account-orders-panel {
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  background:#fff;
+  box-shadow:0 2px 8px rgba(20,24,28,.035);
+}
+.admin-order-card { padding:22px; }
+.admin-settings-section { padding:24px; background:#f8f9fa; }
+.admin-settings-card { padding:20px; }
+.admin-current-account,
+.admin-submission,
+.admin-shipment-summary { background:#f5f6f7; }
+.admin-empty { background:#f7f8f9; border:1px solid #e5e7eb; border-radius:10px; }
+.admin-review-actions button:first-child,
+.admin-fulfillment-button,
+.admin-primary-button {
+  border:1px solid #202124;
+  border-radius:6px;
+  background:#202124;
+  color:#fff;
+}
+.admin-review-actions button:first-child:hover,
+.admin-fulfillment-button:hover,
+.admin-primary-button:hover { background:#08090a; border-color:#08090a; }
+.admin-outline-button,
+.admin-review-actions button,
+.admin-signout-button {
+  border:1px solid #d9dde2;
+  border-radius:6px;
+  background:#fff;
+  color:#25292e;
+}
+.admin-outline-button:hover,
+.admin-review-actions button:hover { border-color:#8a9199; background:#f7f8f9; }
+.admin-catalogue-item.selected { background:#f5f6f7; }
+.admin-catalogue-page { background:#fff; }
+.admin-catalogue-search,
+.admin-catalogue-toolbar select,
+.admin-product-fields input,
+.admin-product-fields select,
+.admin-product-fields textarea,
+.admin-variant-row input {
+  border-color:#dfe3e7;
+  border-radius:6px;
+}
+.admin-catalogue-search:focus-within,
+.admin-product-fields input:focus,
+.admin-product-fields select:focus,
+.admin-product-fields textarea:focus,
+.admin-variant-row input:focus {
+  outline:2px solid rgba(32,33,36,.12);
+  border-color:#777f87;
+}
+.admin-status-pill,
+.admin-status-pill.active,
+.admin-shipment-summary,
+.admin-product-image-tile > span,
+.admin-product-image-tile > button,
+.admin-gallery-empty {
+  background:#f1f3f5;
+  color:#42484f;
+}
+.admin-form-success,
+.admin-form-error { border:1px solid #e1e4e8; border-radius:6px; background:#f5f6f7; color:#343a40; }
+.admin-remove-variant { border-radius:6px; color:#454b52; }
+.admin-product-image-tile,
+.admin-catalogue-thumb { background:#f1f3f5; }
+.admin-variant-row { border-color:#e8eaed; }
+
+.account-wrap { max-width:1240px; padding:54px clamp(20px,5vw,72px) 88px; }
+.account-heading { max-width:760px; margin-bottom:32px; }
+.account-heading .eyebrow,
+.account-section-heading .eyebrow,
+.account-profile-panel > .eyebrow { color:#555d65; font-size:9px; letter-spacing:1px; }
+.account-heading h1 { margin:10px 0 12px; }
+.account-heading h1 span { color:#202124; }
+.account-heading > p:last-child,
+.account-muted { color:#687078; font-size:13px; line-height:1.7; }
+.account-layout { gap:18px; }
+.account-profile-panel,
+.account-orders-panel { padding:24px; }
+.account-profile-icon {
+  width:46px;
+  height:46px;
+  border:1px solid #e1e4e8;
+  border-radius:10px;
+  background:#f5f6f7;
+  color:#30353a;
+}
+.account-profile-panel h2 { font-size:18px; }
+.account-member-label,
+.account-order-icon,
+.account-order-status,
+.account-status-delivered,
+.account-status-confirmed,
+.account-status-cancelled,
+.account-status-expired {
+  background:#f1f3f5;
+  color:#42484f;
+}
+.account-admin-link,
+.account-shop-link,
+.account-order-side a,
+.account-empty-orders > svg { color:#202124; }
+.account-signout-button {
+  border-radius:6px;
+  border-color:#d9dde2;
+}
+.account-signout-button:hover { border-color:#777f87; color:#202124; background:#f7f8f9; }
+.account-section-heading h2 { font-size:20px; font-weight:700; }
+.account-order-card { padding:17px 0; }
+.account-order-icon { border-radius:8px; }
+.account-order-status { border-radius:4px; font-size:8px; }
+.account-empty-orders { padding:48px 18px; }
+.account-empty-orders .text-link { color:#202124; border-color:#202124; }
+
+@media(max-width:560px) {
+  .admin-wrap,
+  .account-wrap { padding:36px 18px 64px; }
+  .admin-order-card,
+  .admin-settings-section,
+  .admin-settings-card,
+  .admin-catalogue-list,
+  .admin-product-editor,
+  .account-profile-panel,
+  .account-orders-panel { border-radius:8px; }
+  .admin-heading h1,
+  .account-heading h1 { font-size:34px; }
+}
+
