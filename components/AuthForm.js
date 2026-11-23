@@ -226,10 +226,12 @@ function AuthFormContent({ mode }) {
         <div className="auth-editorial auth-carousel" aria-label="CroppTech linen collection">
           <div className="auth-carousel-image-wrap">
             {linenSlides.map((slide, index) => (
-              <img
+              <Image
                 key={slide.label}
                 src={slide.image}
-                alt={slide.label.toLowerCase().replaceAll(" ", " ")}
+                alt={slide.label.toLowerCase()}
+                fill
+                sizes="(max-width: 760px) 100vw, 50vw"
                 className={index === activeSlide ? "auth-carousel-image is-active" : "auth-carousel-image"}
                 aria-hidden={index !== activeSlide}
               />
