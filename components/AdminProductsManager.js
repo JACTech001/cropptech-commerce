@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ImagePlus, LoaderCircle, Plus, Save, Search, Trash2 } from "lucide-react";
+import { ArrowLeft, ImagePlus, Plus, Save, Search, Trash2 } from "lucide-react";
 
 const blankProduct = () => ({
   id: "",
@@ -18,7 +18,6 @@ const blankProduct = () => ({
 });
 
 const blankVariant = () => ({ id: "", sku: "", size: "", colour: "", price: "", stockQuantity: "0", isActive: true });
-const money = (value) => new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(Number(value || 0));
 
 export default function AdminProductsManager() {
   const [products, setProducts] = useState([]);
