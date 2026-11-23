@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, startTransition, useContext, useEffect, useMemo, useState } from "react";
 import { ShoppingBag } from "lucide-react";
 const CartContext = createContext(null);
 const STORAGE_KEY = "cropptech-cart";
@@ -8,8 +8,8 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    try { setItems(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]").map(item => ({ ...item, slug: item.slug || makeSlug(item.name), selected: item.selected !== false }))); } catch { setItems([]); }
-    setReady(true);
+    try { startTransition(() => setItems(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]").map(item => ({ ...item, slug: item.slug || makeSlug(item.name), selected: item.selected !== false })))); } catch { startTransition(() => setItems([])); }
+    startTransition(() => setReady(true));
   }, []);
   useEffect(() => { if (ready) localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }, [items, ready]);
   const addItem = (product, size, selectedColour = product.tone || "Natural") => setItems(current => {
@@ -37,7 +37,7 @@ export function CartProvider({ children }) {
   const count = items.reduce((sum, item) => sum + item.quantity, 0);
   const selectedItems = items.filter(item => item.selected !== false);
   const selectedCount = selectedItems.reduce((sum, item) => sum + item.quantity, 0);
-  const value = useMemo(() => ({ items, addItem, changeQuantity, removeItem, clearSelectedItems, toggleItem, changeSize, selectedItems, selectedCount, count, ready }), [items, count, ready]);
+  const value = useMemo(() => ({ items, addItem, changeQuantity, removeItem, clearSelectedItems, toggleItem, changeSize, selectedItems, selectedCount, count, ready }), [items, count, selectedItems, selectedCount, ready]);
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 export function useCart() {
