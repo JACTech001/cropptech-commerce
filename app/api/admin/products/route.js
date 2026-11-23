@@ -5,6 +5,7 @@ import { prisma } from "../../../../lib/db";
 const roles = ["ADMIN", "SUPER_ADMIN"];
 const categories = ["MEN", "WOMEN", "UNISEX"];
 const statuses = ["DRAFT", "ACTIVE", "ARCHIVED"];
+const productTypes = ["SHIRTS", "TROUSERS", "SHORTS", "SETS", "DRESSES", "SKIRTS", "OTHER"];
 const clean = (value, max = 500) => typeof value === "string" ? value.trim().slice(0, max) : "";
 const slugify = (value) => value.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
@@ -76,8 +77,9 @@ export async function POST(request) {
   const slug = slugify(clean(body.slug, 180) || name);
   const description = clean(body.description, 5000);
   const category = clean(body.category, 20).toUpperCase();
+  const productType = clean(body.productType, 30).toUpperCase();
   const status = clean(body.status, 20).toUpperCase();
-  if (!name || !slug || !description || !categories.includes(category) || !statuses.includes(status)) {
+  if (!name || !slug || !description || !categories.includes(category) || !productTypes.includes(productType) || !statuses.includes(status)) {
     return error("Complete the product name, description, category and status.");
   }
 
@@ -98,7 +100,7 @@ export async function POST(request) {
     const product = await prisma.$transaction(async (tx) => {
       const created = await tx.product.create({
         data: {
-          name, slug, description, category, status,
+          name, slug, description, category, productType, status,
           isFeatured: body.isFeatured === true,
           archivedAt: status === "ARCHIVED" ? new Date() : null,
           variants: { create: variants.map(({ id, ...variant }) => variant) },
@@ -135,8 +137,9 @@ export async function PATCH(request) {
   const slug = slugify(clean(body.slug, 180) || name);
   const description = clean(body.description, 5000);
   const category = clean(body.category, 20).toUpperCase();
+  const productType = clean(body.productType, 30).toUpperCase();
   const status = clean(body.status, 20).toUpperCase();
-  if (!name || !slug || !description || !categories.includes(category) || !statuses.includes(status)) {
+  if (!name || !slug || !description || !categories.includes(category) || !productTypes.includes(productType) || !statuses.includes(status)) {
     return error("Complete the product name, description, category and status.");
   }
 
@@ -160,7 +163,7 @@ export async function PATCH(request) {
       const updated = await tx.product.update({
         where: { id },
         data: {
-          name, slug, description, category, status,
+          name, slug, description, category, productType, status,
           isFeatured: body.isFeatured === true,
           archivedAt: status === "ARCHIVED" ? current.archivedAt || new Date() : null,
         },
