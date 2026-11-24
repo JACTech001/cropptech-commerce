@@ -2002,7 +2002,7 @@ h1, h2, h3, p { margin-top: 0; }
   .site-header {
     height:66px;
     min-height:66px;
-    grid-template-columns:36px minmax(0,1fr) 76px;
+    grid-template-columns:36px minmax(0,1fr) 112px;
     gap:4px;
     padding:0 14px;
     background:#fff;
@@ -2027,11 +2027,10 @@ h1, h2, h3, p { margin-top: 0; }
   }
   .header-actions {
     justify-content:flex-end;
-    gap:13px;
+    gap:7px;
     min-width:0;
   }
   .header-actions .search-trigger { display:inline-flex; padding:4px; color:#222; }
-  .header-actions > :nth-child(2),
   .header-actions > :nth-child(3) { display:none !important; }
   .header-actions .home-cart-link { width:23px; height:28px; color:#222; font-size:0; }
   .header-actions .home-cart-link::before { width:21px; height:21px; }
@@ -2245,9 +2244,10 @@ h1, h2, h3, p { margin-top: 0; }
     height:auto;
     object-fit:contain;
   }
-  .shop-header-actions { display:flex; align-items:center; justify-content:flex-end; gap:0; }
-  .shop-header-actions .shop-top-note,
-  .shop-header-actions > :nth-child(2) { display:none !important; }
+  .shop-header-actions { display:flex; align-items:center; justify-content:flex-end; gap:9px; }
+  .shop-header-actions .shop-top-note { display:none !important; }
+  .shop-header-actions .currency-selector { display:inline-flex; flex:0 0 auto; }
+  .shop-header-actions .currency-selector select { min-width:39px; padding:6px 1px; font-size:9px; }
   .shop-header-actions .shop-cart-link { display:inline-flex; align-items:center; justify-content:center; min-width:34px; min-height:38px; }
   .shop-hero {
     display:block;
@@ -2361,9 +2361,10 @@ h1, h2, h3, p { margin-top: 0; }
     min-width:0;
   }
   .product-detail-page .shop-brand-wordmark .brand-text-logo { width:100%; height:auto; object-fit:contain; }
-  .product-detail-page .shop-header-actions { justify-content:flex-end; gap:0; }
-  .product-detail-page .shop-header-actions .shop-top-note,
-  .product-detail-page .shop-header-actions > :nth-child(2) { display:none !important; }
+  .product-detail-page .shop-header-actions { justify-content:flex-end; gap:9px; }
+  .product-detail-page .shop-header-actions .shop-top-note { display:none !important; }
+  .product-detail-page .shop-header-actions .currency-selector { display:inline-flex; flex:0 0 auto; }
+  .product-detail-page .shop-header-actions .currency-selector select { min-width:39px; padding:6px 1px; font-size:9px; }
   .product-detail-wrap {
     display:grid;
     grid-template-columns:minmax(0,1fr);
