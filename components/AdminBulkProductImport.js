@@ -129,6 +129,11 @@ export default function AdminBulkProductImport() {
       setError("Add a product name, description and at least one image to a product group before saving.");
       return;
     }
+    const oversized = grouped.filter((group) => group.images.length > 30);
+    if (oversized.length) {
+      setError("Each product can have up to 30 images. Move some images into another product group.");
+      return;
+    }
     const incomplete = grouped.filter((group) => group.images.length && (!group.name.trim() || !group.description.trim()));
     if (incomplete.length) {
       setError("Complete the name and description for every group that contains images.");
