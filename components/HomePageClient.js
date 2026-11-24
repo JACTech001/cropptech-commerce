@@ -66,6 +66,7 @@ export default function HomePage({ firstName }) {
   const [products, setProducts] = useState([]);
   const [productsLoading, setProductsLoading] = useState(true);
   const [productsError, setProductsError] = useState("");
+  const [homepageMedia, setHomepageMedia] = useState({});
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -87,6 +88,15 @@ export default function HomePage({ firstName }) {
     }
     loadStoreProducts();
     return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/homepage-media", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((data) => { if (active) setHomepageMedia(data.media || {}); })
+      .catch(() => {});
+    return () => { active = false; };
   }, []);
 
   useEffect(() => {
@@ -192,7 +202,7 @@ export default function HomePage({ firstName }) {
       )}
 
       <section className="hero">
-        <div className="hero-image" />
+        <div className="hero-image" style={homepageMedia.hero_main?.url ? { backgroundImage: `url("${homepageMedia.hero_main.url}")` } : undefined} />
         <div className="hero-shade" />
         <div className="hero-content">
           <p className="eyebrow hero-eyebrow">CROPPTECH COMMERCE — THE LINEN SHIRT EDIT</p>
@@ -231,9 +241,9 @@ export default function HomePage({ firstName }) {
         </div>
 
         <div className="collection-grid">
-          {collections.map((item) => (
+          {collections.map((item, index) => (
             <Link className="collection-card" href={item.href} key={item.title}>
-              <div className="collection-image" style={{ backgroundImage: `url(\"${item.image}\")` }}>
+              <div className="collection-image" style={{ backgroundImage: `url("${homepageMedia[index === 0 ? "collection_men" : "collection_women"]?.url || item.image}")` }}>
                 <span className="round-arrow"><ArrowUpRight size={20} /></span>
               </div>
               <div className="collection-card-copy">
@@ -249,7 +259,7 @@ export default function HomePage({ firstName }) {
       </section>
 
       <section className="linen-section" id="linen">
-        <div className="linen-photo" />
+        <div className="linen-photo" style={homepageMedia.linen_feature?.url ? { backgroundImage: `url("${homepageMedia.linen_feature.url}")` } : undefined} />
         <div className="linen-copy">
           <p className="eyebrow">THE LINEN WEAR COLLECTION</p>
           <h2>Made for<br /><em>the everyday.</em></h2>
@@ -291,10 +301,10 @@ export default function HomePage({ firstName }) {
           <Link href="/shop?collection=linen" className="text-link">EXPLORE LINEN WEAR <ArrowUpRight size={16} /></Link>
         </div>
         <div className="moodboard-grid">
-          <Link href="/shop?collection=linen" className="moodboard-tile moodboard-tile-tall"><Image src="https://images.pexels.com/photos/32825460/pexels-photo-32825460.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Men's beige linen outfit" fill sizes="(max-width: 640px) 100vw, 40vw" /><span>THE MEN&apos;S LINEN EDIT</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile moodboard-tile-tall"><Image src={homepageMedia.moodboard_men?.url || "https://images.pexels.com/photos/32825460/pexels-photo-32825460.jpeg?auto=compress&cs=tinysrgb&w=1000"} alt="Men's beige linen outfit" fill sizes="(max-width: 640px) 100vw, 40vw" /><span>THE MEN&apos;S LINEN EDIT</span></Link>
           <Link href="/shop?collection=linen" className="moodboard-tile"><Image src="https://images.pexels.com/photos/5393448/pexels-photo-5393448.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Woman wearing a relaxed linen outfit" fill sizes="(max-width: 640px) 50vw, 30vw" /><span>SOFT, RELAXED SILHOUETTES</span></Link>
-          <Link href="/shop?collection=linen" className="moodboard-tile"><Image src="https://images.pexels.com/photos/15923917/pexels-photo-15923917.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Neutral linen garments on wooden hangers" fill sizes="(max-width: 640px) 50vw, 30vw" /><span>THE DETAILS</span></Link>
-          <Link href="/shop?collection=linen" className="moodboard-tile"><Image src="https://images.pexels.com/photos/9637778/pexels-photo-9637778.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Men's white linen outfit" fill sizes="(max-width: 640px) 50vw, 30vw" /><span>MADE FOR EVERYDAY</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile"><Image src={homepageMedia.moodboard_details?.url || "https://images.pexels.com/photos/15923917/pexels-photo-15923917.jpeg?auto=compress&cs=tinysrgb&w=900"} alt="Neutral linen garments on wooden hangers" fill sizes="(max-width: 640px) 50vw, 30vw" /><span>THE DETAILS</span></Link>
+          <Link href="/shop?collection=linen" className="moodboard-tile"><Image src={homepageMedia.moodboard_everyday?.url || "https://images.pexels.com/photos/9637778/pexels-photo-9637778.jpeg?auto=compress&cs=tinysrgb&w=900"} alt="Men's white linen outfit" fill sizes="(max-width: 640px) 50vw, 30vw" /><span>MADE FOR EVERYDAY</span></Link>
         </div>
         <p className="moodboard-note">A visual style edit for inspiration. Product fabrics, styles and availability will be confirmed in the store catalogue.</p>
       </section>
@@ -308,9 +318,9 @@ export default function HomePage({ firstName }) {
           <Link href="/shop" className="text-link">SHOP ALL COLLECTIONS <ArrowUpRight size={16} /></Link>
         </div>
         <div className="category-grid">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <Link href={category.href} className="category-card" key={category.name}>
-              <div className="category-image" style={{ backgroundImage: `url(\"${category.image}\")` }}>
+              <div className="category-image" style={{ backgroundImage: `url("${homepageMedia[["category_linen_wear", "category_linen_sets", "category_linen_dresses"][index]]?.url || category.image}")` }}>
               </div>
               <div className="category-meta">
                 <div><h3>{category.name}</h3><p>{category.detail}</p></div>
