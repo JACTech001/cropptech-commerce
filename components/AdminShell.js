@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { Bell, ChevronLeft, ChevronRight, Command, LayoutDashboard, Package, Search, Settings2, ShoppingBag, X } from "lucide-react";
 
 const sections = [
-  { label: "WORKSPACE", items: [
+  { items: [
     { href: "/admin", title: "Overview", icon: LayoutDashboard },
     { href: "/admin/orders", title: "Orders", icon: ShoppingBag },
     { href: "/admin/products", title: "Products", icon: Package },
@@ -18,7 +18,7 @@ const sections = [
   ]},
 ];
 
-export default function AdminShell({ children, email }) {
+export default function AdminShell({ children, email, adminName }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -50,7 +50,7 @@ export default function AdminShell({ children, email }) {
         <Link href="/admin" className="admin-shell-brand"><Image src="/brand/cropplogotextcommerce-transparent.png" alt="CROPPTECH COMMERCE STORE" width={190} height={54} priority className="admin-shell-logo"/></Link>
         <div className="admin-sidebar-label">ADMIN WORKSPACE</div>
         {sections.map((section) => <nav className="admin-nav-group" aria-label={section.label} key={section.label}>
-          <p>{section.label}</p>
+          {section.label && <p>{section.label}</p>}
           {section.items.map((item) => { const Icon = item.icon; const active = item.href === "/admin" ? pathname === "/admin" : pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href + "/")); return (
             <Link href={item.href} key={item.href} className={"admin-nav-link " + (active ? "active" : "")} onClick={() => setMobileOpen(false)} title={item.title}>
               <Icon size={17}/><span>{item.title}</span>
@@ -68,7 +68,7 @@ export default function AdminShell({ children, email }) {
         <header className="admin-utility-bar">
           <button type="button" className="admin-mobile-menu" onClick={() => setMobileOpen(true)} aria-label="Open navigation"><Command size={18}/></button>
           <button type="button" className="admin-command-trigger" onClick={() => { setQuery(""); setCommandOpen(true); }}><Search size={16}/><span>Search admin pages and actions...</span><kbd>Ctrl K</kbd></button>
-          <div className="admin-utility-right"><span className="admin-environment"><i/> STORE ADMIN</span><span className="admin-utility-user">{email}</span></div>
+          <div className="admin-utility-right"><span className="admin-environment"><i/> STORE ADMIN</span><span className="admin-utility-user">{adminName || "Admin"}</span></div>
         </header>
         <div className="admin-main-content">{children}</div>
       </div>
