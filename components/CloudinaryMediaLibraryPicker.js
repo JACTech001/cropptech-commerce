@@ -73,11 +73,11 @@ export default function CloudinaryMediaLibraryPicker({ onSelect, disabled = fals
         type="button"
         className="admin-outline-button"
         onClick={openLibrary}
-        disabled={disabled || opening || remaining < 1}
+        disabled={disabled || opening || !scriptReady || remaining < 1}
         title={remaining < 1 ? "This product already has the maximum of 30 images." : "Browse images already stored in Cloudinary"}
       >
         <Images size={14} />
-        {opening ? "OPENING CLOUDINARY…" : scriptReady ? "CHOOSE FROM CLOUDINARY" : "LOAD CLOUDINARY LIBRARY"}
+        {opening ? "OPENING CLOUDINARY…" : scriptReady ? "CHOOSE FROM CLOUDINARY" : "LOADING CLOUDINARY…"}
       </button>
     </>
   );
