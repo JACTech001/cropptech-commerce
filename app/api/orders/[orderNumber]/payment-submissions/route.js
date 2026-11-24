@@ -28,7 +28,7 @@ function uploadReceipt(buffer, resourceType) {
 }
 
 export async function POST(request, { params }) {
-  const access = await requireAppRole(["CUSTOMER", "ADMIN", "SUPER_ADMIN"]);
+  const access = await requireAppRole(["CUSTOMER"]);
   if (access.status !== 200) return error("Sign in to submit payment details.", access.status);
 
   const { orderNumber } = await params;
