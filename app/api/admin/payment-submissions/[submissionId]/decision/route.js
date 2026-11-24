@@ -68,7 +68,7 @@ export async function POST(request, { params }) {
         const receiptData = {
           storeName: "CROPPTECH COMMERCE STORE",
           slogan: "BUSINESS MOVES WITH COMMERCE.",
-          receiptNumber: "CPS-" + issuedAt.getFullYear() + "-" + randomBytes(4).toString("hex").toUpperCase(),
+          receiptNumber: "CPS-" + issuedAt.getFullYear() + "-" + randomBytes(8).toString("hex").toUpperCase(),
           orderNumber: order.orderNumber,
           issuedAt: issuedAt.toISOString(),
           paidAt: issuedAt.toISOString(),
