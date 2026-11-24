@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowUpRight, Package, ShieldCheck, ShoppingBag, UserRound }
 import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import AccountSignOutButton from "../../components/AccountSignOutButton";
+import { redirectAdminFromCustomerPages } from "../../lib/auth/customer-access";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,7 @@ const date = (value) => new Intl.DateTimeFormat("en-NG", {
 }).format(value);
 
 export default async function AccountPage() {
+  await redirectAdminFromCustomerPages();
   const user = await getCurrentAppUser();
 
   if (!user) {
