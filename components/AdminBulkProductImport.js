@@ -95,7 +95,7 @@ export default function AdminBulkProductImport() {
   }
 
   function addGroup() {
-    setGroups((current) => [...current, newGroup(current.length + 1)]);
+    setGroups((current) => [...current, { ...newGroup(Date.now()), id: "bulk-group-" + Date.now() }]);
   }
 
   function updateGroup(id, key, value) {
@@ -139,6 +139,7 @@ export default function AdminBulkProductImport() {
     setError("");
     setMessage("");
     const saved = [];
+    const savedGroupIds = [];
     const failed = [];
     for (const group of ready) {
       const payload = {
@@ -170,6 +171,7 @@ export default function AdminBulkProductImport() {
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Could not save this product.");
         saved.push(group.name.trim());
+        savedGroupIds.push(group.id);
       } catch (cause) {
         failed.push(group.name.trim() + ": " + cause.message);
       }
@@ -177,13 +179,16 @@ export default function AdminBulkProductImport() {
 
     setSaving(false);
     if (saved.length) {
-      const savedIds = new Set(ready.filter((group) => saved.includes(group.name.trim())).map((group) => group.id));
+      const savedIds = new Set(savedGroupIds);
       setImages((current) => current.filter((image) => !savedIds.has(image.groupId)));
-      setGroups((current) => current.filter((group) => !savedIds.has(group.id)));
+      setGroups((current) => {
+        const remaining = current.filter((group) => !savedIds.has(group.id));
+        return remaining.length ? remaining : [newGroup(Date.now())];
+      });
       setMessage(saved.length + " draft product(s) created successfully. " + (failed.length ? failed.length + " group(s) still need attention." : "You can now add variants and review them in the product catalogue."));
     }
     if (failed.length) setError(failed.join(" | "));
-    if (!failed.length && !images.length) setGroups([newGroup(1)]);
+
   }
 
   return (
