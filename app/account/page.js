@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, Package, ShieldCheck, ShoppingBag, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Package, ShoppingBag, UserRound } from "lucide-react";
 import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import AccountSignOutButton from "../../components/AccountSignOutButton";
@@ -103,9 +103,6 @@ export default async function AccountPage() {
             <h2>{user.fullName || "CroppTech customer"}</h2>
             <p className="account-email">{user.email}</p>
             <span className="account-member-label">CUSTOMER ACCOUNT</span>
-            {user.role === "ADMIN" || user.role === "SUPER_ADMIN" ? (
-              <Link href="/admin" className="account-admin-link"><ShieldCheck size={15} /> OPEN ADMIN DASHBOARD <ArrowUpRight size={14} /></Link>
-            ) : null}
             <AccountSignOutButton />
           </aside>
 
