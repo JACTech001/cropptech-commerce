@@ -3585,3 +3585,14 @@ h1, h2, h3, p { margin-top: 0; }
   .admin-orders-filter > span { display:none; }
   .admin-drawer-status > strong { width:100%; margin:7px 0 0; }
 }
+
+/* Cloudinary product image source actions */
+.admin-editor-image-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.admin-editor-image-actions > button,
+.admin-editor-image-actions > label { white-space:nowrap; }
+.admin-editor-image-actions button:disabled { opacity:.55; cursor:not-allowed; }
+@media(max-width:650px) {
+  .admin-editor-image-actions { width:100%; align-items:stretch; flex-direction:column; }
+  .admin-editor-image-actions > button,
+  .admin-editor-image-actions > label { justify-content:center; width:100%; min-height:40px; }
+}
