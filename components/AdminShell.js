@@ -9,12 +9,12 @@ import { Bell, ChevronLeft, ChevronRight, Command, LayoutDashboard, Package, Sea
 const sections = [
   { label: "WORKSPACE", items: [
     { href: "/admin", title: "Overview", icon: LayoutDashboard },
-    { href: "/admin#orders", title: "Orders", icon: ShoppingBag },
+    { href: "/admin/orders", title: "Orders", icon: ShoppingBag },
     { href: "/admin/products", title: "Products", icon: Package },
   ]},
   { label: "STORE OPERATIONS", items: [
-    { href: "/admin#payments", title: "Payment reviews", icon: Bell },
-    { href: "/admin#settings", title: "Delivery & settings", icon: Settings2 },
+    { href: "/admin/payments", title: "Payment reviews", icon: Bell },
+    { href: "/admin/settings", title: "Delivery & settings", icon: Settings2 },
   ]},
 ];
 
@@ -39,9 +39,9 @@ export default function AdminShell({ children, email }) {
   const commands = [
     { title: "Overview", detail: "Dashboard summary", href: "/admin" },
     { title: "Manage products", detail: "Create, edit and publish products", href: "/admin/products" },
-    { title: "Orders", detail: "Review orders and fulfilment", href: "/admin#orders" },
-    { title: "Payment reviews", detail: "Review customer transfer submissions", href: "/admin#payments" },
-    { title: "Delivery and settings", detail: "Bank account and delivery zones", href: "/admin#settings" },
+    { title: "Orders", detail: "Review orders and fulfilment", href: "/admin/orders" },
+    { title: "Payment reviews", detail: "Review customer transfer submissions", href: "/admin/payments" },
+    { title: "Delivery and settings", detail: "Bank account and delivery zones", href: "/admin/settings" },
   ].filter((item) => (item.title + " " + item.detail).toLowerCase().includes(query.toLowerCase()));
 
   return (
@@ -51,7 +51,7 @@ export default function AdminShell({ children, email }) {
         <div className="admin-sidebar-label">ADMIN WORKSPACE</div>
         {sections.map((section) => <nav className="admin-nav-group" aria-label={section.label} key={section.label}>
           <p>{section.label}</p>
-          {section.items.map((item) => { const Icon = item.icon; const active = item.href === "/admin" ? pathname === "/admin" : !item.href.includes("#") && pathname === item.href; return (
+          {section.items.map((item) => { const Icon = item.icon; const active = item.href === "/admin" ? pathname === "/admin" : pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href + "/")); return (
             <Link href={item.href} key={item.href} className={"admin-nav-link " + (active ? "active" : "")} onClick={() => setMobileOpen(false)} title={item.title}>
               <Icon size={17}/><span>{item.title}</span>
             </Link>
