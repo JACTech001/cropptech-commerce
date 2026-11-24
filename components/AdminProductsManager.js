@@ -3,6 +3,7 @@
 import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ImagePlus, Plus, Save, Search, Trash2 } from "lucide-react";
+import CsvExportButton from "./CsvExportButton";
 
 const blankProduct = () => ({
   id: "",
@@ -54,6 +55,26 @@ export default function AdminProductsManager() {
     const matchesSearch = !term || [product.name, product.slug, product.category].some((value) => String(value || "").toLowerCase().includes(term));
     return matchesStatus && matchesSearch;
   }), [products, filter, search]);
+
+  const exportRows = visibleProducts.flatMap((product) => {
+    const availability = product.status === "ACTIVE" && !product.variants.some((variant) => variant.isActive && variant.stockQuantity > 0) ? "OUT_OF_STOCK" : product.status;
+    const variants = product.variants.length ? product.variants : [null];
+    return variants.map((variant) => ({
+      product: product.name,
+      slug: product.slug,
+      category: product.category,
+      type: product.productType || "OTHER",
+      status: availability,
+      featured: product.isFeatured ? "Yes" : "No",
+      sku: variant?.sku || "",
+      size: variant?.size || "",
+      colour: variant?.colour || "",
+      priceNgn: variant?.price ?? "",
+      stock: variant?.stockQuantity ?? "",
+      sellable: variant ? (variant.isActive ? "Yes" : "No") : "N/A",
+      images: product.images.length,
+    }));
+  });
 
   const startNew = () => { setDraft(blankProduct()); setRemovedVariantIds([]); setRemovedImageIds([]); setMessage(""); setError(""); };
   const editProduct = (product) => {
@@ -187,6 +208,7 @@ export default function AdminProductsManager() {
           <select value={filter} onChange={(event) => setFilter(event.target.value)} aria-label="Filter products">
             <option value="ALL">All products</option><option value="DRAFT">Draft</option><option value="ACTIVE">Active</option><option value="OUT_OF_STOCK">Out of stock</option><option value="ARCHIVED">Archived</option>
           </select>
+          <CsvExportButton filename="cropptech-products-inventory" label="EXPORT CSV" columns={[{ key: "product", label: "Product" }, { key: "slug", label: "Slug" }, { key: "category", label: "Category" }, { key: "type", label: "Garment type" }, { key: "status", label: "Status" }, { key: "featured", label: "Featured" }, { key: "sku", label: "SKU" }, { key: "size", label: "Size" }, { key: "colour", label: "Colour" }, { key: "priceNgn", label: "Price (NGN)" }, { key: "stock", label: "Stock quantity" }, { key: "sellable", label: "Sellable" }, { key: "images", label: "Image count" }]} rows={exportRows} disabled={loading || !exportRows.length}/>
           <button type="button" className="admin-primary-button" onClick={startNew}><Plus size={16}/> NEW PRODUCT</button>
         </div>
 
