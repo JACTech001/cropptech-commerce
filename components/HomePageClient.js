@@ -58,7 +58,7 @@ const categories = [
   }
 ];
 
-export default function HomePage() {
+export default function HomePage({ firstName }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -140,7 +140,7 @@ export default function HomePage() {
             <Search size={19} strokeWidth={1.6} />
           </button>
           <CurrencySelector />
-          <AuthAccountControl />
+          <AuthAccountControl firstName={firstName} />
           <CartLink className="home-cart-link" />
         </div>
       </header>
