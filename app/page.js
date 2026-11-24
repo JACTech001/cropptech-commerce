@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -59,6 +60,7 @@ const categories = [
 ];
 
 export default function HomePage() {
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -66,6 +68,19 @@ export default function HomePage() {
   const [newsletterMessage, setNewsletterMessage] = useState("");
 
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/account/me", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => {
+        if (active && ["ADMIN", "SUPER_ADMIN"].includes(data?.user?.role)) {
+          router.replace("/admin");
+        }
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, [router]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
