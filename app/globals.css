@@ -3596,3 +3596,32 @@ h1, h2, h3, p { margin-top: 0; }
   .admin-editor-image-actions > button,
   .admin-editor-image-actions > label { justify-content:center; width:100%; min-height:40px; }
 }
+
+/* Admin navigation stays anchored while the workspace content scrolls */
+@media (min-width:681px) {
+  .admin-shell { align-items:flex-start; }
+  .admin-sidebar {
+    position:sticky;
+    top:0;
+    align-self:flex-start;
+    height:100vh;
+    min-height:0;
+    max-height:100vh;
+    overflow-x:hidden;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    scrollbar-width:thin;
+    scrollbar-color:#d6d8dc transparent;
+  }
+  .admin-main-frame { min-width:0; min-height:100vh; }
+}
+@media (max-width:680px) {
+  .admin-sidebar {
+    height:100dvh;
+    max-height:100dvh;
+    min-height:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+  }
+}
