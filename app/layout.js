@@ -2,6 +2,7 @@ import "./globals.css";
 import { CartProvider } from "../components/CartProvider";
 import { CurrencyProvider } from "../components/CurrencyProvider";
 import MobileBottomNav from "../components/MobileBottomNav";
+import TikTokFloatingLogo from "../components/TikTokFloatingLogo";
 
 export const metadata = {
   title: "CroppTech Commerce Store | Business Moves With Commerce",
@@ -14,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body><CartProvider><CurrencyProvider>{children}<MobileBottomNav /></CurrencyProvider></CartProvider></body>
+      <body><CartProvider><CurrencyProvider>{children}<MobileBottomNav /><TikTokFloatingLogo /></CurrencyProvider></CartProvider></body>
     </html>
   );
 }
