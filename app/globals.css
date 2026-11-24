@@ -2843,3 +2843,10 @@ h1, h2, h3, p { margin-top: 0; }
 @media(max-width:680px) {
   .admin-nav-link.active { box-shadow:inset 3px 0 0 #a40000; }
 }
+
+.admin-page .checkout-primary {
+  border-color:#202124;
+  background:#202124;
+  color:#fff;
+}
+.admin-page .checkout-primary:hover { border-color:#08090a; background:#08090a; }
