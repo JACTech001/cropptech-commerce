@@ -5,6 +5,7 @@ import { ArrowLeft, CheckCircle2, Clock3, PackageCheck } from "lucide-react";
 import { getCurrentAppUser } from "../../../lib/auth/user";
 import { prisma } from "../../../lib/db";
 import { decryptBankAccountNumber } from "../../../lib/security/bank-account-encryption";
+import { redirectAdminFromCustomerPages } from "../../../lib/auth/customer-access";
 import PaymentSubmissionForm from "../../../components/PaymentSubmissionForm";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,7 @@ const orderStatusLabels = {
 
 export default async function OrderDetailsPage({ params }) {
   const { orderNumber } = await params;
+  await redirectAdminFromCustomerPages();
   const user = await getCurrentAppUser();
   if (!user) redirect("/auth/sign-in?redirectTo=" + encodeURIComponent("/orders/" + orderNumber));
 
