@@ -15,9 +15,9 @@ export default async function AdminHomepageMediaPage() {
       <main className="admin-page admin-route-page">
         <div className="admin-wrap">
           <div className="admin-heading">
-            <p className="eyebrow">STORE MANAGEMENT / HOMEPAGE</p>
-            <h1>Homepage <em>images.</em></h1>
-            <p>Choose exactly which Cloudinary image appears in each homepage position. Product catalogue images are managed separately.</p>
+            <p className="eyebrow">STORE MANAGEMENT / STORE FRONT STUDIO</p>
+            <h1>Store Front <em>Studio.</em></h1>
+            <p>Curate the images and visual placements customers see across your storefront. Product catalogue images are managed separately.</p>
           </div>
           <AdminHomepageMediaManager />
         </div>
