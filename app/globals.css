@@ -2716,3 +2716,33 @@ h1, h2, h3, p { margin-top: 0; }
 @media (prefers-reduced-motion: reduce) {
   .tiktok-floating-logo { animation: none; }
 }
+
+
+/* Password visibility controls shared by sign-in, sign-up and reset forms */
+.auth-password-field {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.auth-password-field input {
+  padding-right: 48px;
+}
+.auth-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #777;
+  cursor: pointer;
+}
+.auth-password-toggle:hover { color: #171717; }
+.auth-password-toggle:focus-visible {
+  outline: 2px solid #555;
+  outline-offset: -3px;
+}
