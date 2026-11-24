@@ -34,7 +34,7 @@ export default function AdminHomepageMediaManager() {
     fetch("/api/admin/homepage-media", { cache: "no-store" })
       .then(async (response) => {
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "Homepage images could not be loaded.");
+        if (!response.ok) throw new Error(data.error || "Store Front Studio content could not be loaded.");
         if (active) {
           setMedia(data.media || {});
           setSavedMedia(data.media || {});
@@ -92,12 +92,12 @@ export default function AdminHomepageMediaManager() {
         body: JSON.stringify({ media }),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Homepage images could not be saved.");
+      if (!response.ok) throw new Error(data.error || "Store Front Studio changes could not be saved.");
       setMedia(data.media || {});
       setSavedMedia(data.media || {});
-      setNotice("Homepage image placements saved successfully.");
+      setNotice("Store Front Studio changes saved successfully.");
     } catch (cause) {
-      setError(cause.message || "Could not save homepage images.");
+      setError(cause.message || "Could not save Store Front Studio changes.");
     } finally {
       setSaving(false);
     }
@@ -111,7 +111,7 @@ export default function AdminHomepageMediaManager() {
 
   const hasChanges = JSON.stringify(media) !== JSON.stringify(savedMedia);
 
-  if (loading) return <div className="admin-home-media-loading"><LoaderCircle size={18} /> Loading homepage placements…</div>;
+  if (loading) return <div className="admin-home-media-loading"><LoaderCircle size={18} /> Loading Store Front Studio…</div>;
 
   return (
     <section className="admin-home-media">
@@ -119,7 +119,7 @@ export default function AdminHomepageMediaManager() {
         <div><strong>{Object.keys(media).length} of {SLOTS.length} image positions assigned</strong><span>Unassigned positions continue using the current website image.</span></div>
         <div className="admin-home-media-actions">
           <button type="button" className="admin-outline-button" onClick={resetChanges} disabled={!hasChanges || saving}><RotateCcw size={14}/> DISCARD</button>
-          <button type="button" className="admin-primary-button" onClick={saveChanges} disabled={!hasChanges || saving}>{saving ? <LoaderCircle size={15} className="admin-spin"/> : <Save size={15}/>} SAVE HOMEPAGE IMAGES</button>
+          <button type="button" className="admin-primary-button" onClick={saveChanges} disabled={!hasChanges || saving}>{saving ? <LoaderCircle size={15} className="admin-spin"/> : <Save size={15}/>} SAVE CHANGES</button>
         </div>
       </div>
 
@@ -134,7 +134,7 @@ export default function AdminHomepageMediaManager() {
               <div className="admin-home-media-card-heading"><span>{slot.title}</span><small>{slot.ratio}</small></div>
               <div className="admin-home-media-location">{slot.location}</div>
               <div className="admin-home-media-preview">
-                {item?.url ? <Image src={item.url} alt={item.altText || slot.title} fill sizes="(max-width: 700px) 100vw, 33vw" unoptimized /> : <div className="admin-home-media-empty"><ImagePlus size={25}/><span>Using current homepage image</span><small>{slot.fallback}</small></div>}
+                {item?.url ? <Image src={item.url} alt={item.altText || slot.title} fill sizes="(max-width: 700px) 100vw, 33vw" unoptimized /> : <div className="admin-home-media-empty"><ImagePlus size={25}/><span>Using current storefront image</span><small>{slot.fallback}</small></div>}
               </div>
               {item?.url && <div className="admin-home-media-current"><Check size={13}/> Custom image selected</div>}
               <div className="admin-home-media-card-actions">
@@ -147,13 +147,13 @@ export default function AdminHomepageMediaManager() {
                   {uploadingKey === slot.key ? <LoaderCircle size={14} className="admin-spin"/> : <Upload size={14}/>} UPLOAD
                 </button>
                 <input ref={(node) => { fileRefs.current[slot.key] = node; }} type="file" accept="image/*" hidden onChange={(event) => uploadImage(slot.key, event.target.files?.[0])}/>
-                {item?.url && <button type="button" className="admin-icon-button" onClick={() => setMedia((current) => { const next = { ...current }; delete next[slot.key]; return next; })} aria-label={"Use default image for " + slot.title} title="Use default homepage image"><Trash2 size={15}/></button>}
+                {item?.url && <button type="button" className="admin-icon-button" onClick={() => setMedia((current) => { const next = { ...current }; delete next[slot.key]; return next; })} aria-label={"Use default image for " + slot.title} title="Use default storefront image"><Trash2 size={15}/></button>}
               </div>
             </article>
           );
         })}
       </div>
-      <p className="admin-home-media-footnote">Images are stored in Cloudinary. Changes only appear on the customer homepage after you save them. This does not change product catalogue photos.</p>
+      <p className="admin-home-media-footnote">Images are stored in Cloudinary. Changes only appear on the customer storefront after you save them. This does not change product catalogue photos.</p>
     </section>
   );
 }
