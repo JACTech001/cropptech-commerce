@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Bell, ChevronLeft, ChevronRight, Command, ExternalLink, LayoutDashboard, Package, Search, Settings2, ShoppingBag, X } from "lucide-react";
+import { Bell, ChevronLeft, ChevronRight, Command, LayoutDashboard, Package, Search, Settings2, ShoppingBag, X } from "lucide-react";
 
 const sections = [
   { label: "WORKSPACE", items: [
@@ -42,7 +42,6 @@ export default function AdminShell({ children, email }) {
     { title: "Orders", detail: "Review orders and fulfilment", href: "/admin#orders" },
     { title: "Payment reviews", detail: "Review customer transfer submissions", href: "/admin#payments" },
     { title: "Delivery and settings", detail: "Bank account and delivery zones", href: "/admin#settings" },
-    { title: "Open storefront", detail: "View the customer-facing store", href: "/shop" },
   ].filter((item) => (item.title + " " + item.detail).toLowerCase().includes(query.toLowerCase()));
 
   return (
@@ -61,7 +60,6 @@ export default function AdminShell({ children, email }) {
         <div className="admin-sidebar-bottom">
           <div className="admin-role-chip"><span className="admin-role-dot"/><span>ADMIN ACCESS</span></div>
           <span className="admin-sidebar-email" title={email}>{email}</span>
-          <Link href="/shop" className="admin-store-link"><ExternalLink size={15}/><span>View storefront</span></Link>
           <button type="button" className="admin-collapse-button" onClick={() => setCollapsed((value) => !value)} aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}>{collapsed ? <ChevronRight size={16}/> : <><ChevronLeft size={16}/><span>Collapse sidebar</span></>}</button>
         </div>
       </aside>
