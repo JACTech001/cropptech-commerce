@@ -4,6 +4,7 @@ import { startTransition, useCallback, useEffect, useMemo, useState } from "reac
 import Image from "next/image";
 import { ImagePlus, Plus, Save, Search, Trash2 } from "lucide-react";
 import CsvExportButton from "./CsvExportButton";
+import CloudinaryMediaLibraryPicker from "./CloudinaryMediaLibraryPicker";
 
 const blankProduct = () => ({
   id: "",
@@ -147,6 +148,23 @@ export default function AdminProductsManager() {
     finally { setUploading(false); }
   }
 
+  function addCloudinaryImages(assets) {
+    const existingIds = new Set(draft.images.map((image) => image.cloudinaryPublicId));
+    const uniqueAssets = assets.filter((image) => !existingIds.has(image.cloudinaryPublicId));
+    const availableSlots = Math.max(0, 30 - draft.images.length);
+    const selected = uniqueAssets.slice(0, availableSlots);
+    if (!selected.length) {
+      setError("These images are already in the gallery, or the 30-image limit has been reached.");
+      return;
+    }
+    update("images", [...draft.images, ...selected]);
+    setError("");
+    setMessage(selected.length + " image(s) selected from Cloudinary. Save the product to attach them to its gallery.");
+    if (selected.length < assets.length) {
+      setError("Some images were skipped because they were duplicates or the 30-image gallery limit was reached.");
+    }
+  }
+
   async function saveProduct(event) {
     event.preventDefault();
     setSaving(true); setError(""); setMessage("");
@@ -256,8 +274,8 @@ export default function AdminProductsManager() {
             </div>
 
             <div className="admin-editor-section">
-              <div className="admin-editor-section-head"><div><p className="eyebrow">CLOUDINARY</p><h3>Product image gallery</h3></div><label className="admin-outline-button admin-upload-label"><ImagePlus size={14}/> {uploading ? "UPLOADING…" : "UPLOAD IMAGES"}<input type="file" accept="image/*" multiple disabled={uploading} onChange={uploadImages}/></label></div>
-              <p className="admin-muted">Upload up to 10 MB per image. Add different angles of the same garment to this gallery. The first image is used as the primary image.</p>
+              <div className="admin-editor-section-head"><div><p className="eyebrow">CLOUDINARY</p><h3>Product image gallery</h3></div><div className="admin-editor-image-actions"><CloudinaryMediaLibraryPicker onSelect={addCloudinaryImages} onError={setError} disabled={uploading || saving} remaining={30 - draft.images.length}/><label className="admin-outline-button admin-upload-label"><ImagePlus size={14}/> {uploading ? "UPLOADING…" : "UPLOAD FROM COMPUTER"}<input type="file" accept="image/*" multiple disabled={uploading || saving || draft.images.length >= 30} onChange={uploadImages}/></label></div></div>
+              <p className="admin-muted">Choose existing images directly from your Cloudinary Media Library or upload new images from your computer (up to 10 MB each). Add different angles of the same garment. The first image is used as the primary image. You can add up to 30 images per product.</p>
               <div className="admin-product-image-grid">
                 {draft.images.map((image, index) => <div className="admin-product-image-tile" key={image.cloudinaryPublicId}>
                   <Image src={image.secureUrl} alt={image.altText || "Product gallery image"} fill sizes="120px"/>
