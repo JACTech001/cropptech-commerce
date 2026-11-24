@@ -11,7 +11,7 @@ const sections = [
     { href: "/admin", title: "Overview", icon: LayoutDashboard },
     { href: "/admin/orders", title: "Orders", icon: ShoppingBag },
     { href: "/admin/products", title: "Products", icon: Package },
-    { href: "/admin/homepage-media", title: "Homepage images", icon: ImagePlus },
+    { href: "/admin/homepage-media", title: "Store Front Studio", icon: ImagePlus },
   ]},
   { label: "STORE OPERATIONS", items: [
     { href: "/admin/payments", title: "Payment reviews", icon: Bell },
@@ -40,7 +40,7 @@ export default function AdminShell({ children, email, adminName }) {
   const commands = [
     { title: "Overview", detail: "Dashboard summary", href: "/admin" },
     { title: "Manage products", detail: "Create, edit and publish products", href: "/admin/products" },
-    { title: "Homepage images", detail: "Change homepage banners and image placements", href: "/admin/homepage-media" },
+    { title: "Store Front Studio", detail: "Curate homepage images and visual placements", href: "/admin/homepage-media" },
     { title: "Orders", detail: "Review orders and fulfilment", href: "/admin/orders" },
     { title: "Payment reviews", detail: "Review customer transfer submissions", href: "/admin/payments" },
     { title: "Delivery and settings", detail: "Bank account and delivery zones", href: "/admin/settings" },
