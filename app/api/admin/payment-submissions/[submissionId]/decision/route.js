@@ -83,8 +83,8 @@ export async function POST(request, { params }) {
         const snapshotHash = createHash("sha256").update(stableStringify(receiptData)).digest("hex");
         const existingReceipt = await tx.paymentReceipt.findUnique({ where: { paymentId: submission.paymentId } });
         if (!existingReceipt) {
-          await tx.paymentReceipt.create({ data: { receiptNumber: receiptData.receiptNumber, paymentId: submission.paymentId, orderId: order.id, receiptData, snapshotHash, issuedAt } });
-          await tx.adminAuditLog.create({ data: { actorId: access.user.id, action: "PAYMENT_RECEIPT_ISSUED", entityType: "PaymentReceipt", entityId: submission.paymentId, metadata: { orderNumber: order.orderNumber, receiptNumber: receiptData.receiptNumber, snapshotHash } } });
+          const createdReceipt = await tx.paymentReceipt.create({ data: { receiptNumber: receiptData.receiptNumber, paymentId: submission.paymentId, orderId: order.id, receiptData, snapshotHash, issuedAt } });
+          await tx.adminAuditLog.create({ data: { actorId: access.user.id, action: "PAYMENT_RECEIPT_ISSUED", entityType: "PaymentReceipt", entityId: createdReceipt.id, metadata: { orderNumber: order.orderNumber, receiptNumber: receiptData.receiptNumber, snapshotHash } } });
         }
       } else if (decision === "REJECTED") {
         nextOrderStatus = "AWAITING_PAYMENT";
