@@ -3698,3 +3698,17 @@ h1, h2, h3, p { margin-top: 0; }
   .admin-bulk-footer { align-items:stretch; flex-direction:column; }
   .admin-bulk-footer .admin-primary-button { width:100%; }
 }
+
+
+/* Header refinements: clean admin navigation and signed-in customer greeting */
+.admin-nav-group:first-of-type > p { display:none; }
+.admin-nav-link.active { box-shadow:none !important; }
+@media(max-width:680px) {
+  .admin-nav-link.active { box-shadow:none !important; }
+}
+.mobile-customer-greeting { display:none; }
+@media(max-width:760px) {
+  .mobile-customer-greeting { display:inline; color:#242424; font-size:11px; font-weight:600; letter-spacing:0; white-space:nowrap; }
+  .auth-account-link { gap:6px; }
+  .auth-account-label { display:none; }
+}
