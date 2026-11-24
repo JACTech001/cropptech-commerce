@@ -19,10 +19,9 @@ export async function POST() {
   const timestamp = Math.floor(Date.now() / 1000);
   const folder = "cropptech store linen";
   const allowed_formats = "jpg,jpeg,png,webp,avif";
-  const max_file_size = 10485760;
-  const signature = cloudinary.utils.api_sign_request({ timestamp, folder, allowed_formats, max_file_size }, apiSecret);
+  const signature = cloudinary.utils.api_sign_request({ timestamp, folder, allowed_formats }, apiSecret);
 
-  return Response.json({ cloudName, apiKey, timestamp, folder, allowed_formats, max_file_size, signature }, {
+  return Response.json({ cloudName, apiKey, timestamp, folder, allowed_formats, signature }, {
     headers: { "Cache-Control": "no-store" },
   });
 }
