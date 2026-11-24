@@ -2850,3 +2850,63 @@ h1, h2, h3, p { margin-top: 0; }
   color:#fff;
 }
 .admin-page .checkout-primary:hover { border-color:#08090a; background:#08090a; }
+
+
+/* Strong CROPPTECH red treatment — no pale/pink navigation accents */
+.admin-page { --red:#e00016; --red-dark:#b80012; }
+.admin-nav-link:hover {
+  background:#e00016;
+  color:#fff;
+}
+.admin-nav-link.active {
+  background:#e00016;
+  color:#fff;
+  box-shadow:inset 3px 0 0 #9f0010;
+}
+.admin-nav-link.active svg,
+.admin-nav-link:hover svg { color:#fff; }
+.admin-role-dot,
+.admin-environment i { background:#e00016; }
+.admin-heading .eyebrow,
+.admin-order-head .eyebrow,
+.admin-submission-list > .eyebrow,
+.admin-settings-heading > svg,
+.admin-settings-card > .eyebrow,
+.admin-fulfillment > .eyebrow,
+.admin-receipt-link,
+.admin-editor-section-head .eyebrow,
+.admin-product-editor .eyebrow,
+.admin-catalogue-edit,
+.admin-panel-heading .eyebrow { color:#e00016; }
+.admin-overview svg,
+.admin-overview-icon { color:#e00016; }
+.admin-overview-icon { border-color:#e00016; }
+.admin-trend-track i { background:#e00016; }
+.admin-catalogue-search:focus-within,
+.admin-product-fields input:focus,
+.admin-product-fields select:focus,
+.admin-product-fields textarea:focus,
+.admin-variant-row input:focus { outline:2px solid rgba(224,0,22,.22); border-color:#e00016; }
+.admin-nav-link:focus-visible,
+.admin-command-trigger:focus-visible,
+.admin-collapse-button:focus-visible { outline:2px solid rgba(224,0,22,.5); outline-offset:2px; }
+@media(max-width:680px) {
+  .admin-nav-link.active { box-shadow:inset 3px 0 0 #9f0010; }
+}
+
+/* Primary action buttons intentionally remain black. */
+.admin-review-actions button:first-child,
+.admin-fulfillment-button,
+.admin-primary-button,
+.admin-page .checkout-primary {
+  border-color:#202124;
+  background:#202124;
+  color:#fff;
+}
+.admin-review-actions button:first-child:hover,
+.admin-fulfillment-button:hover,
+.admin-primary-button:hover,
+.admin-page .checkout-primary:hover {
+  border-color:#08090a;
+  background:#08090a;
+}
