@@ -1,3 +1,4 @@
+import { createHash, randomBytes } from "node:crypto";
 import { requireAppRole } from "../../../../../../lib/auth/user";
 import { prisma } from "../../../../../../lib/db";
 
@@ -21,7 +22,7 @@ export async function POST(request, { params }) {
     const result = await prisma.$transaction(async (tx) => {
       const submission = await tx.paymentSubmission.findUnique({
         where: { id: submissionId },
-        include: { payment: { include: { order: true } } },
+        include: { payment: { include: { order: { include: { customer: true, items: true } } } } },
       });
       if (!submission) throw new Error("SUBMISSION_NOT_FOUND");
       if (submission.status !== "PENDING") throw new Error("SUBMISSION_ALREADY_REVIEWED");
@@ -56,6 +57,29 @@ export async function POST(request, { params }) {
           where: { orderId: submission.payment.orderId, status: "ACTIVE" },
           data: { status: "CONSUMED" },
         });
+        const order = submission.payment.order;
+        const issuedAt = new Date();
+        const receiptData = {
+          storeName: "CROPPTECH COMMERCE STORE",
+          slogan: "BUSINESS MOVES WITH COMMERCE.",
+          receiptNumber: "CPS-" + issuedAt.getFullYear() + "-" + randomBytes(4).toString("hex").toUpperCase(),
+          orderNumber: order.orderNumber,
+          issuedAt: issuedAt.toISOString(),
+          paidAt: issuedAt.toISOString(),
+          customer: {
+            name: order.customer.fullName || [order.customer.firstName, order.customer.lastName].filter(Boolean).join(" ") || order.recipientName,
+            email: order.customer.email,
+          },
+          payment: { method: "Bank transfer", bankName: submission.bankName, transactionReference: submission.transactionReference, amountPaid: submission.amountTransferred.toString(), currency: submission.payment.currency },
+          totals: { subtotal: order.subtotal.toString(), delivery: order.shippingFee.toString(), discount: order.discountTotal.toString(), total: order.total.toString() },
+          items: order.items.map((item) => ({ name: item.productName, sku: item.sku, size: item.size, colour: item.colour, quantity: item.quantity, unitPrice: item.unitPrice.toString(), lineTotal: item.lineTotal.toString() })),
+        };
+        const snapshotHash = createHash("sha256").update(JSON.stringify(receiptData)).digest("hex");
+        const existingReceipt = await tx.paymentReceipt.findUnique({ where: { paymentId: submission.paymentId } });
+        if (!existingReceipt) {
+          await tx.paymentReceipt.create({ data: { receiptNumber: receiptData.receiptNumber, paymentId: submission.paymentId, orderId: order.id, receiptData, snapshotHash, issuedAt } });
+          await tx.adminAuditLog.create({ data: { actorId: access.user.id, action: "PAYMENT_RECEIPT_ISSUED", entityType: "PaymentReceipt", entityId: submission.paymentId, metadata: { orderNumber: order.orderNumber, receiptNumber: receiptData.receiptNumber, snapshotHash } } });
+        }
       } else if (decision === "REJECTED") {
         nextOrderStatus = "AWAITING_PAYMENT";
         nextPaymentStatus = "REJECTED";
