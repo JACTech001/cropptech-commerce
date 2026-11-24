@@ -2746,3 +2746,100 @@ h1, h2, h3, p { margin-top: 0; }
   outline: 2px solid #555;
   outline-offset: -3px;
 }
+
+
+/* CROPPTECH admin brand refresh: white surfaces, brand-red accents, black action buttons */
+.admin-page {
+  --red:#a40000;
+  --red-dark:#790000;
+  --ink:#202124;
+  --muted:#687078;
+  --cream:#f7f7f8;
+  --paper:#ffffff;
+  --line:#e5e7eb;
+  background:#fff;
+  color:#202124;
+}
+.admin-shell { background:#fff; color:#202124; }
+.admin-sidebar { background:#fff; border-right-color:#ececee; }
+.admin-shell-brand { border-bottom-color:#ececee; }
+.admin-sidebar-label,
+.admin-nav-group > p { color:#999da3; }
+.admin-nav-link { color:#5f6369; }
+.admin-nav-link:hover { background:#fff5f5; color:#8f0000; }
+.admin-nav-link.active {
+  background:#fff0f0;
+  color:#a40000;
+  box-shadow:inset 3px 0 0 #a40000;
+}
+.admin-role-dot { background:#a40000; }
+.admin-role-chip { color:#6c7076; }
+.admin-sidebar-bottom { border-top-color:#ececee; }
+.admin-utility-bar { background:#fff; border-bottom-color:#ececee; }
+.admin-environment i { background:#a40000; }
+.admin-heading .eyebrow,
+.admin-order-head .eyebrow,
+.admin-submission-list > .eyebrow,
+.admin-settings-heading > svg,
+.admin-settings-card > .eyebrow,
+.admin-fulfillment > .eyebrow,
+.admin-receipt-link,
+.admin-editor-section-head .eyebrow,
+.admin-product-editor .eyebrow,
+.admin-catalogue-edit { color:#a40000; }
+.admin-overview > div,
+.admin-order-card,
+.admin-settings-section,
+.admin-settings-card,
+.admin-catalogue-list,
+.admin-product-editor,
+.admin-insight-panel { background:#fff; border-color:#e7e7e9; }
+.admin-overview svg,
+.admin-overview-icon { color:#a40000; }
+.admin-overview-icon { border-color:#a40000; }
+.admin-settings-section { background:#fff; }
+.admin-current-account,
+.admin-submission,
+.admin-shipment-summary,
+.admin-empty,
+.admin-catalogue-item.selected,
+.admin-catalogue-thumb,
+.admin-product-image-tile,
+.admin-gallery-empty { background:#f7f7f8; }
+.admin-trend-track { background:#f4eeee; }
+.admin-trend-track i { background:#a40000; }
+.admin-panel-heading .eyebrow { color:#a40000; }
+.admin-attention-count,
+.admin-attention-mark { background:#fff2e2; color:#98610b; }
+.admin-status-pill.active { background:#edf6ef; color:#376344; }
+.admin-form-success { background:#edf6ef; color:#285c3a; border-color:#d9eadc; }
+.admin-form-error { background:#fff0ef; color:#9a2822; border-color:#f0d7d5; }
+.admin-catalogue-search:focus-within,
+.admin-product-fields input:focus,
+.admin-product-fields select:focus,
+.admin-product-fields textarea:focus,
+.admin-variant-row input:focus { outline:2px solid rgba(164,0,0,.10); border-color:#a40000; }
+.admin-nav-link:focus-visible,
+.admin-command-trigger:focus-visible,
+.admin-collapse-button:focus-visible { outline:2px solid rgba(164,0,0,.35); outline-offset:2px; }
+
+/* Keep the dashboard's primary action buttons black as requested. */
+.admin-review-actions button:first-child,
+.admin-fulfillment-button,
+.admin-primary-button {
+  border-color:#202124;
+  background:#202124;
+  color:#fff;
+}
+.admin-review-actions button:first-child:hover,
+.admin-fulfillment-button:hover,
+.admin-primary-button:hover { border-color:#08090a; background:#08090a; }
+.admin-outline-button,
+.admin-review-actions button { background:#fff; color:#25292e; }
+
+/* Dedicated settings route spacing */
+.admin-route-page .admin-settings-section { margin-top:8px; }
+.admin-route-page .admin-wrap { min-height:calc(100vh - 62px); }
+@media(max-width:680px) {
+  .admin-nav-link.active { box-shadow:inset 3px 0 0 #a40000; }
+}
