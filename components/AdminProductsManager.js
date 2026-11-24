@@ -2,6 +2,7 @@
 
 import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ImagePlus, Plus, Save, Search, Trash2 } from "lucide-react";
 import CsvExportButton from "./CsvExportButton";
 import CloudinaryMediaLibraryPicker from "./CloudinaryMediaLibraryPicker";
@@ -226,7 +227,7 @@ export default function AdminProductsManager() {
             <option value="ALL">All products</option><option value="DRAFT">Draft</option><option value="ACTIVE">Active</option><option value="OUT_OF_STOCK">Out of stock</option><option value="ARCHIVED">Archived</option>
           </select>
           <CsvExportButton filename="cropptech-products-inventory" label="EXPORT CSV" columns={[{ key: "product", label: "Product" }, { key: "slug", label: "Slug" }, { key: "category", label: "Category" }, { key: "type", label: "Garment type" }, { key: "status", label: "Status" }, { key: "featured", label: "Featured" }, { key: "sku", label: "SKU" }, { key: "size", label: "Size" }, { key: "colour", label: "Colour" }, { key: "priceNgn", label: "Price (NGN)" }, { key: "stock", label: "Stock quantity" }, { key: "sellable", label: "Sellable" }, { key: "images", label: "Image count" }]} rows={exportRows} disabled={loading || !exportRows.length}/>
-          <button type="button" className="admin-primary-button" onClick={startNew}><Plus size={16}/> NEW PRODUCT</button>
+          <Link href="/admin/products/bulk-import" className="admin-outline-button admin-bulk-import-link"><ImagePlus size={15}/> BULK IMPORT</Link><button type="button" className="admin-primary-button" onClick={startNew}><Plus size={16}/> NEW PRODUCT</button>
         </div>
 
         <div className="admin-catalogue-layout">
