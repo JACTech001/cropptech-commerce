@@ -6,12 +6,12 @@ export const metadata = { title: "FAQs | CroppTech Commerce Store", description:
 
 const faqs = [
   ["What does CroppTech Commerce Store sell?", "The store focuses exclusively on linen wear for men and women, including shirts, trousers, shorts, coordinated sets, dresses, skirts and relaxed layers."],
-  ["How do I place an order request?", "Choose a product, select a size, add it to your cart and continue to checkout. Enter your contact and delivery details, then submit the request to prepare an email to the store."],
-  ["Is my order confirmed when I submit checkout?", "No. The current checkout sends an order request by email. Our team must confirm availability, final pricing, delivery charges and payment instructions before the order is confirmed."],
-  ["How do I pay?", "The current website does not collect payment. Payment instructions and the final amount will be provided by the store after your request has been reviewed."],
-  ["Can I view prices in another currency?", "The currency selector can display reference prices in supported currencies. The store will confirm the final payable amount and currency before payment."],
+  ["How do I place an order?", "Sign in to your customer account, choose a product, select its colour and size, add it to your cart, and complete the Nigerian delivery details at checkout. The store checks the selected variants, stock and delivery rate before creating your order."],
+  ["What happens after I place an order?", "Your order is saved with an order number and appears in your account. The order page shows the NGN total and the store bank-transfer instructions. Your order remains awaiting payment until the store verifies your transfer."],
+  ["How do I pay?", "Transfer the exact NGN amount to the bank account shown on your order page. Then submit your sending-bank details, transaction reference and receipt through the payment form. A receipt alone does not confirm payment; the store verifies the transfer."],
+  ["Can I view prices in another currency?", "The currency selector can show reference conversions while browsing. All orders and payments are processed in Nigerian naira (NGN), and the order page displays the amount due in NGN."],
   ["How do I ask about sizing or product details?", "Use the Contact page or email Cropptechcommercestores@gmail.com with the product name and your question."],
-  ["How is delivery handled?", "Delivery options, charges and estimated timelines are confirmed with you based on your destination before an order is accepted."],
+  ["Where do you deliver?", "The store currently accepts orders within Nigeria in locations that have an active delivery rate configured. Enter your state and city at checkout; the delivery fee is included in your order total."],
   ["What if an item arrives damaged or incorrect?", "Contact the store with your order details and clear photos. Please wait for the team's instructions before sending an item back."]
 ];
 
