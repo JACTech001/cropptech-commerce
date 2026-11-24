@@ -2595,3 +2595,102 @@ h1, h2, h3, p { margin-top: 0; }
   .account-empty-orders p { font-size:9px; line-height:1.6; }
   .account-page .shop-footer { flex-direction:column; gap:9px; padding:20px 17px; background:#fff; color:#777; font-size:7px; }
 }
+
+
+/* CROPPTECH mobile order tracking and payment details */
+@media (max-width:760px) {
+  .order-details-page .shop-topbar {
+    position:sticky;
+    top:0;
+    z-index:35;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    height:62px;
+    min-height:62px;
+    padding:0 16px;
+    background:#fff;
+  }
+  .order-details-page .shop-back { display:none; }
+  .order-details-page .shop-brand-wordmark { justify-self:start; width:158px; height:auto; min-width:0; }
+  .order-details-page .shop-brand-wordmark .brand-text-logo { width:100%; height:auto; object-fit:contain; }
+  .order-header-label { font-size:8px; letter-spacing:.7px; }
+  .order-details-page .checkout-wrap { padding:31px 16px 48px; }
+  .order-details-page .checkout-heading { margin-bottom:20px; }
+  .order-details-page .checkout-heading .eyebrow { color:#777; font-size:8px; letter-spacing:.9px; }
+  .order-details-page .checkout-heading h1 { margin:10px 0; font-size:clamp(37px,10vw,47px); line-height:1.03; letter-spacing:-1.7px; }
+  .order-details-page .checkout-heading > p:last-child { font-size:10px; line-height:1.65; }
+  .order-confirmation-card { padding:16px; margin-bottom:15px; border:1px solid #e7e8ea; border-radius:7px; background:#fafafa; }
+  .order-confirmation-top { align-items:flex-start; flex-direction:column; gap:11px; }
+  .order-confirmation-top .eyebrow { color:#777; font-size:7px; }
+  .order-confirmation-top h2 { margin-top:6px; font-size:17px; overflow-wrap:anywhere; }
+  .order-status-pill { padding:6px 9px; border-radius:4px; font-size:8px; }
+  .order-confirmation-grid { grid-template-columns:1fr 1fr; gap:13px; margin-top:15px; padding-top:13px; }
+  .order-confirmation-grid div:last-child { grid-column:1/-1; }
+  .order-confirmation-grid span,.order-bank-details span { font-size:7px; letter-spacing:.7px; }
+  .order-confirmation-grid strong { font-size:10px; line-height:1.4; overflow-wrap:anywhere; }
+  .order-details-layout { grid-template-columns:minmax(0,1fr); gap:15px; }
+  .order-details-main { min-width:0; }
+  .order-details-main .checkout-form-section { padding:17px 0; }
+  .order-details-main .checkout-form-section > .eyebrow { margin-bottom:10px; color:#777; font-size:8px; }
+  .order-line { align-items:flex-start; gap:10px; padding:12px 0; }
+  .order-line h3 { font-size:11px; line-height:1.4; }
+  .order-line p,.order-line small { font-size:8px; line-height:1.5; overflow-wrap:anywhere; }
+  .order-line > strong { font-size:10px; }
+  .checkout-summary-foot { font-size:7px; }
+  .checkout-summary-foot strong { font-size:9px; }
+  .order-total-row { padding-top:13px; margin-top:12px; font-size:8px; }
+  .order-total-row strong { font-size:15px; }
+  .order-address { gap:6px; font-size:9px; overflow-wrap:anywhere; }
+  .order-address strong { font-size:11px; }
+  .order-payment-panel { position:static; padding:17px; border:1px solid #e7e8ea; border-radius:7px; background:#fafafa; }
+  .order-payment-panel > .eyebrow { color:#777; font-size:8px; }
+  .order-bank-details { margin:13px 0; border-radius:5px; overflow:hidden; }
+  .order-bank-details div { gap:5px; padding:10px; }
+  .order-bank-details strong { font-size:10px; }
+  .order-bank-details .order-account-number { font-size:17px; }
+  .order-bank-details .order-amount { color:#202124; font-size:16px; }
+  .order-payment-warning { padding:10px; border-radius:4px; font-size:8px; line-height:1.6; }
+  .order-payment-state { padding:14px 0; }
+  .order-payment-state h3 { font-size:15px; }
+  .order-payment-state p,.order-payment-intro { font-size:9px; line-height:1.65; }
+  .order-details-page .checkout-edit-link { margin-top:15px; color:#292d32; font-size:8px; }
+  .order-history-section { margin-top:19px; padding-top:17px; }
+  .order-history-section > .eyebrow { color:#777; font-size:8px; }
+  .order-history-list { gap:13px; }
+  .order-history-item { gap:9px; }
+  .order-history-item > svg { color:#555; }
+  .order-history-item strong { font-size:9px; }
+  .order-history-item span,.order-history-item small { font-size:8px; line-height:1.5; }
+  .order-details-page .shop-footer { flex-direction:column; gap:9px; padding:20px 17px; background:#fff; color:#777; font-size:7px; }
+
+  .auth-topbar { position:sticky; top:0; z-index:35; min-height:62px; padding:0 16px; background:#fff; }
+  .auth-back { gap:5px; font-size:7px; letter-spacing:.5px; white-space:nowrap; }
+  .auth-wordmark { width:145px; }
+  .auth-layout { width:100%; margin:0; padding:0 16px 38px; grid-template-columns:minmax(0,1fr); gap:0; }
+  .auth-carousel { margin:0 -16px 22px; width:calc(100% + 32px); }
+  .auth-carousel-image-wrap { min-height:0; height:220px; }
+  .auth-carousel-copy { left:19px; right:19px; bottom:42px; }
+  .auth-carousel-copy .eyebrow { margin-bottom:7px; font-size:7px; }
+  .auth-carousel-copy h1 { max-width:300px; margin-bottom:6px; font-size:30px; letter-spacing:-1px; }
+  .auth-carousel-copy > p:last-child { max-width:250px; font-size:8px; line-height:1.5; }
+  .auth-carousel-controls { left:19px; right:19px; bottom:10px; }
+  .auth-carousel-count { font-size:7px; }
+  .auth-carousel-buttons { gap:5px; }
+  .auth-carousel-buttons button { width:28px; height:28px; }
+  .auth-carousel-dots { display:none; }
+  .auth-editorial-foot { display:none; }
+  .auth-layout-no-carousel { padding-top:29px; }
+  .auth-panel { padding:23px 18px; border:1px solid #e7e8ea; border-radius:7px; box-shadow:none; }
+  .auth-panel .eyebrow { margin-bottom:12px; color:#777; font-size:8px; }
+  .auth-panel h2 { margin-bottom:8px; font-size:25px; letter-spacing:-.7px; }
+  .auth-panel-intro { margin-bottom:21px; font-size:10px; line-height:1.65; }
+  .auth-form { gap:15px; }
+  .auth-form label { gap:7px; font-size:7px; letter-spacing:.8px; }
+  .auth-form input { height:47px; border-radius:5px; font-size:14px; }
+  .auth-form input:focus { box-shadow:none; }
+  .auth-submit { min-height:48px; border-radius:5px; background:#202124; font-size:8px; }
+  .auth-switch { margin-top:19px; font-size:9px; line-height:1.6; }
+  .auth-legal { font-size:8px; line-height:1.6; }
+  .auth-completion { padding:20px 0 5px; }
+  .auth-footer { padding:18px 16px; font-size:7px; }
+}
