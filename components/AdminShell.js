@@ -48,7 +48,6 @@ export default function AdminShell({ children, email, adminName }) {
     <div className={"admin-shell " + (collapsed ? "is-collapsed " : "") + (mobileOpen ? "mobile-nav-open" : "")}>
       <aside className="admin-sidebar">
         <Link href="/admin" className="admin-shell-brand"><Image src="/brand/cropplogotextcommerce-transparent.png" alt="CROPPTECH COMMERCE STORE" width={190} height={54} priority className="admin-shell-logo"/></Link>
-        <div className="admin-sidebar-label">ADMIN WORKSPACE</div>
         {sections.map((section) => <nav className="admin-nav-group" aria-label={section.label} key={section.label}>
           {section.label && <p>{section.label}</p>}
           {section.items.map((item) => { const Icon = item.icon; const active = item.href === "/admin" ? pathname === "/admin" : pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href + "/")); return (
