@@ -117,8 +117,8 @@ export default async function OrderDetailsPage({ params }) {
           <aside className="order-payment-panel">
             <p className="eyebrow">BANK TRANSFER PAYMENT</p>
             {order.payment?.status === "PAID" ? (
-              <div className="order-payment-state"><CheckCircle2 size={28}/><h3>Payment confirmed</h3><p>Your transfer has been verified by the store. We will update your order as it moves through processing and delivery.</p></div>
-              <Link href={"/api/orders/" + encodeURIComponent(order.orderNumber) + "/receipt"} target="_blank" className="checkout-edit-link">VIEW OFFICIAL PAYMENT RECEIPT <ArrowLeft size={14}/></Link>
+              <><div className="order-payment-state"><CheckCircle2 size={28}/><h3>Payment confirmed</h3><p>Your transfer has been verified by the store. We will update your order as it moves through processing and delivery.</p></div>
+              <Link href={"/api/orders/" + encodeURIComponent(order.orderNumber) + "/receipt"} target="_blank" className="checkout-edit-link">VIEW OFFICIAL PAYMENT RECEIPT <ArrowLeft size={14}/></Link></>
             ) : order.payment?.status === "SUBMITTED" || hasPendingSubmission ? (
               <div className="order-payment-state"><Clock3 size={28}/><h3>Payment under review</h3><p>Your transfer details have been received. Please do not submit the same payment again while the store verifies it.</p></div>
             ) : paymentSetupError ? (
