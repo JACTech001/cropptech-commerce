@@ -1,9 +1,9 @@
 import { notFound, redirect } from "next/navigation";
+import Link from "next/link";
 import { ArrowUpRight, ClipboardList, ShieldCheck } from "lucide-react";
 import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import PaymentReviewControls from "../../components/PaymentReviewControls";
-import AdminStoreSettings from "../../components/AdminStoreSettings";
 import AdminShell from "../../components/AdminShell";
 import FulfillmentControls from "../../components/FulfillmentControls";
 
@@ -98,10 +98,10 @@ export default async function AdminPage() {
           </section>
 
           <section className="admin-orders-section" id="orders">
-            <div className="admin-section-heading"><div><p className="eyebrow">ORDER OPERATIONS</p><h2>Recent orders <span>({orders.length})</span></h2></div></div>
+            <div className="admin-section-heading"><div><p className="eyebrow">ORDER OPERATIONS</p><h2>Recent orders <span>({orders.length})</span></h2></div><Link className="admin-receipt-link" href="/admin/orders">VIEW ALL ORDERS →</Link></div>
             {!orders.length ? <section className="admin-empty"><h2>No orders yet</h2><p>Customer orders will appear here after the catalogue, shipping zones and payment account are configured.</p></section> :
               <div className="admin-order-list">
-                {orders.map((order) => {
+                {orders.slice(0, 5).map((order) => {
                   const shipment = order.shipments[0] || null;
                   return (
                     <article className="admin-order-card" key={order.id}>
@@ -152,10 +152,7 @@ export default async function AdminPage() {
             }
           </section>
 
-          <section id="settings" className="admin-settings-route">
-            <div className="admin-section-heading"><div><p className="eyebrow">STORE CONFIGURATION</p><h2>Delivery & payment settings</h2></div></div>
-            <AdminStoreSettings />
-          </section>
+
         </div>
       </main>
     </AdminShell>
