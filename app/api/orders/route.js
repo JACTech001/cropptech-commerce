@@ -11,7 +11,7 @@ function jsonError(message, status) {
 }
 
 export async function POST(request) {
-  const access = await requireAppRole(["CUSTOMER", "ADMIN", "SUPER_ADMIN"]);
+  const access = await requireAppRole(["CUSTOMER"]);
   if (access.status !== 200) return jsonError(access.status === 401 ? "Sign in to place your order." : "Your account cannot place orders.", access.status);
 
   let body;
