@@ -2,6 +2,12 @@ import { createHash, randomBytes } from "node:crypto";
 import { requireAppRole } from "../../../../../../lib/auth/user";
 import { prisma } from "../../../../../../lib/db";
 
+function stableStringify(value) {
+  if (Array.isArray(value)) return "[" + value.map(stableStringify).join(",") + "]";
+  if (value && typeof value === "object") return "{" + Object.keys(value).sort().map((key) => JSON.stringify(key) + ":" + stableStringify(value[key])).join(",") + "}";
+  return JSON.stringify(value);
+}
+
 function error(message, status) {
   return Response.json({ error: message }, { status, headers: { "Cache-Control": "no-store" } });
 }
@@ -74,7 +80,7 @@ export async function POST(request, { params }) {
           totals: { subtotal: order.subtotal.toString(), delivery: order.shippingFee.toString(), discount: order.discountTotal.toString(), total: order.total.toString() },
           items: order.items.map((item) => ({ name: item.productName, sku: item.sku, size: item.size, colour: item.colour, quantity: item.quantity, unitPrice: item.unitPrice.toString(), lineTotal: item.lineTotal.toString() })),
         };
-        const snapshotHash = createHash("sha256").update(JSON.stringify(receiptData)).digest("hex");
+        const snapshotHash = createHash("sha256").update(stableStringify(receiptData)).digest("hex");
         const existingReceipt = await tx.paymentReceipt.findUnique({ where: { paymentId: submission.paymentId } });
         if (!existingReceipt) {
           await tx.paymentReceipt.create({ data: { receiptNumber: receiptData.receiptNumber, paymentId: submission.paymentId, orderId: order.id, receiptData, snapshotHash, issuedAt } });
