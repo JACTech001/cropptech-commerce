@@ -21,7 +21,7 @@ export default async function AdminPaymentsPage() {
   const submissions = orders.flatMap((order) => (order.payment?.submissions || []).map((submission) => ({ order, submission })));
   const pending = submissions.filter(({ submission }) => submission.status === "PENDING");
 
-  return <AdminShell email={user.email}>
+  return <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]}>
     <main className="admin-page admin-route-page"><div className="admin-wrap">
       <div className="admin-heading"><p className="eyebrow">STORE MANAGEMENT / PAYMENTS</p><h1>Payment <em>reviews.</em></h1><p>Verify submitted bank transfers against the store account before confirming customer payments.</p></div>
       <div className="admin-route-summary"><div><span>AWAITING REVIEW</span><strong>{pending.length}</strong></div><div><span>APPROVED</span><strong>{submissions.filter(({ submission }) => submission.status === "APPROVED").length}</strong></div><div><span>NEEDS CLARIFICATION</span><strong>{submissions.filter(({ submission }) => submission.status === "NEEDS_CLARIFICATION").length}</strong></div><div><span>REJECTED</span><strong>{submissions.filter(({ submission }) => submission.status === "REJECTED").length}</strong></div></div>
