@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import ProductAddButton from "../components/ProductAddButton";
 import { CartLink } from "../components/CartProvider";
-import { products, productSlug } from "../data/products";
 import { CurrencySelector, ProductPrice } from "../components/CurrencyProvider";
 import AuthAccountControl from "../components/AuthAccountControl";
 
@@ -64,8 +63,31 @@ export default function HomePage({ firstName }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [email, setEmail] = useState("");
   const [newsletterMessage, setNewsletterMessage] = useState("");
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [productsError, setProductsError] = useState("");
 
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    async function loadStoreProducts() {
+      setProductsLoading(true);
+      setProductsError("");
+      try {
+        const response = await fetch("/api/products", { cache: "no-store", signal: controller.signal });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Products could not be loaded.");
+        setProducts(Array.isArray(data.products) ? data.products : []);
+      } catch (error) {
+        if (error.name !== "AbortError") setProductsError("We could not load products right now. Please visit the shop to try again.");
+      } finally {
+        if (!controller.signal.aborted) setProductsLoading(false);
+      }
+    }
+    loadStoreProducts();
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -157,7 +179,7 @@ export default function HomePage({ firstName }) {
             <div className="home-search-results" aria-live="polite">
               <div className="home-search-results-heading"><span>{searchQuery.trim() ? "SEARCH RESULTS" : "POPULAR IN THE COLLECTION"}</span><span>{searchResults.length} {searchResults.length === 1 ? "ITEM" : "ITEMS"}</span></div>
               {searchResults.length ? searchResults.map((product) => (
-                <Link className="home-search-result" href={"/shop/" + productSlug(product.name)} key={product.id}>
+                <Link className="home-search-result" href={"/shop/" + product.slug} key={product.id}>
                   <Image src={product.image} alt="" width={48} height={58} />
                   <span className="home-search-result-copy"><strong>{product.name}</strong><small>{product.audience} / {product.category} · {product.tone}</small></span>
                   <span className="home-search-result-price">{product.price == null ? "Price to be confirmed" : "₦" + product.price.toLocaleString("en-NG")}</span>
@@ -246,8 +268,8 @@ export default function HomePage({ firstName }) {
           <p className="section-aside">Choose your size and add a favourite directly to your cart, without leaving the home page.</p>
         </div>
         <div className="home-featured-grid">
-          {products.filter((product) => product.featured).map((product) => {
-            const slug = productSlug(product.name);
+          {productsLoading ? <p className="home-products-state">Loading products from the store…</p> : productsError ? <p className="home-products-state" role="status">{productsError}</p> : products.length === 0 ? <p className="home-products-state">Our products will appear here as soon as they are published in the store.</p> : products.slice(0, 6).map((product) => {
+            const slug = product.slug;
             return <article className="home-featured-card" key={product.id}>
               <Link href={"/shop/" + slug} className="home-featured-image"><Image src={product.image} alt={product.name} fill sizes="(max-width: 800px) 100vw, 33vw" /><span>{product.tag}</span></Link>
               <div className="home-featured-meta">
