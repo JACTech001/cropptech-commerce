@@ -32,9 +32,9 @@ export async function GET(_request, { params }) {
   if (access.status !== 200) return Response.json({ error: "Sign in to access this receipt." }, { status: access.status, headers: { "Cache-Control": "no-store" } });
   const { orderNumber } = await params;
   const order = await prisma.order.findUnique({ where: { orderNumber }, include: { payment: { include: { receipt: true } } } });
-  if (!order || !order.payment || order.payment.status !== "PAID" || !order.payment.receipt) return Response.json({ error: "An official receipt is not available for this order." }, { status: 404, headers: { "Cache-Control": "no-store" } });
   const admin = ["ADMIN", "SUPER_ADMIN"].includes(access.user.role);
-  if (!admin && order.customerId !== access.user.id) return Response.json({ error: "You are not authorized to access this receipt." }, { status: 403, headers: { "Cache-Control": "no-store" } });
+  if (!order || (!admin && order.customerId !== access.user.id)) return Response.json({ error: "Receipt not found." }, { status: 404, headers: { "Cache-Control": "no-store" } });
+  if (!order.payment || order.payment.status !== "PAID" || !order.payment.receipt) return Response.json({ error: "An official receipt is not available for this order." }, { status: 404, headers: { "Cache-Control": "no-store" } });
   const receipt = order.payment.receipt;
   const hash = createHash("sha256").update(stableStringify(receipt.receiptData)).digest("hex");
   if (hash !== receipt.snapshotHash || receipt.receiptData.receiptNumber !== receipt.receiptNumber) return Response.json({ error: "Receipt integrity check failed. Contact store support." }, { status: 409, headers: { "Cache-Control": "no-store" } });
