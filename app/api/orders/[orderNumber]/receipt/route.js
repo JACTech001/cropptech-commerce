@@ -4,6 +4,12 @@ import { prisma } from "../../../../../lib/db";
 
 export const dynamic = "force-dynamic";
 
+function stableStringify(value) {
+  if (Array.isArray(value)) return "[" + value.map(stableStringify).join(",") + "]";
+  if (value && typeof value === "object") return "{" + Object.keys(value).sort().map((key) => JSON.stringify(key) + ":" + stableStringify(value[key])).join(",") + "}";
+  return JSON.stringify(value);
+}
+
 const esc = (value) => String(value ?? "").replace(/[&<>\"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]));
 const cash = (value, currency) => new Intl.NumberFormat("en-NG", { style: "currency", currency: currency || "NGN" }).format(Number(value || 0));
 
@@ -30,7 +36,7 @@ export async function GET(_request, { params }) {
   const admin = ["ADMIN", "SUPER_ADMIN"].includes(access.user.role);
   if (!admin && order.customerId !== access.user.id) return Response.json({ error: "You are not authorized to access this receipt." }, { status: 403, headers: { "Cache-Control": "no-store" } });
   const receipt = order.payment.receipt;
-  const hash = createHash("sha256").update(JSON.stringify(receipt.receiptData)).digest("hex");
+  const hash = createHash("sha256").update(stableStringify(receipt.receiptData)).digest("hex");
   if (hash !== receipt.snapshotHash || receipt.receiptData.receiptNumber !== receipt.receiptNumber) return Response.json({ error: "Receipt integrity check failed. Contact store support." }, { status: 409, headers: { "Cache-Control": "no-store" } });
   if (admin) await prisma.adminAuditLog.create({ data: { actorId: access.user.id, action: "PAYMENT_RECEIPT_ACCESSED", entityType: "PaymentReceipt", entityId: receipt.id, metadata: { orderNumber: order.orderNumber, receiptNumber: receipt.receiptNumber } } });
   return new Response(render(receipt), { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store, max-age=0", "Pragma": "no-cache", "X-Content-Type-Options": "nosniff", "Content-Disposition": "inline; filename=\"CROPPTECH-" + receipt.receiptNumber + ".html\"" } });
