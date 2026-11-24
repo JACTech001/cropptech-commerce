@@ -1,4 +1,6 @@
 import StorePageShell from "../../components/StorePageShell";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export const metadata = { title: "FAQs | CroppTech Commerce Store", description: "Answers about the CroppTech Commerce Store linen collection and current order-request process." };
 
@@ -16,7 +18,19 @@ const faqs = [
 export default function FAQPage() {
   return (
     <StorePageShell eyebrow="CUSTOMER CARE / FREQUENTLY ASKED QUESTIONS" title={<>A few things<br /><em>worth knowing.</em></>} intro="Helpful information about shopping the CroppTech linen collection and sending an order request.">
-      <div className="faq-list">{faqs.map(([question, answer]) => <article key={question}><h2>{question}</h2><p>{answer}</p></article>)}</div>
+      <div className="faq-page-heading">
+        <div><p className="eyebrow">CUSTOMER SUPPORT</p><h2>Answers, without the guesswork.</h2></div>
+        <p>Open a question to read more. If you still need help, our team is one message away.</p>
+      </div>
+      <div className="faq-list">
+        {faqs.map(([question, answer], index) => (
+          <details className="faq-item" key={question}>
+            <summary><span className="faq-item-number">{String(index + 1).padStart(2, "0")}</span><span>{question}</span><i aria-hidden="true" /></summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+      <div className="info-callout faq-contact-callout"><h2>Still have a question?</h2><Link href="/contact" className="text-link">CONTACT CUSTOMER CARE <ArrowUpRight size={16} /></Link></div>
     </StorePageShell>
   );
 }
