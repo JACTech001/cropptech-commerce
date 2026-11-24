@@ -9,5 +9,5 @@ export default async function HomePage() {
   if (user && ["ADMIN", "SUPER_ADMIN"].includes(user.role)) {
     redirect("/admin");
   }
-  return <HomePageClient />;
+  const firstName = user?.firstName?.trim() || user?.fullName?.trim().split(/\\s+/)[0] || null;\n  return <HomePageClient firstName={firstName} />;
 }
