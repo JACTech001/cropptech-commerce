@@ -296,6 +296,7 @@ model Order {
   items           OrderItem[]
   statusHistory   OrderStatusHistory[]
   payment         Payment?
+  receipt         PaymentReceipt?
   reservations    StockReservation[]
   shipments       Shipment[]
   returnRequests  ReturnRequest[]
@@ -384,6 +385,7 @@ model Payment {
   bankAccount BankAccount?        @relation(fields: [bankAccountId], references: [id], onDelete: SetNull)
   submissions PaymentSubmission[]
   refunds     Refund[]
+  receipt     PaymentReceipt?
 
   @@index([status, createdAt])
   @@index([bankAccountId])
@@ -625,4 +627,21 @@ model StoreSetting {
   value       Json
   description String?
   updatedAt   DateTime @updatedAt
+}
+
+
+model PaymentReceipt {
+  id            String   @id @default(cuid())
+  receiptNumber String   @unique
+  paymentId     String   @unique
+  orderId       String   @unique
+  receiptData   Json
+  snapshotHash  String   @db.VarChar(64)
+  issuedAt      DateTime @default(now())
+  createdAt     DateTime @default(now())
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Restrict)
+
+  @@index([issuedAt])
 }
