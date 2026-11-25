@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, CheckCircle2, Clock3, PackageCheck } from "lucide-react";
 import { getCurrentAppUser } from "../../../lib/auth/user";
@@ -7,7 +6,6 @@ import { prisma } from "../../../lib/db";
 import { decryptBankAccountNumber } from "../../../lib/security/bank-account-encryption";
 import { redirectAdminFromCustomerPages } from "../../../lib/auth/customer-access";
 import PaymentSubmissionForm from "../../../components/PaymentSubmissionForm";
-import CustomerNotificationBell from "../../../components/CustomerNotificationBell";
 
 export const dynamic = "force-dynamic";
 
@@ -59,13 +57,7 @@ export default async function OrderDetailsPage({ params }) {
 
   return (
     <main className="checkout-page order-details-page">
-      <header className="shop-topbar">
-        <Link href="/shop" className="shop-back"><ArrowLeft size={16}/> CONTINUE SHOPPING</Link>
-        <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
-          <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo"/>
-        </Link>
-        <CustomerNotificationBell />
-      </header>
+      <CustomerPageHeader />
 
       <div className="checkout-wrap">
         <div className="checkout-heading">
