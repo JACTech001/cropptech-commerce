@@ -10,7 +10,8 @@ import PageSkeleton from "../../components/PageSkeleton";
 export default function CartPage() {
   const { items, changeQuantity, removeItem, toggleItem, changeSize, selectedItems, selectedCount, count, ready } = useCart();
   const selectedSubtotal = selectedItems.reduce((sum, item) => sum + ((Number(item.price) || products.find(product => product.id === item.id)?.price || 0) * item.quantity), 0);
-  if (!ready) return <PageSkeleton variant="cart" />;\n  return <main className="cart-page">
+  if (!ready) return <PageSkeleton variant="cart" />;
+  return <main className="cart-page">
     <header className="shop-topbar"><Link href="/shop" className="shop-back"><ArrowLeft size={16}/> CONTINUE SHOPPING</Link><Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home"><Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" /></Link><CartLink className="shop-cart-link" /></header>
     <section className="cart-content">
       <p className="eyebrow">CROPPTECH COMMERCE STORE / YOUR SELECTION</p><h1 className="cart-page-title"><ShoppingBag size={35} strokeWidth={1.7}/> Your <em>cart.</em></h1>
