@@ -3961,3 +3961,46 @@ h1, h2, h3, p { margin-top: 0; }
 .admin-shell[data-theme="dark"] .admin-order-drawer-header,.admin-shell[data-theme="dark"] .admin-order-drawer-footer,.admin-shell[data-theme="dark"] .admin-drawer-section { border-color:#303844; }
 .admin-shell[data-theme="dark"] .admin-drawer-section p,.admin-shell[data-theme="dark"] .admin-drawer-section span { color:#b7c0cc; }
 .admin-shell[data-theme="dark"] .admin-mobile-menu { color:#edf0f4; }
+
+/* Extend dark theme to the catalogue, payment review, homepage studio and order workspaces. */
+.admin-shell[data-theme="dark"] .admin-page [class*="-card"],
+.admin-shell[data-theme="dark"] .admin-page [class*="-panel"],
+.admin-shell[data-theme="dark"] .admin-page [class*="-workspace"],
+.admin-shell[data-theme="dark"] .admin-page [class*="-toolbar"],
+.admin-shell[data-theme="dark"] .admin-page [class*="-drawer"] {
+  background-color:#191e26;
+  border-color:#303844;
+  color:#e8eaed;
+}
+.admin-shell[data-theme="dark"] .admin-page [class*="-card"] h2,
+.admin-shell[data-theme="dark"] .admin-page [class*="-card"] h3,
+.admin-shell[data-theme="dark"] .admin-page [class*="-panel"] h2,
+.admin-shell[data-theme="dark"] .admin-page [class*="-panel"] h3,
+.admin-shell[data-theme="dark"] .admin-page [class*="-workspace"] h2,
+.admin-shell[data-theme="dark"] .admin-page [class*="-workspace"] h3 { color:#f0f2f5; }
+.admin-shell[data-theme="dark"] .admin-page [class*="-card"] p,
+.admin-shell[data-theme="dark"] .admin-page [class*="-panel"] p,
+.admin-shell[data-theme="dark"] .admin-page [class*="-workspace"] p,
+.admin-shell[data-theme="dark"] .admin-page [class*="-card"] small,
+.admin-shell[data-theme="dark"] .admin-page [class*="-panel"] small { color:#a6afbb; }
+.admin-shell[data-theme="dark"] .admin-page table th,
+.admin-shell[data-theme="dark"] .admin-page table td { border-color:#303844; }
+.admin-shell[data-theme="dark"] .admin-page table th { color:#9ba5b2; }
+.admin-shell[data-theme="dark"] .admin-page table td { color:#d0d6df; }
+.admin-shell[data-theme="dark"] .admin-page input,
+.admin-shell[data-theme="dark"] .admin-page textarea,
+.admin-shell[data-theme="dark"] .admin-page select { background:#11161d; border-color:#3a4350; color:#edf0f4; }
+.admin-shell[data-theme="dark"] .admin-page input::placeholder,
+.admin-shell[data-theme="dark"] .admin-page textarea::placeholder { color:#788391; }
+.admin-shell[data-theme="dark"] .admin-page .admin-orders-search,
+.admin-shell[data-theme="dark"] .admin-page .admin-catalogue-search,
+.admin-shell[data-theme="dark"] .admin-page .admin-product-fields,
+.admin-shell[data-theme="dark"] .admin-page .admin-editor-section { background:#191e26; border-color:#303844; color:#e8eaed; }
+.admin-shell[data-theme="dark"] .admin-page .admin-orders-search input,
+.admin-shell[data-theme="dark"] .admin-page .admin-catalogue-search input { background:transparent; color:#edf0f4; }
+.admin-shell[data-theme="dark"] .admin-page .admin-product-fields label,
+.admin-shell[data-theme="dark"] .admin-page .admin-editor-section label { color:#c4cbd5; }
+.admin-shell[data-theme="dark"] .admin-page .admin-order-number-button,
+.admin-shell[data-theme="dark"] .admin-page .admin-order-open-button { color:#ff7b86; }
+.admin-shell[data-theme="dark"] .admin-page .admin-orders-results-line,
+.admin-shell[data-theme="dark"] .admin-page .admin-team-activity article { border-color:#303844; }
