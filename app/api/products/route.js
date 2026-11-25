@@ -39,6 +39,7 @@ export async function GET() {
       images: product.images.map((image) => ({ id: image.id, url: image.secureUrl, altText: image.altText })),
       tag: featured ? "FEATURED LINEN" : "LINEN COLLECTION",
       featured,
+      featuredOrder: featured && configured ? selectedOrder.get(product.id) : null,
       price: Math.min(...prices),
       availableSizes: [...new Set(product.variants.map((variant) => variant.size))],
       colours,
