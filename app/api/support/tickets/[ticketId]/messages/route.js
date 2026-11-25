@@ -13,7 +13,7 @@ export async function GET(request, { params }) {
       where: { id: ticketId, ...(access.user.role === "CUSTOMER" ? { customerId: access.user.id } : {}) },
       select: {
         id: true, ticketNumber: true, subject: true, category: true, status: true, priority: true,
-        createdAt: true, updatedAt: true, customerId: true, assignedToId: true,
+        createdAt: true, updatedAt: true,
         order: { select: { orderNumber: true } },
         customer: { select: { fullName: true, email: true } },
         messages: { where: access.user.role === "CUSTOMER" ? { isInternal: false } : {}, orderBy: { createdAt: "asc" }, include: { sender: { select: { id: true, fullName: true, role: true } } } },
