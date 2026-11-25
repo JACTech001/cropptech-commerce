@@ -204,7 +204,7 @@ export default function AdminHomepageMediaManager() {
     setMedia((current) => {
       const slides = Array.isArray(current.hero_slides) ? current.hero_slides : [];
       if (slides.length >= 8) return current;
-      return { ...current, hero_slides: [...slides, { id: `hero-slide-${Date.now()}`, active: true, positionDesktop: "center center", positionMobile: "58% center", fitDesktop: "cover", fitMobile: "cover" }] };
+      return { ...current, hero_slides: [...slides, { id: `hero-slide-${Date.now()}`, active: true }] };
     });
     setNotice("");
   }
@@ -284,14 +284,14 @@ export default function AdminHomepageMediaManager() {
                   <div className="admin-hero-slide-image-field">
                     <span>MOBILE / ORIGINAL IMAGE</span>
                     <div className="admin-hero-slide-preview portrait">
-                      {slide.url ? <Image src={slide.url} alt={slide.altText || "Hero slide mobile image"} fill sizes="(max-width: 700px) 45vw, 180px" style={{ objectFit: slide.fitMobile || "cover", objectPosition: slide.positionMobile || "58% center" }} unoptimized/> : <div><ImagePlus size={22}/><small>Select mobile image</small></div>}
+                      {slide.url ? <Image src={slide.url} alt={slide.altText || "Hero slide mobile image"} fill sizes="(max-width: 700px) 45vw, 180px" style={{ objectFit: "cover", objectPosition: "58% center" }} unoptimized/> : <div><ImagePlus size={22}/><small>Select mobile image</small></div>}
                     </div>
                     <CloudinaryMediaLibraryPicker remaining={1} onSelect={(assets) => selectHeroSlideImage(index, "mobile", assets[0])} onError={setError}/>
                   </div>
                   <div className="admin-hero-slide-image-field">
                     <span>DESKTOP IMAGE · OPTIONAL</span>
                     <div className="admin-hero-slide-preview landscape">
-                      {slide.desktopUrl ? <Image src={slide.desktopUrl} alt="Hero slide desktop image" fill sizes="(max-width: 700px) 45vw, 280px" style={{ objectFit: slide.fitDesktop || "cover", objectPosition: slide.positionDesktop || "center center" }} unoptimized/> : slide.url ? <Image src={slide.url} alt="Hero slide desktop fallback" fill sizes="(max-width: 700px) 45vw, 280px" style={{ objectFit: slide.fitDesktop || "cover", objectPosition: slide.positionDesktop || "center center" }} unoptimized/> : <div><ImagePlus size={22}/><small>Uses mobile image until selected</small></div>}
+                      {slide.desktopUrl ? <Image src={slide.desktopUrl} alt="Hero slide desktop image" fill sizes="(max-width: 700px) 45vw, 280px" style={{ objectFit: "cover", objectPosition: "center center" }} unoptimized/> : slide.url ? <Image src={slide.url} alt="Hero slide desktop fallback" fill sizes="(max-width: 700px) 45vw, 280px" style={{ objectFit: "cover", objectPosition: "center center" }} unoptimized/> : <div><ImagePlus size={22}/><small>Uses mobile image until selected</small></div>}
                     </div>
                     <CloudinaryMediaLibraryPicker remaining={1} onSelect={(assets) => selectHeroSlideImage(index, "desktop", assets[0])} onError={setError}/>
                     {slide.url && <div className="admin-home-ai-tool admin-hero-slide-adaptation">
@@ -307,16 +307,10 @@ export default function AdminHomepageMediaManager() {
                       </button>
                     </div>}
                     {slide.desktopUrl && <><div className="admin-home-ai-previews">
-                      <div><span>DESKTOP · 16:9</span><div className="admin-home-ai-preview landscape"><Image src={slide.desktopUrl} alt={`Adapted desktop preview for slide ${index + 2}`} fill sizes="(max-width: 700px) 100vw, 40vw" style={{ objectFit: slide.fitDesktop || "cover", objectPosition: slide.positionDesktop || "center center" }} unoptimized /></div></div>
-                      <div><span>MOBILE · ORIGINAL</span><div className="admin-home-ai-preview portrait"><Image src={slide.url} alt={`Original mobile preview for slide ${index + 2}`} fill sizes="(max-width: 700px) 100vw, 20vw" style={{ objectFit: slide.fitMobile || "cover", objectPosition: slide.positionMobile || "58% center" }} unoptimized /></div></div>
+                      <div><span>DESKTOP · 16:9</span><div className="admin-home-ai-preview landscape"><Image src={slide.desktopUrl} alt={`Adapted desktop preview for slide ${index + 2}`} fill sizes="(max-width: 700px) 100vw, 40vw" style={{ objectFit: "cover", objectPosition: "center center" }} unoptimized /></div></div>
+                      <div><span>MOBILE · ORIGINAL</span><div className="admin-home-ai-preview portrait"><Image src={slide.url} alt={`Original mobile preview for slide ${index + 2}`} fill sizes="(max-width: 700px) 100vw, 20vw" style={{ objectFit: "cover", objectPosition: "58% center" }} unoptimized /></div></div>
                     </div><button type="button" className="admin-outline-button" onClick={() => updateHeroSlide(index, { desktopUrl: "", desktopPublicId: "", desktopWidth: 0, desktopHeight: 0 })}>USE MOBILE IMAGE INSTEAD</button></>}
                   </div>
-                </div>
-                <div className="admin-hero-slide-position">
-                  <label>Desktop image position<select value={slide.positionDesktop || "center center"} onChange={(event) => updateHeroSlide(index, { positionDesktop: event.target.value })}><option value="left top">Top left</option><option value="center top">Top centre</option><option value="right top">Top right</option><option value="left center">Middle left</option><option value="center center">Centre</option><option value="right center">Middle right</option><option value="left bottom">Bottom left</option><option value="center bottom">Bottom centre</option><option value="right bottom">Bottom right</option></select></label>
-                  <label>Mobile image position<select value={slide.positionMobile || "58% center"} onChange={(event) => updateHeroSlide(index, { positionMobile: event.target.value })}><option value="left top">Top left</option><option value="center top">Top centre</option><option value="right top">Top right</option><option value="left center">Middle left</option><option value="center center">Centre</option><option value="right center">Middle right</option><option value="left bottom">Bottom left</option><option value="center bottom">Bottom centre</option><option value="right bottom">Bottom right</option><option value="58% center">Default mobile position</option></select></label>
-                  <label>Desktop image fit<select value={slide.fitDesktop || "cover"} onChange={(event) => updateHeroSlide(index, { fitDesktop: event.target.value })}><option value="cover">Cover · fill the hero</option><option value="contain">Contain · show the full image</option></select></label>
-                  <label>Mobile image fit<select value={slide.fitMobile || "cover"} onChange={(event) => updateHeroSlide(index, { fitMobile: event.target.value })}><option value="cover">Cover · fill the hero</option><option value="contain">Contain · show the full image</option></select></label>
                 </div>
                 {!slide.url && <p className="admin-hero-slide-warning">Choose the mobile/original image before saving this slide. The desktop image is optional.</p>}
               </article>
