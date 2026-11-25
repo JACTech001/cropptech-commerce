@@ -11,7 +11,7 @@ export default async function AdminHomepageMediaPage() {
   if (!["ADMIN", "SUPER_ADMIN"].includes(user.role) || !user.isActive) notFound();
 
   return (
-    <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]}>
+    <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]} isSuperAdmin={user.role === "SUPER_ADMIN"}>
       <main className="admin-page admin-route-page">
         <div className="admin-wrap">
           <div className="admin-heading">
