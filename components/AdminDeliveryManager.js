@@ -143,8 +143,8 @@ export default function AdminDeliveryManager() {
       {error && <p className="checkout-error" role="alert">{error}</p>}
       {message && <p className="checkout-success" role="status"><CheckCircle2 size={15}/>{message}</p>}
       <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Delivery management sections">
-        <button type="button" className={activeView === "zones" ? "active" : ""} aria-pressed={activeView === "zones"} onClick={() => setActiveView("zones")}><MapPin size={15}/> DELIVERY ZONES</button>
-        <button type="button" className={activeView === "add" ? "active" : ""} aria-pressed={activeView === "add"} onClick={() => setActiveView("add")}><PlusCircle size={15}/> ADD DELIVERY AREA</button>
+        <button type="button" className={activeView === "zones" ? "is-active" : ""} aria-pressed={activeView === "zones"} onClick={() => setActiveView("zones")}><MapPin size={15}/> DELIVERY ZONES</button>
+        <button type="button" className={activeView === "add" ? "is-active" : ""} aria-pressed={activeView === "add"} onClick={() => setActiveView("add")}><PlusCircle size={15}/> ADD DELIVERY AREA</button>
       </nav>
       <div className="admin-delivery-grid">
         <form className="admin-delivery-card" hidden={activeView !== "add"} onSubmit={addZone}>
