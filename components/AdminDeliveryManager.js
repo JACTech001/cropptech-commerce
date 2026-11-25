@@ -26,7 +26,18 @@ export default function AdminDeliveryManager() {
     }
   }, []);
 
-  useEffect(() => { loadZones(); }, [loadZones]);
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/admin/shipping-zones", { cache: "no-store" })
+      .then(async (response) => {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || "Could not load delivery zones.");
+        if (!cancelled) setZones(data.zones || []);
+      })
+      .catch((err) => { if (!cancelled) setError(err.message); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
 
   async function addZone(event) {
     event.preventDefault();
