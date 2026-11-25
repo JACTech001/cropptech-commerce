@@ -26,7 +26,7 @@ export default async function AdminPaymentsPage() {
   const clarification = submissions.filter(({ submission }) => submission.status === "NEEDS_CLARIFICATION");
   const rejected = submissions.filter(({ submission }) => submission.status === "REJECTED");
 
-  return <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]}>
+  return <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]} isSuperAdmin={user.role === "SUPER_ADMIN"}>
     <main className="admin-page admin-route-page payment-review-page">
       <div className="admin-wrap">
         <div className="payment-review-hero">
