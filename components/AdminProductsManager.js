@@ -24,6 +24,7 @@ const blankVariant = () => ({ id: "", sku: "", size: "", colour: "", price: "", 
 
 export default function AdminProductsManager() {
   const [products, setProducts] = useState([]);
+  const [activeView, setActiveView] = useState("catalogue");
   const [draft, setDraft] = useState(blankProduct);
   const [filter, setFilter] = useState("ALL");
   const [search, setSearch] = useState("");
@@ -78,7 +79,7 @@ export default function AdminProductsManager() {
     }));
   });
 
-  const startNew = () => { setDraft(blankProduct()); setRemovedVariantIds([]); setRemovedImageIds([]); setMessage(""); setError(""); };
+  const startNew = () => { setDraft(blankProduct()); setRemovedVariantIds([]); setRemovedImageIds([]); setMessage(""); setError(""); setActiveView("editor"); };
   const editProduct = (product) => {
     setRemovedVariantIds([]); setRemovedImageIds([]);
     setDraft({
@@ -93,7 +94,7 @@ export default function AdminProductsManager() {
       variants: product.variants.map((variant) => ({ ...variant, price: String(variant.price), stockQuantity: String(variant.stockQuantity) })),
       images: product.images.map((image) => ({ ...image })),
     });
-    setMessage(""); setError("");
+    setMessage(""); setError(""); setActiveView("editor");
   };
 
   const update = (key, value) => setDraft((current) => ({ ...current, [key]: value }));
@@ -221,17 +222,21 @@ export default function AdminProductsManager() {
           <p>Create products, organise variants and stock, and manage the Cloudinary image gallery. Products stay unpublished until you choose to activate them.</p>
         </div>
 
+        <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Product management sections">
+          <button type="button" className={activeView === "catalogue" ? "active" : ""} aria-pressed={activeView === "catalogue"} onClick={() => setActiveView("catalogue")}><Search size={15}/> PRODUCT CATALOGUE</button>
+          <button type="button" className={activeView === "editor" ? "active" : ""} aria-pressed={activeView === "editor"} onClick={() => setActiveView("editor")}><Plus size={15}/> ADD / EDIT PRODUCT</button>
+        </nav>
+
+        {activeView === "catalogue" && <>
         <div className="admin-catalogue-toolbar">
           <label className="admin-catalogue-search"><Search size={16}/><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search products" /></label>
           <select value={filter} onChange={(event) => setFilter(event.target.value)} aria-label="Filter products">
             <option value="ALL">All products</option><option value="DRAFT">Draft</option><option value="ACTIVE">Active</option><option value="OUT_OF_STOCK">Out of stock</option><option value="ARCHIVED">Archived</option>
           </select>
           <CsvExportButton filename="cropptech-products-inventory" label="EXPORT CSV" columns={[{ key: "product", label: "Product" }, { key: "slug", label: "Slug" }, { key: "category", label: "Category" }, { key: "type", label: "Garment type" }, { key: "status", label: "Status" }, { key: "featured", label: "Featured" }, { key: "sku", label: "SKU" }, { key: "size", label: "Size" }, { key: "colour", label: "Colour" }, { key: "priceNgn", label: "Price (NGN)" }, { key: "stock", label: "Stock quantity" }, { key: "sellable", label: "Sellable" }, { key: "images", label: "Image count" }]} rows={exportRows} disabled={loading || !exportRows.length}/>
-          <Link href="/admin/products/bulk-import" className="admin-outline-button admin-bulk-import-link"><ImagePlus size={15}/> BULK IMPORT</Link><button type="button" className="admin-primary-button" onClick={startNew}><Plus size={16}/> NEW PRODUCT</button>
+          <Link href="/admin/products/bulk-import" className="admin-outline-button admin-bulk-import-link"><ImagePlus size={15}/> BULK IMPORT</Link>
         </div>
-
-        <div className="admin-catalogue-layout">
-          <section className="admin-catalogue-list">
+        <section className="admin-catalogue-list">
             <div className="admin-section-heading"><h2>Catalogue <span>({visibleProducts.length})</span></h2></div>
             {loading ? <p className="admin-muted">Loading catalogue…</p> : visibleProducts.length === 0 ? <p className="admin-muted">No products match this filter.</p> : visibleProducts.map((product) => (
               <article className={"admin-catalogue-item " + (draft.id === product.id ? "selected" : "")} key={product.id}>
@@ -242,9 +247,10 @@ export default function AdminProductsManager() {
                 <button type="button" className="admin-catalogue-edit" onClick={() => editProduct(product)}>EDIT</button>
               </article>
             ))}
-          </section>
+        </section>
+        </>}
 
-          <form className="admin-product-editor" onSubmit={saveProduct}>
+        {activeView === "editor" && <form className="admin-product-editor" onSubmit={saveProduct}>
             <div className="admin-section-heading"><div><p className="eyebrow">{draft.id ? "EDIT PRODUCT" : "NEW PRODUCT"}</p><h2>{draft.name || "Product details"}</h2></div><span className={"admin-status-pill " + draft.status.toLowerCase()}>{draft.status}</span></div>
             <div className="admin-product-fields">
               <label>Product name<input required maxLength={160} value={draft.name} onChange={(event) => update("name", event.target.value)} placeholder="e.g. Relaxed linen shirt"/></label>
@@ -289,8 +295,7 @@ export default function AdminProductsManager() {
             {error && <p className="admin-form-error" role="alert">{error}</p>}
             {message && <p className="admin-form-success" role="status">{message}</p>}
             <div className="admin-editor-actions"><button type="submit" className="admin-primary-button" disabled={saving || uploading}><Save size={15}/>{saving ? "SAVING…" : "SAVE PRODUCT"}</button>{draft.id && <button type="button" className="admin-outline-button" onClick={() => archiveProduct(products.find((product) => product.id === draft.id))}>ARCHIVE</button>}</div>
-          </form>
-        </div>
+        </form>}
       </div>
     </main>
   );
