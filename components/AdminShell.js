@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronLeft, ChevronRight, Bell, Command, ImagePlus, LayoutDashboard, Package, Boxes, BarChart3, RotateCcw, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Bell, Command, ImagePlus, LayoutDashboard, Package, Boxes, BarChart3, RotateCcw, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X, Star, Headset } from "lucide-react";
 import AdminNotificationBell from "./AdminNotificationBell";
 
 const sections = [
@@ -16,6 +16,7 @@ const sections = [
     { href: "/admin/reports", title: "Reports", icon: BarChart3 },
     { href: "/admin/homepage-media", title: "Store Front Studio", icon: ImagePlus },
     { href: "/admin/featured-products", title: "Featured Products", icon: Star },
+    { href: "/admin/support", title: "Customer Support", icon: Headset },
   ]},
   { label: "STORE OPERATIONS", items: [
     { href: "/admin/payments", title: "Payment reviews", icon: Bell },
@@ -83,6 +84,7 @@ export default function AdminShell({ children, email, adminName, isSuperAdmin = 
     { title: "Store Front Studio", detail: "Curate homepage images and visual placements", href: "/admin/homepage-media" },
     { title: "Featured Products", detail: "Choose and order products displayed on the homepage", href: "/admin/featured-products" },
     { title: "Orders", detail: "Review orders and fulfilment", href: "/admin/orders" },
+    { title: "Customer Support", detail: "Manage customer requests and replies", href: "/admin/support" },
     { title: "Payment reviews", detail: "Review customer transfer submissions", href: "/admin/payments" },
     { title: "Delivery", detail: "Delivery zones, fees and estimates", href: "/admin/delivery" },
     { title: "Settings", detail: "Payment and store configuration", href: "/admin/settings" },
