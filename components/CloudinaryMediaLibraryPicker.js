@@ -1,29 +1,76 @@
 "use client";
 
-import { useState } from "react";
-import Script from "next/script";
+import { useEffect, useState } from "react";
 import { Images } from "lucide-react";
 
 const MEDIA_LIBRARY_SCRIPT = "https://media-library.cloudinary.com/global/all.js";
+let mediaLibraryPromise = null;
+
+// Every homepage image picker shares one script load and one readiness result.
+function loadCloudinaryMediaLibrary() {
+  if (typeof window !== "undefined" && window.cloudinary?.openMediaLibrary) {
+    return Promise.resolve();
+  }
+  if (mediaLibraryPromise) return mediaLibraryPromise;
+
+  mediaLibraryPromise = new Promise((resolve, reject) => {
+    let script = document.querySelector('script[data-cloudinary-media-library="true"]');
+    if (!script) {
+      script = document.createElement("script");
+      script.src = MEDIA_LIBRARY_SCRIPT;
+      script.async = true;
+      script.dataset.cloudinaryMediaLibrary = "true";
+      document.head.appendChild(script);
+    }
+
+    const finish = () => {
+      if (window.cloudinary?.openMediaLibrary) resolve();
+      else {
+        mediaLibraryPromise = null;
+        reject(new Error("Cloudinary Media Library could not initialise. Please refresh and try again."));
+      }
+    };
+    if (window.cloudinary?.openMediaLibrary) {
+      resolve();
+    } else {
+      script.addEventListener("load", finish, { once: true });
+      script.addEventListener("error", () => {
+        mediaLibraryPromise = null;
+        reject(new Error("Cloudinary Media Library could not be loaded. Check your internet connection and try again."));
+      }, { once: true });
+    }
+  });
+
+  return mediaLibraryPromise;
+}
 
 export default function CloudinaryMediaLibraryPicker({ onSelect, disabled = false, remaining = 30, onError }) {
-  const [scriptReady, setScriptReady] = useState(false);
+  const [scriptReady, setScriptReady] = useState(
+    () => typeof window !== "undefined" && Boolean(window.cloudinary?.openMediaLibrary)
+  );
   const [opening, setOpening] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    loadCloudinaryMediaLibrary()
+      .then(() => { if (active) setScriptReady(true); })
+      .catch((cause) => { if (active) onError?.(cause.message); });
+    return () => { active = false; };
+  }, [onError]);
 
   async function openLibrary() {
     if (opening || disabled || remaining < 1) return;
     setOpening(true);
     onError?.("");
     try {
+      await loadCloudinaryMediaLibrary();
+      setScriptReady(true);
       const response = await fetch("/api/admin/products/upload-signature", {
         method: "POST",
         cache: "no-store",
       });
       const config = await response.json();
       if (!response.ok) throw new Error(config.error || "Cloudinary Media Library is not available.");
-      if (!window.cloudinary?.openMediaLibrary) {
-        throw new Error("The Cloudinary Media Library has not finished loading. Please try again.");
-      }
 
       window.cloudinary.openMediaLibrary(
         {
@@ -41,7 +88,7 @@ export default function CloudinaryMediaLibraryPicker({ onSelect, disabled = fals
               .map((asset) => ({
                 cloudinaryPublicId: asset.public_id,
                 secureUrl: asset.secure_url,
-                altText: asset.display_name || asset.public_id.split("/").pop() || "CroppTech product image",
+                altText: asset.display_name || asset.public_id.split("/").pop() || "CroppTech homepage image",
                 width: asset.width,
                 height: asset.height,
                 format: asset.format,
@@ -62,23 +109,15 @@ export default function CloudinaryMediaLibraryPicker({ onSelect, disabled = fals
   }
 
   return (
-    <>
-      <Script
-        src={MEDIA_LIBRARY_SCRIPT}
-        strategy="afterInteractive"
-        onLoad={() => setScriptReady(true)}
-        onError={() => onError?.("Cloudinary Media Library could not be loaded. Check your internet connection and try again.")}
-      />
-      <button
-        type="button"
-        className="admin-outline-button"
-        onClick={openLibrary}
-        disabled={disabled || opening || !scriptReady || remaining < 1}
-        title={remaining < 1 ? "This product already has the maximum of 30 images." : "Browse images already stored in Cloudinary"}
-      >
-        <Images size={14} />
-        {opening ? "OPENING CLOUDINARY…" : scriptReady ? "CHOOSE FROM CLOUDINARY" : "LOADING CLOUDINARY…"}
-      </button>
-    </>
+    <button
+      type="button"
+      className="admin-outline-button"
+      onClick={openLibrary}
+      disabled={disabled || opening || !scriptReady || remaining < 1}
+      title={remaining < 1 ? "This position has reached its image limit." : "Browse images already stored in Cloudinary"}
+    >
+      <Images size={14} />
+      {opening ? "OPENING CLOUDINARY…" : scriptReady ? "CHOOSE FROM CLOUDINARY" : "LOADING CLOUDINARY…"}
+    </button>
   );
 }
