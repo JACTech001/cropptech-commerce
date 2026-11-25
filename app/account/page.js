@@ -1,11 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Package, ShoppingBag, UserRound } from "lucide-react";
 import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import AccountSignOutButton from "../../components/AccountSignOutButton";
-import CustomerNotificationBell from "../../components/CustomerNotificationBell";
 import CustomerThemeControl from "../../components/CustomerThemeControl";
 import { redirectAdminFromCustomerPages } from "../../lib/auth/customer-access";
 
@@ -83,13 +81,7 @@ export default async function AccountPage() {
 
   return (
     <main className="account-page">
-      <header className="shop-topbar">
-        <Link href="/shop" className="shop-back"><ArrowLeft size={16} /> CONTINUE SHOPPING</Link>
-        <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
-          <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" />
-        </Link>
-        <CustomerNotificationBell />
-      </header>
+      <CustomerPageHeader />
 
       <div className="account-wrap">
         <div className="account-heading">
