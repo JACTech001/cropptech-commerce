@@ -154,11 +154,19 @@ export async function POST(request) {
               bankAccountId: bankAccount.id,
             },
           },
-          reservations: {
-            create: resolved.map((line) => ({ variantId: line.variant.id, quantity: line.quantity, status: "ACTIVE" })),
-          },
+
         },
         include: { items: true, payment: true },
+      });
+
+      await tx.stockReservation.createMany({
+        data: order.items.map((item) => ({
+          orderId: order.id,
+          orderItemId: item.id,
+          variantId: item.variantId,
+          quantity: item.quantity,
+          status: "ACTIVE",
+        })),
       });
 
       await tx.inventoryTransaction.createMany({
