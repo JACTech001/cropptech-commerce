@@ -41,7 +41,7 @@ export async function PATCH(request, context) {
         return { type, record: updated, message: "Return request updated." };
       }
 
-      const current = await tx.refund.findUnique({ where: { id }, include: { payment: { include: { order: { select: { orderNumber: true, customerId: true } } } } });
+      const current = await tx.refund.findUnique({ where: { id }, include: { payment: { include: { order: { select: { orderNumber: true, customerId: true } } } } } });
       if (!current) throw new Error("RECORD_NOT_FOUND");
       const transitions = {
         REQUESTED: { UNDER_REVIEW: "UNDER_REVIEW", APPROVE: "APPROVED", REJECT: "REJECTED" },
