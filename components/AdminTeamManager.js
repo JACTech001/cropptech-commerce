@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { UserPlus, ShieldCheck, ShieldOff, RefreshCw, LoaderCircle } from "lucide-react";
 
 export default function AdminTeamManager() {
@@ -12,7 +12,7 @@ export default function AdminTeamManager() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  async function load() {
+  const load = useCallback(async () => {
     setLoading(true); setError("");
     try {
       const response = await fetch("/api/admin/team", { cache: "no-store" });
@@ -21,8 +21,8 @@ export default function AdminTeamManager() {
       setAdmins(data.admins || []); setLogs(data.activity || []);
     } catch (err) { setError(err.message); }
     finally { setLoading(false); }
-  }
-  useEffect(() => { load(); }, []);
+  }, []);
+  useEffect(() => { load(); }, [load]);
 
   async function addAdmin(event) {
     event.preventDefault();
