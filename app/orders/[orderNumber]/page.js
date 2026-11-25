@@ -7,6 +7,7 @@ import { prisma } from "../../../lib/db";
 import { decryptBankAccountNumber } from "../../../lib/security/bank-account-encryption";
 import { redirectAdminFromCustomerPages } from "../../../lib/auth/customer-access";
 import PaymentSubmissionForm from "../../../components/PaymentSubmissionForm";
+import CustomerNotificationBell from "../../../components/CustomerNotificationBell";
 
 export const dynamic = "force-dynamic";
 
@@ -63,7 +64,7 @@ export default async function OrderDetailsPage({ params }) {
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo"/>
         </Link>
-        <span className="order-header-label">MY ORDER</span>
+        <CustomerNotificationBell />
       </header>
 
       <div className="checkout-wrap">
