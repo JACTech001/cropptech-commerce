@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowUpRight, Package, ShoppingBag, UserRound } from "lucide-react";
+import { ArrowUpRight, Package, ShoppingBag, UserRound, Headset } from "lucide-react";
 import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import AccountSignOutButton from "../../components/AccountSignOutButton";
@@ -103,6 +103,7 @@ export default async function AccountPage() {
           </aside>
 
           <section className="account-orders-panel">
+            <Link href="/support" className="account-support-entry"><span className="account-support-entry-icon"><Headset size={20}/></span><span><strong>Customer care & support</strong><small>Ask a question, report an issue or follow your support requests.</small></span><ArrowUpRight size={17}/></Link>
             <div className="account-section-heading">
               <div>
                 <p className="eyebrow">YOUR PURCHASES</p>
