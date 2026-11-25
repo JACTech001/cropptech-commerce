@@ -46,14 +46,9 @@ export default function AdminHomepageMediaManager() {
   }, []);
 
   function assignImage(key, asset) {
-    setMedia((current) => ({ ...current, [key]: { url: asset.secureUrl, publicId: asset.cloudinaryPublicId, altText: asset.altText || "", fit: current[key]?.fit || "contain" } }));
+    setMedia((current) => ({ ...current, [key]: { url: asset.secureUrl, publicId: asset.cloudinaryPublicId, altText: asset.altText || "", width: asset.width || 0, height: asset.height || 0 } }));
     setNotice("");
     setError("");
-  }
-
-  function setImageFit(key, fit) {
-    setMedia((current) => ({ ...current, [key]: { ...current[key], fit } }));
-    setNotice("");
   }
 
   async function uploadImage(key, file) {
@@ -76,7 +71,7 @@ export default function AdminHomepageMediaManager() {
       const uploadResponse = await fetch("https://api.cloudinary.com/v1_1/" + config.cloudName + "/image/upload", { method: "POST", body: form });
       const asset = await uploadResponse.json();
       if (!uploadResponse.ok || !asset.secure_url || !asset.public_id) throw new Error(asset.error?.message || "Cloudinary could not upload this image.");
-      assignImage(key, { secureUrl: asset.secure_url, cloudinaryPublicId: asset.public_id, altText: file.name.replace(/\.[^.]+$/, "") });
+      assignImage(key, { secureUrl: asset.secure_url, cloudinaryPublicId: asset.public_id, altText: file.name.replace(/\.[^.]+$/, ""), width: asset.width, height: asset.height });
       setNotice("Image uploaded. Save changes to publish it on the homepage.");
     } catch (cause) {
       setError(cause.message || "Image upload failed.");
@@ -139,15 +134,11 @@ export default function AdminHomepageMediaManager() {
               <div className="admin-home-media-card-heading"><span>{slot.title}</span><small>{slot.ratio}</small></div>
               <div className="admin-home-media-location">{slot.location}</div>
               <div className="admin-home-media-preview">
-                {item?.url ? <Image src={item.url} alt={item.altText || slot.title} fill sizes="(max-width: 700px) 100vw, 33vw" style={{ objectFit: item.fit === "cover" ? "cover" : "contain" }} unoptimized /> : <div className="admin-home-media-empty"><ImagePlus size={25}/><span>Using current storefront image</span><small>{slot.fallback}</small></div>}
+                {item?.url ? <Image src={item.url} alt={item.altText || slot.title} fill sizes="(max-width: 700px) 100vw, 33vw" style={{ objectFit: "contain" }} unoptimized /> : <div className="admin-home-media-empty"><ImagePlus size={25}/><span>Using current storefront image</span><small>{slot.fallback}</small></div>}
               </div>
               {item?.url && <>
                 <div className="admin-home-media-current"><Check size={13}/> Custom image selected</div>
-                <div className="admin-home-media-fit" role="group" aria-label={"Image display for " + slot.title}>
-                  <span>IMAGE DISPLAY</span>
-                  <button type="button" className={item.fit !== "cover" ? "is-active" : ""} aria-pressed={item.fit !== "cover"} onClick={() => setImageFit(slot.key, "contain")}>SHOW FULL IMAGE</button>
-                  <button type="button" className={item.fit === "cover" ? "is-active" : ""} aria-pressed={item.fit === "cover"} onClick={() => setImageFit(slot.key, "cover")}>FILL FRAME</button>
-                </div>
+                <div className="admin-home-media-fit"><span>NATURAL PROPORTIONS</span><small>The storefront image area will adapt to this image's original dimensions.</small></div>
               </>}
               <div className="admin-home-media-card-actions">
                 <CloudinaryMediaLibraryPicker
