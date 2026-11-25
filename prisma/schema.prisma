@@ -762,7 +762,7 @@ model CustomerSupportTicket {
 
   customer  User                  @relation("SupportTicketCustomer", fields: [customerId], references: [id], onDelete: Cascade)
   assignee  User?                 @relation("SupportTicketAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
-  order     Order?                @relation(fields: [orderId, customerId], references: [id, customerId], onDelete: Restrict)
+  order     Order?                @relation(fields: [orderId], references: [id], onDelete: Restrict)
   messages  SupportTicketMessage[]
 
   @@index([customerId, updatedAt])
