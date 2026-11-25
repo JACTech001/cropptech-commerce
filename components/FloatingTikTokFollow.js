@@ -16,7 +16,10 @@ export default function FloatingTikTokFollow() {
       aria-label="Follow CroppTech Commerce on TikTok"
       title="Follow CroppTech Commerce on TikTok"
     >
-      <Music2 size={21} strokeWidth={2} />
+      <span className="floating-tiktok-icon" aria-hidden="true">
+        <Music2 size={21} strokeWidth={2} />
+      </span>
+      <span className="floating-tiktok-label">Follow us<br />on TikTok</span>
     </a>
   );
 }
