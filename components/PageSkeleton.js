@@ -68,10 +68,27 @@ function AdminSkeleton() {
   </main>;
 }
 
+
+function NotificationsSkeleton() {
+  return <main className={styles.account} aria-busy="true" aria-label="Loading notifications">
+    <Header/><div className={styles.accountContent}><Heading/><section className={styles.orders}>{Array.from({length:5},(_,i)=><div className={styles.orderRow} key={i}><Block className={styles.orderIcon}/><div><Block className={styles.copyLine}/><Block className={styles.copyShort}/></div><Block className={styles.orderEnd}/></div>)}</section></div>
+    <span className={styles.srOnly} role="status">Loading notifications…</span>
+  </main>;
+}
+
+function OrderDetailsSkeleton() {
+  return <main className={styles.cart} aria-busy="true" aria-label="Loading order details">
+    <Header/><div className={styles.cartContent}><Heading wide/><section className={styles.orders}><div className={styles.catalogueHeading}><Block className={styles.headingTitle}/><Block className={styles.filter}/></div><div className={styles.metrics}>{Array.from({length:3},(_,i)=><div key={i}><Block className={styles.eyebrow}/><Block className={styles.metricValue}/></div>)}</div></section><div className={styles.cartLayout}><section className={styles.checkoutForm}>{Array.from({length:2},(_,i)=><div className={styles.formSection} key={i}><Block className={styles.eyebrow}/>{Array.from({length:3},(_,j)=><div className={styles.orderRow} key={j}><Block className={styles.copyLine}/><Block className={styles.orderEnd}/></div>)}</div>)}</section><aside className={styles.cartSummary}><Block className={styles.copyLine}/><Block className={styles.summaryLine}/><Block className={styles.summaryLine}/><Block className={styles.profileButton}/></aside></div></div>
+    <span className={styles.srOnly} role="status">Loading order details…</span>
+  </main>;
+}
+
 export default function PageSkeleton({ variant = "home" }) {
   if (variant === "storefront" || variant === "shop") return <ShopSkeleton/>;
   if (variant === "admin") return <AdminSkeleton/>;
-  if (variant === "account" || variant === "notifications") return <AccountSkeleton/>;
+  if (variant === "account") return <AccountSkeleton/>;
+  if (variant === "notifications") return <NotificationsSkeleton/>;
+  if (variant === "order-details") return <OrderDetailsSkeleton/>;
   if (variant === "cart") return <CartSkeleton/>;
   if (variant === "checkout") return <CheckoutSkeleton/>;
   return <HomeSkeleton/>;
