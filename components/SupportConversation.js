@@ -54,7 +54,7 @@ export default function SupportConversation({ ticketId, isStaff = false }) {
 
   return <section className="support-conversation">
     <div className="support-conversation-heading">
-      <div><Link href={isStaff ? "/admin/support" : "/support"} className="support-back-link"><ArrowLeft size={15}/> BACK TO {isStaff ? "INBOX" : "SUPPORT REQUESTS"}</Link><p className="eyebrow">{ticket.ticketNumber} / {ticket.category.replaceAll("_"," ")}</p><h2>{ticket.subject}</h2><p>{isStaff ? (ticket.customer?.fullName || ticket.customer?.email || "Customer") : "Our customer care team will respond in this conversation."}{ticket.order?.orderNumber ? " · Order " + ticket.order.orderNumber : ""}</p></div>
+      <div><Link href={isStaff ? "/admin/support" : "/support"} className="support-back-link"><ArrowLeft size={15}/> BACK TO {isStaff ? "INBOX" : "SUPPORT REQUESTS"}</Link><p className="eyebrow">{ticket.ticketNumber} / {ticket.category.replaceAll("_"," ")} / {(ticket.issueType || "GENERAL_ENQUIRY").replaceAll("_"," ")}</p><h2>{ticket.subject}</h2><p>{isStaff ? (ticket.customer?.fullName || ticket.customer?.email || "Customer") : "Our customer care team will respond in this conversation."}{ticket.order?.orderNumber ? " · Order " + ticket.order.orderNumber : ""}</p></div>
       <span className={"customer-support-status status-" + ticket.status.toLowerCase()}>{ticket.status.replaceAll("_"," ")}</span>
     </div>
     {isStaff && <div className="support-admin-controls">
