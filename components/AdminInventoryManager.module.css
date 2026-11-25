@@ -8,9 +8,9 @@
 @media(max-width:900px){.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.fields{grid-template-columns:1fr 1fr}.reason{grid-column:1/-1}}
 @media(max-width:620px){.intro,.toolbar{align-items:stretch;flex-direction:column}.intro>button{width:max-content}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{flex-direction:column}.filters label{min-width:0;height:36px}.fields{grid-template-columns:1fr}.reason{grid-column:auto}}
 :global(.admin-shell[data-theme="dark"]) .workspace{color:#e8eaed}
-:global(.admin-shell[data-theme="dark"]) .intro h1,:global(.admin-shell[data-theme="dark"]) .toolbar h2,:global(.admin-shell[data-theme="dark"]) .adjust h2,:global(.admin-shell[data-theme="dark"]) .metrics strong,:global(.admin-shell[data-theme="dark"]) td strong{color:#f2f4f7}
+:global(.admin-shell[data-theme="dark"]) .intro h1,:global(.admin-shell[data-theme="dark"]) .toolbar h2,:global(.admin-shell[data-theme="dark"]) .adjust h2,:global(.admin-shell[data-theme="dark"]) .metrics strong,:global(.admin-shell[data-theme="dark"]) .tableWrap td strong{color:#f2f4f7}
 :global(.admin-shell[data-theme="dark"]) .metrics article,:global(.admin-shell[data-theme="dark"]) .tableCard,:global(.admin-shell[data-theme="dark"]) .adjust{background:#191e26;border-color:#303844}
-:global(.admin-shell[data-theme="dark"]) .intro>button,:global(.admin-shell[data-theme="dark"]) .filters select,:global(.admin-shell[data-theme="dark"]) .filters label,:global(.admin-shell[data-theme="dark"]) td button,:global(.admin-shell[data-theme="dark"]) .adjustHeading>button{background:#202630;border-color:#3a4350;color:#d4dae2}
+:global(.admin-shell[data-theme="dark"]) .intro>button,:global(.admin-shell[data-theme="dark"]) .filters select,:global(.admin-shell[data-theme="dark"]) .filters label,:global(.admin-shell[data-theme="dark"]) .tableWrap td button,:global(.admin-shell[data-theme="dark"]) .adjustHeading>button{background:#202630;border-color:#3a4350;color:#d4dae2}
 :global(.admin-shell[data-theme="dark"]) .filters input,:global(.admin-shell[data-theme="dark"]) .fields input,:global(.admin-shell[data-theme="dark"]) .fields select{background:#11161d;border-color:#3a4350;color:#edf0f4}
-:global(.admin-shell[data-theme="dark"]) th,:global(.admin-shell[data-theme="dark"]) td{border-color:#303844}
-:global(.admin-shell[data-theme="dark"]) td{color:#d0d6df}
+:global(.admin-shell[data-theme="dark"]) .tableWrap th,:global(.admin-shell[data-theme="dark"]) .tableWrap td{border-color:#303844}
+:global(.admin-shell[data-theme="dark"]) .tableWrap td{color:#d0d6df}
