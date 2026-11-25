@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Check, ImagePlus, LoaderCircle, RotateCcw, Save, Trash2, Upload, WandSparkles } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, ImagePlus, LoaderCircle, Plus, RotateCcw, Save, Trash2, Upload, WandSparkles } from "lucide-react";
 import CloudinaryMediaLibraryPicker from "./CloudinaryMediaLibraryPicker";
 
 const SLOTS = [
@@ -147,7 +147,7 @@ export default function AdminHomepageMediaManager() {
       const response = await fetch("/api/admin/homepage-media", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ media }),
+        body: JSON.stringify({ media: { ...media, hero_slides: heroSlides.filter((slide) => slide.url) } }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Store Front Studio changes could not be saved.");
@@ -167,6 +167,50 @@ export default function AdminHomepageMediaManager() {
     setNotice("Unsaved changes have been discarded.");
   }
 
+  const heroSlides = Array.isArray(media.hero_slides) ? media.hero_slides : [];
+
+  function updateHeroSlide(index, patch) {
+    setMedia((current) => ({
+      ...current,
+      hero_slides: (Array.isArray(current.hero_slides) ? current.hero_slides : []).map((slide, slideIndex) =>
+        slideIndex === index ? { ...slide, ...patch } : slide
+      ),
+    }));
+    setNotice("");
+    setError("");
+  }
+
+  function addHeroSlide() {
+    setMedia((current) => {
+      const slides = Array.isArray(current.hero_slides) ? current.hero_slides : [];
+      if (slides.length >= 8) return current;
+      return { ...current, hero_slides: [...slides, { id: `hero-slide-${Date.now()}`, active: true, positionDesktop: "center center", positionMobile: "58% center" }] };
+    });
+    setNotice("");
+  }
+
+  function removeHeroSlide(index) {
+    setMedia((current) => ({ ...current, hero_slides: (current.hero_slides || []).filter((_, slideIndex) => slideIndex !== index) }));
+    setNotice("");
+  }
+
+  function moveHeroSlide(index, direction) {
+    setMedia((current) => {
+      const slides = [...(current.hero_slides || [])];
+      const target = index + direction;
+      if (target < 0 || target >= slides.length) return current;
+      [slides[index], slides[target]] = [slides[target], slides[index]];
+      return { ...current, hero_slides: slides };
+    });
+    setNotice("");
+  }
+
+  function selectHeroSlideImage(index, field, asset) {
+    updateHeroSlide(index, field === "mobile"
+      ? { url: asset.secureUrl, publicId: asset.cloudinaryPublicId, altText: asset.altText || "", width: asset.width || 0, height: asset.height || 0 }
+      : { desktopUrl: asset.secureUrl, desktopPublicId: asset.cloudinaryPublicId, desktopWidth: asset.width || 0, desktopHeight: asset.height || 0 });
+  }
+
   const hasChanges = JSON.stringify(media) !== JSON.stringify(savedMedia);
 
   if (loading) return <div className="admin-home-media-loading"><LoaderCircle size={18} /> Loading Store Front Studio…</div>;
@@ -183,6 +227,51 @@ export default function AdminHomepageMediaManager() {
 
       {error && <p className="admin-home-media-message is-error" role="alert">{error}</p>}
       {notice && <p className="admin-home-media-message is-success" role="status"><Check size={15}/>{notice}</p>}
+
+      <section className="admin-hero-slides">
+        <div className="admin-hero-slides-heading">
+          <div><strong>Hero image slider</strong><span>The current Main homepage hero remains Slide 1 with all its existing desktop and mobile settings. Add up to 8 more slides below.</span></div>
+          <button type="button" className="admin-primary-button" onClick={addHeroSlide} disabled={heroSlides.length >= 8 || saving}><Plus size={15}/> ADD SLIDE</button>
+        </div>
+        {heroSlides.length === 0 ? <p className="admin-hero-slides-empty">No additional slides yet. Your existing hero will continue to display normally.</p> : (
+          <div className="admin-hero-slides-list">
+            {heroSlides.map((slide, index) => (
+              <article className={`admin-hero-slide-card${slide.active === false ? " is-disabled" : ""}`} key={slide.id || index}>
+                <div className="admin-hero-slide-topline">
+                  <strong>Additional slide {index + 2}</strong>
+                  <div className="admin-hero-slide-tools">
+                    <button type="button" className="admin-icon-button" onClick={() => moveHeroSlide(index, -1)} disabled={index === 0} aria-label="Move slide up"><ChevronUp size={16}/></button>
+                    <button type="button" className="admin-icon-button" onClick={() => moveHeroSlide(index, 1)} disabled={index === heroSlides.length - 1} aria-label="Move slide down"><ChevronDown size={16}/></button>
+                    <button type="button" className="admin-outline-button" onClick={() => updateHeroSlide(index, { active: slide.active === false })}>{slide.active === false ? "ENABLE" : "DISABLE"}</button>
+                    <button type="button" className="admin-icon-button" onClick={() => removeHeroSlide(index)} aria-label="Remove slide"><Trash2 size={15}/></button>
+                  </div>
+                </div>
+                <div className="admin-hero-slide-images">
+                  <div className="admin-hero-slide-image-field">
+                    <span>MOBILE / ORIGINAL IMAGE</span>
+                    <div className="admin-hero-slide-preview portrait">
+                      {slide.url ? <Image src={slide.url} alt={slide.altText || "Hero slide mobile image"} fill sizes="(max-width: 700px) 45vw, 180px" unoptimized/> : <div><ImagePlus size={22}/><small>Select mobile image</small></div>}
+                    </div>
+                    <CloudinaryMediaLibraryPicker remaining={1} onSelect={(assets) => selectHeroSlideImage(index, "mobile", assets[0])} onError={setError}/>
+                  </div>
+                  <div className="admin-hero-slide-image-field">
+                    <span>DESKTOP IMAGE · OPTIONAL</span>
+                    <div className="admin-hero-slide-preview landscape">
+                      {slide.desktopUrl ? <Image src={slide.desktopUrl} alt="Hero slide desktop image" fill sizes="(max-width: 700px) 45vw, 280px" unoptimized/> : slide.url ? <Image src={slide.url} alt="Hero slide desktop fallback" fill sizes="(max-width: 700px) 45vw, 280px" unoptimized/> : <div><ImagePlus size={22}/><small>Uses mobile image until selected</small></div>}
+                    </div>
+                    <CloudinaryMediaLibraryPicker remaining={1} onSelect={(assets) => selectHeroSlideImage(index, "desktop", assets[0])} onError={setError}/>
+                  </div>
+                </div>
+                <div className="admin-hero-slide-position">
+                  <label>Desktop image position<select value={slide.positionDesktop || "center center"} onChange={(event) => updateHeroSlide(index, { positionDesktop: event.target.value })}><option value="left top">Top left</option><option value="center top">Top centre</option><option value="right top">Top right</option><option value="left center">Middle left</option><option value="center center">Centre</option><option value="right center">Middle right</option><option value="left bottom">Bottom left</option><option value="center bottom">Bottom centre</option><option value="right bottom">Bottom right</option></select></label>
+                  <label>Mobile image position<select value={slide.positionMobile || "58% center"} onChange={(event) => updateHeroSlide(index, { positionMobile: event.target.value })}><option value="left top">Top left</option><option value="center top">Top centre</option><option value="right top">Top right</option><option value="left center">Middle left</option><option value="center center">Centre</option><option value="right center">Middle right</option><option value="left bottom">Bottom left</option><option value="center bottom">Bottom centre</option><option value="right bottom">Bottom right</option><option value="58% center">Default mobile position</option></select></label>
+                </div>
+                {!slide.url && <p className="admin-hero-slide-warning">Choose the mobile/original image before saving this slide. The desktop image is optional.</p>}
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
 
       <div className="admin-home-media-grid">
         {SLOTS.map((slot, index) => {
