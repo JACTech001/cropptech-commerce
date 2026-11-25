@@ -4144,7 +4144,7 @@ html[data-customer-theme="dark"] .mobile-bottom-nav-link.is-active{color:#ff6573
 
 
 /* Uploaded homepage media keeps its source aspect ratio instead of letterboxing. */
-.collection-image,.category-image { height:auto; min-height:0; background-position:center top; }
+.collection-image,.category-image { background-position:center top; }
 .linen-photo { background-position:center top; }
 .moodboard-grid { grid-template-rows:auto; align-items:start; }
 .moodboard-tile-tall { grid-row:auto; }
