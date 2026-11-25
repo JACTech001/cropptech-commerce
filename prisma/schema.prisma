@@ -399,7 +399,6 @@ model Payment {
   @@unique([id, orderId])
   @@unique([id, customerId])
   @@unique([orderId, customerId])
-  @@unique([orderId, customerId])
   @@index([bankAccountId])
 }
 
