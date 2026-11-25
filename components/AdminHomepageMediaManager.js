@@ -6,7 +6,7 @@ import { Check, ImagePlus, LoaderCircle, RotateCcw, Save, Trash2, Upload } from 
 import CloudinaryMediaLibraryPicker from "./CloudinaryMediaLibraryPicker";
 
 const SLOTS = [
-  { key: "hero_main", title: "Main homepage hero", location: "The large first image at the very top of the homepage.", ratio: "Wide landscape", fallback: "Current linen campaign hero" },
+  { key: "hero_main", title: "Main homepage hero", location: "The large first image at the very top of the homepage. Adjust its focal point separately for desktop and mobile.", ratio: "Responsive framing", fallback: "Current linen campaign hero" },
   { key: "collection_men", title: "Men's collection card", location: "First image under “Two ways to wear your day”.", ratio: "Portrait / tall", fallback: "Men's Edit card" },
   { key: "collection_women", title: "Women's collection card", location: "Second image under “Two ways to wear your day”.", ratio: "Portrait / tall", fallback: "Women's Edit card" },
   { key: "linen_feature", title: "Linen feature image", location: "Large image beside “Made for the everyday”.", ratio: "Landscape", fallback: "Linen feature panel" },
@@ -46,7 +46,7 @@ export default function AdminHomepageMediaManager() {
   }, []);
 
   function assignImage(key, asset) {
-    setMedia((current) => ({ ...current, [key]: { url: asset.secureUrl, publicId: asset.cloudinaryPublicId, altText: asset.altText || "", width: asset.width || 0, height: asset.height || 0 } }));
+    setMedia((current) => ({ ...current, [key]: { ...current[key], url: asset.secureUrl, publicId: asset.cloudinaryPublicId, altText: asset.altText || "", width: asset.width || 0, height: asset.height || 0 } }));
     setNotice("");
     setError("");
   }
@@ -133,9 +133,14 @@ export default function AdminHomepageMediaManager() {
             <article className="admin-home-media-card" key={slot.key}>
               <div className="admin-home-media-card-heading"><span>{slot.title}</span><small>{slot.ratio}</small></div>
               <div className="admin-home-media-location">{slot.location}</div>
-              <div className="admin-home-media-preview" style={item?.width > 0 && item?.height > 0 ? { aspectRatio: `${item.width} / ${item.height}` } : undefined}>
-                {item?.url ? <Image src={item.url} alt={item.altText || slot.title} fill sizes="(max-width: 700px) 100vw, 33vw" style={{ objectFit: "cover" }} unoptimized /> : <div className="admin-home-media-empty"><ImagePlus size={25}/><span>Using current storefront image</span><small>{slot.fallback}</small></div>}
+              <div className="admin-home-media-preview" style={slot.key === "hero_main" ? { aspectRatio: "16 / 9" } : item?.width > 0 && item?.height > 0 ? { aspectRatio: `${item.width} / ${item.height}` } : undefined}>
+                {item?.url ? <Image src={item.url} alt={item.altText || slot.title} fill sizes="(max-width: 700px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: slot.key === "hero_main" ? (item.positionDesktop || "center center") : "center" }} unoptimized /> : <div className="admin-home-media-empty"><ImagePlus size={25}/><span>Using current storefront image</span><small>{slot.fallback}</small></div>}
               </div>
+              {slot.key === "hero_main" && item?.url && <div className="admin-home-media-position-controls">
+                <label>Desktop image position<select value={item.positionDesktop || "center center"} onChange={(event) => setMedia((current) => ({ ...current, hero_main: { ...current.hero_main, positionDesktop: event.target.value } }))}><option value="left top">Top left</option><option value="center top">Top centre</option><option value="right top">Top right</option><option value="left center">Middle left</option><option value="center center">Centre</option><option value="right center">Middle right</option><option value="left bottom">Bottom left</option><option value="center bottom">Bottom centre</option><option value="right bottom">Bottom right</option></select></label>
+                <label>Mobile image position<select value={item.positionMobile || "58% center"} onChange={(event) => setMedia((current) => ({ ...current, hero_main: { ...current.hero_main, positionMobile: event.target.value } }))}><option value="left top">Top left</option><option value="center top">Top centre</option><option value="right top">Top right</option><option value="left center">Middle left</option><option value="center center">Centre</option><option value="right center">Middle right</option><option value="left bottom">Bottom left</option><option value="center bottom">Bottom centre</option><option value="right bottom">Bottom right</option><option value="58% center">Original mobile position</option></select></label>
+                <p>These controls move the visible area of the same image. They do not stretch it or add side backgrounds.</p>
+              </div>}
               {item?.url && <>
                 <div className="admin-home-media-current"><Check size={13}/> Custom image selected</div>
               </>}
