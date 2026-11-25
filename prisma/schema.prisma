@@ -138,7 +138,6 @@ model User {
   addresses             CustomerAddress[]
   carts                 Cart[]
   orders                Order[]
-  paymentSubmissions    PaymentSubmission[]
   paymentVerifications  PaymentVerification[]  @relation("PaymentVerifiedBy")
   orderStatusChanges    OrderStatusHistory[]   @relation("OrderStatusChangedBy")
   inventoryTransactions InventoryTransaction[] @relation("InventoryAdjustedBy")
@@ -416,7 +415,6 @@ model PaymentSubmission {
   updatedAt              DateTime                @updatedAt
 
   payment       Payment               @relation(fields: [paymentId, submittedById], references: [id, customerId], onDelete: Restrict)
-  submittedBy   User                  @relation(fields: [submittedById], references: [id], onDelete: Restrict)
   verifications PaymentVerification[]
 
   @@unique([bankName, transactionReference])
