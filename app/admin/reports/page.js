@@ -13,7 +13,8 @@ export default async function AdminReportsPage() {
   if (!user) redirect("/auth/sign-in?redirectTo=%2Fadmin%2Freports");
   if (!["ADMIN", "SUPER_ADMIN"].includes(user.role) || !user.isActive) notFound();
 
-  const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const since = new Date();
+  since.setDate(since.getDate() - 30);
   const [orders, pendingReturns, pendingRefunds] = await Promise.all([
     prisma.order.findMany({
       where: { createdAt: { gte: since } },
