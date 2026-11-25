@@ -6,6 +6,7 @@ import { prisma } from "../../../lib/db";
 import { decryptBankAccountNumber } from "../../../lib/security/bank-account-encryption";
 import { redirectAdminFromCustomerPages } from "../../../lib/auth/customer-access";
 import PaymentSubmissionForm from "../../../components/PaymentSubmissionForm";
+import CustomerPageHeader from "../../../components/CustomerPageHeader";
 
 export const dynamic = "force-dynamic";
 
