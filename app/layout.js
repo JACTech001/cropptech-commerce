@@ -2,6 +2,7 @@ import "./globals.css";
 import { CartProvider } from "../components/CartProvider";
 import { CurrencyProvider } from "../components/CurrencyProvider";
 import MobileBottomNav from "../components/MobileBottomNav";
+import CustomerThemeProvider from "../components/CustomerThemeProvider";
 
 export const metadata = {
   title: "CroppTech Commerce Store | Business Moves With Commerce",
@@ -14,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body><CartProvider><CurrencyProvider>{children}<MobileBottomNav /></CurrencyProvider></CartProvider></body>
+      <body><CustomerThemeProvider><CartProvider><CurrencyProvider>{children}<MobileBottomNav /></CurrencyProvider></CartProvider></CustomerThemeProvider></body>
     </html>
   );
 }
