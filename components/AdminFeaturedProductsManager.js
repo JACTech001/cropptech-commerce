@@ -111,8 +111,8 @@ export default function AdminFeaturedProductsManager() {
       </div>
 
       <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Featured products sections">
-        <button type="button" className={activeView === "selected" ? "active" : ""} aria-pressed={activeView === "selected"} onClick={() => setActiveView("selected")}>FEATURED SELECTION</button>
-        <button type="button" className={activeView === "catalogue" ? "active" : ""} aria-pressed={activeView === "catalogue"} onClick={() => setActiveView("catalogue")}><Search size={14}/> PRODUCT CATALOGUE</button>
+        <button type="button" className={activeView === "selected" ? "is-active" : ""} aria-pressed={activeView === "selected"} onClick={() => setActiveView("selected")}>FEATURED SELECTION</button>
+        <button type="button" className={activeView === "catalogue" ? "is-active" : ""} aria-pressed={activeView === "catalogue"} onClick={() => setActiveView("catalogue")}><Search size={14}/> PRODUCT CATALOGUE</button>
       </nav>
       {error && <p className={styles.error} role="alert">{error}</p>}
       {notice && <p className={styles.notice} role="status"><Check size={15} />{notice}</p>}
