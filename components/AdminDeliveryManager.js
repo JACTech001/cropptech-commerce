@@ -3,15 +3,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { CheckCircle2, LoaderCircle, MapPin, Pencil, PlusCircle, RefreshCw, ShieldOff, ShieldCheck, Truck, X } from "lucide-react";
 
-const emptyZone = {
-  name: "",
-  state: "",
-  city: "",
-  fee: "",
-  estimatedMinDays: "2",
-  estimatedMaxDays: "5",
-};
-
 export default function AdminDeliveryManager() {
   const [zones, setZones] = useState([]);
   const [loading, setLoading] = useState(true);
