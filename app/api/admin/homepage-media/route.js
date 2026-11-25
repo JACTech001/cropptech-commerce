@@ -50,6 +50,7 @@ export async function PUT(request) {
       url: item.url,
       publicId: item.publicId.trim().slice(0, 250),
       altText: typeof item.altText === "string" ? item.altText.trim().slice(0, 250) : "",
+      fit: item.fit === "cover" ? "cover" : "contain",
     };
   }
 
