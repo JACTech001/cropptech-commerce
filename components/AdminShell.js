@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Bell, ChevronLeft, ChevronRight, Command, ImagePlus, LayoutDashboard, Package, Search, Settings2, ShoppingBag, X } from "lucide-react";
+import { Bell, ChevronLeft, ChevronRight, Command, ImagePlus, LayoutDashboard, Package, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X } from "lucide-react";
 
 const sections = [
   { items: [
@@ -15,16 +15,37 @@ const sections = [
   ]},
   { label: "STORE OPERATIONS", items: [
     { href: "/admin/payments", title: "Payment reviews", icon: Bell },
-    { href: "/admin/settings", title: "Delivery & settings", icon: Settings2 },
+    { href: "/admin/delivery", title: "Delivery", icon: Truck },
+    { href: "/admin/settings", title: "Settings", icon: Settings2 },
   ]},
 ];
 
-export default function AdminShell({ children, email, adminName }) {
+export default function AdminShell({ children, email, adminName, isSuperAdmin = false }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [theme, setTheme] = useState("system");
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem("cropptech-admin-theme");
+      if (["light", "dark", "system"].includes(saved)) setTheme(saved);
+    } catch {}
+    const onThemeChange = (event) => setTheme(event.detail || "system");
+    window.addEventListener("cropptech-admin-theme-change", onThemeChange);
+    return () => window.removeEventListener("cropptech-admin-theme-change", onThemeChange);
+  }, []);
+
+  const [systemDark, setSystemDark] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const update = () => setSystemDark(media.matches);
+    update(); media.addEventListener?.("change", update);
+    return () => media.removeEventListener?.("change", update);
+  }, []);
+  const darkMode = theme === "dark" || (theme === "system" && systemDark);
 
   useEffect(() => {
     const onKey = (event) => {
@@ -43,11 +64,14 @@ export default function AdminShell({ children, email, adminName }) {
     { title: "Store Front Studio", detail: "Curate homepage images and visual placements", href: "/admin/homepage-media" },
     { title: "Orders", detail: "Review orders and fulfilment", href: "/admin/orders" },
     { title: "Payment reviews", detail: "Review customer transfer submissions", href: "/admin/payments" },
-    { title: "Delivery and settings", detail: "Bank account and delivery zones", href: "/admin/settings" },
+    { title: "Delivery", detail: "Delivery zones, fees and estimates", href: "/admin/delivery" },
+    { title: "Settings", detail: "Payment and store configuration", href: "/admin/settings" },
+    { title: "Admin account", detail: "Personal account and appearance", href: "/admin/account" },
+    ...(isSuperAdmin ? [{ title: "Admin management", detail: "Grant, deactivate and restore admin access", href: "/admin/team" }] : []),
   ].filter((item) => (item.title + " " + item.detail).toLowerCase().includes(query.toLowerCase()));
 
   return (
-    <div className={"admin-shell " + (collapsed ? "is-collapsed " : "") + (mobileOpen ? "mobile-nav-open" : "")}>
+    <div className={"admin-shell " + (collapsed ? "is-collapsed " : "") + (mobileOpen ? "mobile-nav-open" : "")} data-theme={darkMode ? "dark" : "light"}>
       <aside className="admin-sidebar">
         <Link href="/admin" className="admin-shell-brand"><Image src="/brand/cropplogotextcommerce-transparent.png" alt="CROPPTECH COMMERCE STORE" width={190} height={54} priority className="admin-shell-logo"/></Link>
         {sections.map((section) => <nav className="admin-nav-group" aria-label={section.label || "Main navigation"} key={section.items[0]?.href || "admin-navigation"}>
@@ -58,6 +82,11 @@ export default function AdminShell({ children, email, adminName }) {
             </Link>
           ); })}
         </nav>)}
+        <nav className="admin-nav-group" aria-label="Personal account">
+          <p>PERSONAL</p>
+          <Link href="/admin/account" className={"admin-nav-link " + (pathname === "/admin/account" ? "active" : "")} onClick={() => setMobileOpen(false)}><UserRound size={17}/><span>Admin Account</span></Link>
+          {isSuperAdmin && <Link href="/admin/team" className={"admin-nav-link " + (pathname === "/admin/team" ? "active" : "")} onClick={() => setMobileOpen(false)}><Users size={17}/><span>Admin Management</span></Link>}
+        </nav>
         <div className="admin-sidebar-bottom">
           <div className="admin-role-chip"><span className="admin-role-dot"/><span>ADMIN ACCESS</span></div>
           <span className="admin-sidebar-email" title={email}>{email}</span>
