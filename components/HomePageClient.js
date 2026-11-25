@@ -15,6 +15,7 @@ import ProductAddButton from "../components/ProductAddButton";
 import { CartLink } from "../components/CartProvider";
 import { CurrencySelector, ProductPrice } from "../components/CurrencyProvider";
 import AuthAccountControl from "../components/AuthAccountControl";
+import HeroCarousel from "./HeroCarousel";
 
 const collections = [
   {
@@ -197,21 +198,7 @@ export default function HomePage({ firstName, initialHomepageMedia = {} }) {
         </section>
       )}
 
-      <section className="hero">
-        <div className="hero-image" style={homepageMedia.hero_main?.url ? { "--hero-image-desktop": `url("${homepageMedia.hero_main.desktopUrl || homepageMedia.hero_main.url}")`, "--hero-image-mobile": `url("${homepageMedia.hero_main.url}")` } : undefined} />
-        <div className="hero-shade" />
-        <div className="hero-content">
-          <p className="eyebrow hero-eyebrow">CROPPTECH COMMERCE — THE LINEN SHIRT EDIT</p>
-          <h1>The linen fashion<br /><em>starts here.</em></h1>
-          <p className="hero-copy">
-            Discover breathable linen wear for men and women. Explore relaxed shirts, considered sets and effortless pieces made for everyday living.
-          </p>
-          <Link className="light-button" href="/shop?collection=linen">
-            SHOP LINEN WEAR <ArrowUpRight size={16} />
-          </Link>
-        </div>
-        <p className="hero-side-note">A NEW PERSPECTIVE ON EVERYDAY STYLE</p>
-      </section>
+      <HeroCarousel homepageMedia={homepageMedia} />
 
       <section className="intro-strip" id="story">
         <p>BUSINESS MOVES WITH COMMERCE.</p>
