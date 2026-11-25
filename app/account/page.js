@@ -92,7 +92,7 @@ export default async function AccountPage() {
         </div>
 
         <div className="account-sections">
-          <details className="account-accordion">
+          <details className="account-accordion" name="customer-account-sections">
             <summary>
               <span className="account-accordion-icon"><UserRound size={19} /></span>
               <span className="account-accordion-copy"><strong>Account details</strong><small>${user.fullName || "CroppTech customer"} · ${user.email}</small></span>
@@ -112,7 +112,7 @@ export default async function AccountPage() {
             </div>
           </details>
 
-          <details className="account-accordion">
+          <details className="account-accordion" name="customer-account-sections">
             <summary>
               <span className="account-accordion-icon"><Headset size={19} /></span>
               <span className="account-accordion-copy"><strong>Customer care & support</strong><small>Ask a question, report an issue or follow your support requests.</small></span>
@@ -124,7 +124,7 @@ export default async function AccountPage() {
             </div>
           </details>
 
-          <details className="account-accordion">
+          <details className="account-accordion" name="customer-account-sections">
             <summary>
               <span className="account-accordion-icon"><Package size={19} /></span>
               <span className="account-accordion-copy"><strong>Order history</strong><small>${orders.length} ${orders.length === 1 ? "order" : "orders"} · View purchases, payment and delivery status.</small></span>
