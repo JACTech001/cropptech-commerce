@@ -146,6 +146,7 @@ model User {
   reviewedRefunds       Refund[]               @relation("RefundReviewedBy")
   auditLogs             AdminAuditLog[]
   notifications         CustomerNotification[]
+  idempotencyRecords    IdempotencyRecord[]
 
   @@unique([authProvider, authSubject])
   @@index([role, isActive])
@@ -669,4 +670,22 @@ model PaymentReceipt {
 
   @@unique([paymentId, orderId])
   @@index([issuedAt])
+}
+
+
+model IdempotencyRecord {
+  id          String   @id @default(cuid())
+  customerId  String
+  scope       String
+  key         String
+  requestHash String   @db.VarChar(64)
+  response    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  customer User @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@unique([customerId, scope, key])
+  @@index([customerId, createdAt])
+  @@index([scope, createdAt])
 }
