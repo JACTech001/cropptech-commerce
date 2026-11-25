@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowUpRight, Package, ShoppingBag, UserRound } from "lucide
 import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import AccountSignOutButton from "../../components/AccountSignOutButton";
+import CustomerNotificationBell from "../../components/CustomerNotificationBell";
 import { redirectAdminFromCustomerPages } from "../../lib/auth/customer-access";
 
 export const dynamic = "force-dynamic";
@@ -86,7 +87,7 @@ export default async function AccountPage() {
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" />
         </Link>
-        <span className="account-top-label">MY ACCOUNT</span>
+        <CustomerNotificationBell />
       </header>
 
       <div className="account-wrap">
