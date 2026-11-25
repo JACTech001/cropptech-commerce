@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Music2 } from "lucide-react";
 import { CartLink } from "./CartProvider";
 
 const footerLinks = [
@@ -26,6 +26,7 @@ export default function StorePageShell({ eyebrow, title, intro, children }) {
             <Link href="/about">OUR STORY</Link>
             <Link href="/contact">CONTACT</Link>
           </nav>
+          <a className="desktop-tiktok-link info-tiktok-link" href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="Follow CroppTech Commerce on TikTok" title="Follow us on TikTok"><Music2 size={18}/><span>TIKTOK</span></a>
           <CartLink className="info-cart-link" />
         </div>
       </header>

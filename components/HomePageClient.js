@@ -168,6 +168,7 @@ export default function HomePage({ firstName, initialHomepageMedia = {} }) {
             <Search size={19} strokeWidth={1.6} />
           </button>
           <CurrencySelector />
+          <a className="desktop-tiktok-link" href="https://www.tiktok.com/@cropp.tech.commercestore?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="Follow CroppTech Commerce on TikTok" title="Follow us on TikTok"><Music2 size={19} strokeWidth={1.8}/><span>TIKTOK</span></a>
           <AuthAccountControl firstName={firstName} />
           <CartLink className="home-cart-link" />
         </div>

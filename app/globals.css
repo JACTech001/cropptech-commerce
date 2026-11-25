@@ -4175,3 +4175,13 @@ html[data-customer-theme="dark"] .mobile-bottom-nav-link.is-active{color:#ff6573
 .admin-shell[data-theme="dark"] .admin-home-ai-mode{color:#c4cbd5}
 .admin-shell[data-theme="dark"] .admin-home-ai-mode select{background:#11161d;border-color:#3a4350;color:#edf0f4}
 @media(max-width:480px){.admin-home-ai-previews{grid-template-columns:minmax(0,1fr) minmax(0,.72fr)}}
+
+
+/* CROPPTECH TikTok shortcut — centered mobile tab and desktop header link */
+@media(max-width:760px){.mobile-bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr))}.mobile-bottom-nav-tiktok{color:#fff!important}.mobile-bottom-nav-tiktok .mobile-bottom-nav-icon{color:#fff;filter:drop-shadow(2px 0 0 #FE2C55) drop-shadow(-2px 0 0 #25F4EE)}.mobile-bottom-nav-tiktok>span:last-child{color:#fff}.desktop-tiktok-link{display:none!important}.customer-header-actions{gap:0}}
+.desktop-tiktok-link{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;color:var(--ink,#222);font-size:9px;font-weight:700;letter-spacing:1px;white-space:nowrap;transition:color .2s ease,transform .2s ease}
+.desktop-tiktok-link svg{color:#171717;filter:drop-shadow(1.5px 0 0 #FE2C55) drop-shadow(-1.5px 0 0 #25F4EE)}
+.desktop-tiktok-link:hover{color:#b31335;transform:translateY(-1px)}
+.info-tiktok-link{margin-right:2px}
+.customer-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:18px}
+@media(min-width:761px){.mobile-bottom-nav{display:none!important}}
