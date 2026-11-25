@@ -36,7 +36,7 @@ export default function PaymentSubmissionForm({ orderNumber, amountDue }) {
         idempotencyKey = typeof crypto.randomUUID === "function"
           ? crypto.randomUUID().replaceAll("-", "")
           : Array.from(crypto.getRandomValues(new Uint8Array(24)), (byte) => byte.toString(16).padStart(2, "0")).join("");
-        localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey }));
+        try { localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey })); } catch {}
       }
       const response = await fetch(`/api/orders/${encodeURIComponent(orderNumber)}/payment-submissions`, {
         method: "POST",
@@ -46,7 +46,7 @@ export default function PaymentSubmissionForm({ orderNumber, amountDue }) {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "We could not submit your payment details.");
       setMessage(data.message || "Your payment submission has been received.");
-      localStorage.removeItem(storageKey);
+      try { localStorage.removeItem(storageKey); } catch {}
       formElement.reset();
       router.refresh();
     } catch (submitError) {
