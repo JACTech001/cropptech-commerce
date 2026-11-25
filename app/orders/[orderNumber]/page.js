@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ArrowLeft, CheckCircle2, Clock3, PackageCheck } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Clock3, Truck } from "lucide-react";
 import { getCurrentAppUser } from "../../../lib/auth/user";
 import { prisma } from "../../../lib/db";
 import { decryptBankAccountNumber } from "../../../lib/security/bank-account-encryption";
@@ -143,7 +143,7 @@ export default async function OrderDetailsPage({ params }) {
           <div className="order-history-list">
             {order.statusHistory.map((entry) => (
               <div className="order-history-item" key={entry.id}>
-                <PackageCheck size={16}/>
+                <Truck size={16}/>
                 <div><strong>{orderStatusLabels[entry.toStatus] || entry.toStatus}</strong><span>{entry.note || "Order status updated"}</span><small>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(entry.createdAt)}</small></div>
               </div>
             ))}
