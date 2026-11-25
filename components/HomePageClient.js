@@ -117,7 +117,7 @@ export default function HomePage({ firstName }) {
     };
   }, [menuOpen]);
 
-  const homepageProducts = featuredSelectionConfigured ? products.filter((product) => product.featured).slice(0, 6) : products.slice(0, 6);
+  const homepageProducts = featuredSelectionConfigured ? products.filter((product) => product.featured).sort((a, b) => a.featuredOrder - b.featuredOrder).slice(0, 6) : products.slice(0, 6);
 
   const searchResults = searchQuery.trim()
     ? products.filter((product) => [product.name, product.category, product.audience, product.tone].some((value) => value.toLowerCase().includes(searchQuery.trim().toLowerCase())))
