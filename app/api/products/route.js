@@ -21,15 +21,8 @@ export async function GET() {
     : [];
   const selectedOrder = new Map(selectedIds.map((id, index) => [id, index]));
   const sellableRecords = records.filter((product) => product.variants.length > 0 && product.images.length > 0);
-  const orderedRecords = configured
-    ? [...sellableRecords].sort((a, b) => {
-        const aIndex = selectedOrder.has(a.id) ? selectedOrder.get(a.id) : Number.MAX_SAFE_INTEGER;
-        const bIndex = selectedOrder.has(b.id) ? selectedOrder.get(b.id) : Number.MAX_SAFE_INTEGER;
-        return aIndex - bIndex || (a.isFeatured === b.isFeatured ? b.updatedAt - a.updatedAt : a.isFeatured ? -1 : 1);
-      })
-    : sellableRecords;
 
-  const products = orderedRecords.map((product) => {
+  const products = sellableRecords.map((product) => {
     const prices = product.variants.map((variant) => Number(variant.price));
     const colours = [...new Set(product.variants.map((variant) => variant.colour))];
     const hasStock = product.variants.some((variant) => variant.stockQuantity > 0);
