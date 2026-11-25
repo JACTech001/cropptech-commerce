@@ -34,8 +34,17 @@ export default function AdminShell({ children, email, adminName, isSuperAdmin = 
       if (["light", "dark", "system"].includes(saved)) setTheme(saved);
     } catch {}
     const onThemeChange = (event) => setTheme(event.detail || "system");
+    const onStorage = (event) => {
+      if (event.key === "cropptech-admin-theme") {
+        setTheme(["light", "dark", "system"].includes(event.newValue) ? event.newValue : "system");
+      }
+    };
     window.addEventListener("cropptech-admin-theme-change", onThemeChange);
-    return () => window.removeEventListener("cropptech-admin-theme-change", onThemeChange);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("cropptech-admin-theme-change", onThemeChange);
+      window.removeEventListener("storage", onStorage);
+    };
   }, []);
 
   const [systemDark, setSystemDark] = useState(false);
@@ -88,7 +97,7 @@ export default function AdminShell({ children, email, adminName, isSuperAdmin = 
           {isSuperAdmin && <Link href="/admin/team" className={"admin-nav-link " + (pathname === "/admin/team" ? "active" : "")} onClick={() => setMobileOpen(false)}><Users size={17}/><span>Admin Management</span></Link>}
         </nav>
         <div className="admin-sidebar-bottom">
-          <div className="admin-role-chip"><span className="admin-role-dot"/><span>ADMIN ACCESS</span></div>
+          <div className="admin-role-chip"><span className="admin-role-dot"/><span>{isSuperAdmin ? "SUPER ADMIN ACCESS" : "ADMIN ACCESS"}</span></div>
           <span className="admin-sidebar-email" title={email}>{email}</span>
           <button type="button" className="admin-collapse-button" onClick={() => setCollapsed((value) => !value)} aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}>{collapsed ? <ChevronRight size={16}/> : <><ChevronLeft size={16}/><span>Collapse sidebar</span></>}</button>
         </div>
