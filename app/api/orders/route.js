@@ -142,6 +142,7 @@ export async function POST(request) {
           statusHistory: { create: { fromStatus: null, toStatus: "AWAITING_PAYMENT", note: "Order placed by customer." } },
           payment: {
             create: {
+              customerId: access.user.id,
               status: "UNPAID",
               amountDue: total,
               amountPaid: 0,
