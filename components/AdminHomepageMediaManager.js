@@ -133,7 +133,7 @@ export default function AdminHomepageMediaManager() {
             <article className="admin-home-media-card" key={slot.key}>
               <div className="admin-home-media-card-heading"><span>{slot.title}</span><small>{slot.ratio}</small></div>
               <div className="admin-home-media-location">{slot.location}</div>
-              <div className="admin-home-media-preview">
+              <div className="admin-home-media-preview" style={item?.width > 0 && item?.height > 0 ? { aspectRatio: `${item.width} / ${item.height}` } : undefined}>
                 {item?.url ? <Image src={item.url} alt={item.altText || slot.title} fill sizes="(max-width: 700px) 100vw, 33vw" style={{ objectFit: "contain" }} onLoad={(event) => { const image = event.currentTarget; if (!item.width || !item.height) setMedia((current) => ({ ...current, [slot.key]: { ...current[slot.key], width: image.naturalWidth, height: image.naturalHeight } })); }} unoptimized /> : <div className="admin-home-media-empty"><ImagePlus size={25}/><span>Using current storefront image</span><small>{slot.fallback}</small></div>}
               </div>
               {item?.url && <>
