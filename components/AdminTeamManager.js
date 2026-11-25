@@ -22,7 +22,18 @@ export default function AdminTeamManager() {
     } catch (err) { setError(err.message); }
     finally { setLoading(false); }
   }, []);
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/admin/team", { cache: "no-store" })
+      .then(async (response) => {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || "Could not load administrator accounts.");
+        if (!cancelled) { setAdmins(data.admins || []); setLogs(data.activity || []); }
+      })
+      .catch((err) => { if (!cancelled) setError(err.message); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
 
   async function addAdmin(event) {
     event.preventDefault();
