@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronLeft, ChevronRight, Command, ImagePlus, LayoutDashboard, Package, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Command, ImagePlus, LayoutDashboard, Package, Boxes, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X } from "lucide-react";
 import AdminNotificationBell from "./AdminNotificationBell";
 
 const sections = [
@@ -12,6 +12,7 @@ const sections = [
     { href: "/admin", title: "Overview", icon: LayoutDashboard },
     { href: "/admin/orders", title: "Orders", icon: ShoppingBag },
     { href: "/admin/products", title: "Products", icon: Package },
+    { href: "/admin/inventory", title: "Inventory", icon: Boxes },
     { href: "/admin/homepage-media", title: "Store Front Studio", icon: ImagePlus },
   ]},
   { label: "STORE OPERATIONS", items: [
@@ -73,6 +74,7 @@ export default function AdminShell({ children, email, adminName, isSuperAdmin = 
   const commands = [
     { title: "Overview", detail: "Dashboard summary", href: "/admin" },
     { title: "Manage products", detail: "Create, edit and publish products", href: "/admin/products" },
+    { title: "Inventory", detail: "Stock levels, adjustments and low-stock variants", href: "/admin/inventory" },
     { title: "Store Front Studio", detail: "Curate homepage images and visual placements", href: "/admin/homepage-media" },
     { title: "Orders", detail: "Review orders and fulfilment", href: "/admin/orders" },
     { title: "Payment reviews", detail: "Review customer transfer submissions", href: "/admin/payments" },
