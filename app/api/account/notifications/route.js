@@ -4,6 +4,7 @@ import { prisma } from "../../../../lib/db";
 const response = (body, status = 200) => Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
 
 function notificationHref(message) {
+  if (/support request|\\bCT-\\d{8}-[A-F0-9]+\\b/i.test(String(message || ""))) return "/support";
   const match = String(message || "").match(/order\s+([A-Z0-9-]+)/i);
   return match ? "/orders/" + encodeURIComponent(match[1]) : "/account";
 }
