@@ -94,9 +94,9 @@ export default function AdminReturnsManager() {
       {error && <p className={styles.error} role="alert">{error}</p>}
       {message && <p className={styles.success} role="status">{message}</p>}
       <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Returns and refunds sections">
-        <button type="button" className={activeView === "returns" ? "active" : ""} aria-pressed={activeView === "returns"} onClick={() => setActiveView("returns")}>RETURN REQUESTS</button>
-        <button type="button" className={activeView === "refunds" ? "active" : ""} aria-pressed={activeView === "refunds"} onClick={() => setActiveView("refunds")}>REFUNDS</button>
-        <button type="button" className={activeView === "create" ? "active" : ""} aria-pressed={activeView === "create"} onClick={() => setActiveView("create")}><Plus size={14}/> CREATE REFUND</button>
+        <button type="button" className={activeView === "returns" ? "is-active" : ""} aria-pressed={activeView === "returns"} onClick={() => setActiveView("returns")}>RETURN REQUESTS</button>
+        <button type="button" className={activeView === "refunds" ? "is-active" : ""} aria-pressed={activeView === "refunds"} onClick={() => setActiveView("refunds")}>REFUNDS</button>
+        <button type="button" className={activeView === "create" ? "is-active" : ""} aria-pressed={activeView === "create"} onClick={() => setActiveView("create")}><Plus size={14}/> CREATE REFUND</button>
       </nav>
       <form className={styles.createCard} hidden={activeView !== "create"} onSubmit={createRefund}>
         <div><p className="eyebrow">ISSUE A REFUND</p><h2>Create refund request</h2><p>Only verified payments with a remaining refundable balance are available. A refund must be processed externally before it can be marked completed.</p></div>
@@ -211,9 +211,9 @@ export default function AdminReturnsManager() {
       {error && <p className={styles.error} role="alert">{error}</p>}
       {message && <p className={styles.success} role="status">{message}</p>}
       <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Returns and refunds sections">
-        <button type="button" className={activeView === "returns" ? "active" : ""} aria-pressed={activeView === "returns"} onClick={() => setActiveView("returns")}>RETURN REQUESTS</button>
-        <button type="button" className={activeView === "refunds" ? "active" : ""} aria-pressed={activeView === "refunds"} onClick={() => setActiveView("refunds")}>REFUNDS</button>
-        <button type="button" className={activeView === "create" ? "active" : ""} aria-pressed={activeView === "create"} onClick={() => setActiveView("create")}><Plus size={14}/> CREATE REFUND</button>
+        <button type="button" className={activeView === "returns" ? "is-active" : ""} aria-pressed={activeView === "returns"} onClick={() => setActiveView("returns")}>RETURN REQUESTS</button>
+        <button type="button" className={activeView === "refunds" ? "is-active" : ""} aria-pressed={activeView === "refunds"} onClick={() => setActiveView("refunds")}>REFUNDS</button>
+        <button type="button" className={activeView === "create" ? "is-active" : ""} aria-pressed={activeView === "create"} onClick={() => setActiveView("create")}><Plus size={14}/> CREATE REFUND</button>
       </nav>
       <form className={styles.createCard} hidden={activeView !== "create"} onSubmit={createRefund}>
         <div><p className="eyebrow">ISSUE A REFUND</p><h2>Create refund request</h2><p>Only verified payments with a remaining refundable balance are available. A refund must be processed externally before it can be marked completed.</p></div>
