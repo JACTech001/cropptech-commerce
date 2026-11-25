@@ -17,7 +17,7 @@ export default async function AdminSettingsPage() {
           <div className="admin-heading">
             <p className="eyebrow">STORE MANAGEMENT / SETTINGS</p>
             <h1>Store <em>settings.</em></h1>
-            <p>Configure the store's payment destination and shared administrative preferences.</p>
+            <p>Configure the store&apos;s payment destination and shared administrative preferences.</p>
           </div>
           <AdminStoreSettings />
           <AdminThemeControl/>
