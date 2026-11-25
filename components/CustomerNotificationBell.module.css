@@ -1,0 +1,4 @@
+.link{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid #e6e8eb;border-radius:4px;color:#292d32;text-decoration:none;font-size:9px;font-weight:800;letter-spacing:.45px}
+.link svg{color:#e00016}.link b{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 4px;border-radius:20px;background:#e00016;color:#fff;font-size:8px}
+.srOnly{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+@media(max-width:560px){.link span:not(.srOnly){display:none}.link{padding:8px}}
