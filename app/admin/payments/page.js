@@ -16,7 +16,7 @@ export default async function AdminPaymentsPage() {
 
   const orders = await prisma.order.findMany({
     orderBy: { createdAt: "desc" }, take: 100,
-    include: { customer: { select: { email: true, fullName: true } }, payment: { include: { submissions: { orderBy: { submittedAt: "desc" }, include: { submittedBy: { select: { email: true, fullName: true } } } } } } },
+    include: { customer: { select: { email: true, fullName: true } }, payment: { include: { submissions: { orderBy: { submittedAt: "desc" } } } } },
   });
   const submissions = orders.flatMap((order) => (order.payment?.submissions || []).map((submission) => ({ order, submission })));
   const pending = submissions.filter(({ submission }) => submission.status === "PENDING");
@@ -29,7 +29,7 @@ export default async function AdminPaymentsPage() {
         {!submissions.length ? <section className="admin-empty"><Bell size={24}/><h2>No payment submissions</h2><p>Customer bank-transfer submissions will appear here when they submit payment details.</p></section> :
           <div className="admin-order-list">{submissions.map(({ order, submission }) => <article className="admin-order-card" key={submission.id}>
             <div className="admin-order-head"><div><p className="eyebrow">{order.orderNumber}</p><h2>{order.customer.fullName || order.customer.email}</h2><span>{order.customer.email}</span></div><div className="admin-order-total"><strong>{money(submission.amountTransferred)}</strong><span>{submission.status.replaceAll("_", " ")}</span></div></div>
-            <div className="admin-submission-list"><div className="admin-submission"><div className="admin-submission-facts"><span><b>Sender</b>{submission.accountNameUsed}</span><span><b>Bank</b>{submission.bankName}</span><span><b>Order total</b>{money(order.total)}</span><span><b>Reference</b>{submission.transactionReference || "Not provided"}</span><span><b>Submitted</b>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(submission.submittedAt)}</span><span><b>Submitted by</b>{submission.submittedBy?.fullName || submission.submittedBy?.email || "Customer"}</span></div>
+            <div className="admin-submission-list"><div className="admin-submission"><div className="admin-submission-facts"><span><b>Sender</b>{submission.accountNameUsed}</span><span><b>Bank</b>{submission.bankName}</span><span><b>Order total</b>{money(order.total)}</span><span><b>Reference</b>{submission.transactionReference || "Not provided"}</span><span><b>Submitted</b>{new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(submission.submittedAt)}</span><span><b>Submitted by</b>{order.customer.fullName || order.customer.email}</span></div>
               {submission.customerNote && <p className="admin-customer-note">Customer note: {submission.customerNote}</p>}
               {submission.receiptStorageKey && <a className="admin-receipt-link" href={"/api/admin/payment-submissions/" + submission.id + "/receipt"} target="_blank" rel="noreferrer">VIEW PRIVATE RECEIPT</a>}
               <PaymentReviewControls submissionId={submission.id} status={submission.status}/>
