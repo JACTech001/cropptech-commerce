@@ -4,6 +4,8 @@ UPDATE "Payment" p SET "customerId" = o."customerId" FROM "Order" o WHERE o.id =
 ALTER TABLE "Payment" ALTER COLUMN "customerId" SET NOT NULL;
 CREATE UNIQUE INDEX "Order_id_customerId_key" ON "Order"(id, "customerId");
 CREATE UNIQUE INDEX "Payment_id_customerId_key" ON "Payment"(id, "customerId");
+CREATE UNIQUE INDEX "OrderItem_id_orderId_key" ON "OrderItem"(id, "orderId");
+CREATE UNIQUE INDEX "ReturnRequest_id_orderId_key" ON "ReturnRequest"(id, "orderId");
 ALTER TABLE "Payment" DROP CONSTRAINT "Payment_orderId_fkey";
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_orderId_customerId_fkey" FOREIGN KEY ("orderId", "customerId") REFERENCES "Order"(id, "customerId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -21,8 +23,6 @@ ALTER TABLE "Refund" ADD CONSTRAINT "Refund_paymentId_orderId_fkey" FOREIGN KEY 
 ALTER TABLE "Refund" ADD CONSTRAINT "Refund_returnRequestId_orderId_fkey" FOREIGN KEY ("returnRequestId", "orderId") REFERENCES "ReturnRequest"(id, "orderId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- A returned item must belong to the same order as its return request.
-CREATE UNIQUE INDEX "OrderItem_id_orderId_key" ON "OrderItem"(id, "orderId");
-CREATE UNIQUE INDEX "ReturnRequest_id_orderId_key" ON "ReturnRequest"(id, "orderId");
 ALTER TABLE "ReturnItem" ADD COLUMN "orderId" TEXT;
 UPDATE "ReturnItem" ri SET "orderId" = rr."orderId" FROM "ReturnRequest" rr WHERE rr.id = ri."returnRequestId";
 ALTER TABLE "ReturnItem" ALTER COLUMN "orderId" SET NOT NULL;
