@@ -248,7 +248,7 @@ export default function HomePage({ firstName }) {
         <div className="collection-grid">
           {collections.map((item, index) => (
             <Link className="collection-card" href={item.href} key={item.title}>
-              <div className="collection-image" style={{ backgroundImage: `url("${homepageMedia[index === 0 ? "collection_men" : "collection_women"]?.url || item.image}")`, backgroundSize: "100% auto", backgroundPosition: "center", backgroundRepeat: "no-repeat", aspectRatio: naturalRatio(homepageMedia[index === 0 ? "collection_men" : "collection_women"]) || undefined }}>
+              <div className="collection-image" style={{ backgroundImage: `url("${homepageMedia[index === 0 ? "collection_men" : "collection_women"]?.url || item.image}")`, backgroundSize: "100% auto", backgroundPosition: "center", backgroundRepeat: "no-repeat", height: naturalRatio(homepageMedia[index === 0 ? "collection_men" : "collection_women"]) ? "auto" : undefined, aspectRatio: naturalRatio(homepageMedia[index === 0 ? "collection_men" : "collection_women"]) || undefined }}>
                 <span className="round-arrow"><ArrowUpRight size={20} /></span>
               </div>
               <div className="collection-card-copy">
@@ -325,7 +325,7 @@ export default function HomePage({ firstName }) {
         <div className="category-grid">
           {categories.map((category, index) => (
             <Link href={category.href} className="category-card" key={category.name}>
-              <div className="category-image" style={{ backgroundImage: `url("${homepageMedia[["category_linen_wear", "category_linen_sets", "category_linen_dresses"][index]]?.url || category.image}")`, backgroundSize: "100% auto", backgroundPosition: "center", backgroundRepeat: "no-repeat", aspectRatio: naturalRatio(homepageMedia[["category_linen_wear", "category_linen_sets", "category_linen_dresses"][index]]) || undefined }}>
+              <div className="category-image" style={{ backgroundImage: `url("${homepageMedia[["category_linen_wear", "category_linen_sets", "category_linen_dresses"][index]]?.url || category.image}")`, backgroundSize: "100% auto", backgroundPosition: "center", backgroundRepeat: "no-repeat", height: naturalRatio(homepageMedia[["category_linen_wear", "category_linen_sets", "category_linen_dresses"][index]]) ? "auto" : undefined, aspectRatio: naturalRatio(homepageMedia[["category_linen_wear", "category_linen_sets", "category_linen_dresses"][index]]) || undefined }}>
               </div>
               <div className="category-meta">
                 <div><h3>{category.name}</h3><p>{category.detail}</p></div>
