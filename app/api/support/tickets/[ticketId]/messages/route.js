@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
     const ticket = await prisma.customerSupportTicket.findFirst({
       where: { id: ticketId, ...(access.user.role === "CUSTOMER" ? { customerId: access.user.id } : {}) },
       select: {
-        id: true, ticketNumber: true, subject: true, category: true, status: true, priority: true,
+        id: true, ticketNumber: true, subject: true, category: true, issueType: true, status: true, priority: true,
         createdAt: true, updatedAt: true,
         order: { select: { orderNumber: true } },
         customer: { select: { fullName: true, email: true } },
