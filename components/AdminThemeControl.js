@@ -16,7 +16,9 @@ export default function AdminThemeControl() {
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(KEY);
-      if (["light", "dark", "system"].includes(saved)) setTheme(saved);
+      if (["light", "dark", "system"].includes(saved)) {
+        window.queueMicrotask(() => setTheme(saved));
+      }
     } catch {}
 
     const onThemeChange = (event) => setTheme(event.detail || "system");
