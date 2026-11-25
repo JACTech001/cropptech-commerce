@@ -8,6 +8,7 @@ import ProductAddButton from "../../components/ProductAddButton";
 import { CartLink } from "../../components/CartProvider";
 import { productSlug } from "../../data/products";
 import { CurrencySelector, ProductPrice } from "../../components/CurrencyProvider";
+import { ProductGridSkeleton } from "../../components/PageSkeleton";
 
 const audiences = ["All", "Men", "Women"];
 const categories = ["All categories", "Shirts", "Trousers", "Shorts", "Sets", "Dresses", "Skirts"];
@@ -92,7 +93,7 @@ export default function ShopPage() {
           </div>
         </div>
         <div className="shop-product-grid">
-          {catalogueLoading ? <div className="shop-empty"><p>Loading the current collection…</p></div> : visibleProducts.map((product) => (
+          {catalogueLoading ? <ProductGridSkeleton count={8} /> : visibleProducts.map((product) => (
             <article className="shop-product-card" key={product.id}>
               <div className="shop-product-image">
                 <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 50vw, (max-width: 900px) 33vw, 25vw" style={{ objectFit: "cover" }} />
