@@ -91,57 +91,85 @@ export default async function AccountPage() {
           <p>Manage your store activity and keep track of your orders in one place.</p>
         </div>
 
-        <div className="account-layout">
-          <aside className="account-profile-panel">
-            <div className="account-profile-icon"><UserRound size={23} /></div>
-            <p className="eyebrow">ACCOUNT DETAILS</p>
-            <h2>{user.fullName || "CroppTech customer"}</h2>
-            <p className="account-email">{user.email}</p>
-            <span className="account-member-label">CUSTOMER ACCOUNT</span>
-            <AccountSignOutButton />
-            <CustomerThemeControl />
-          </aside>
-
-          <section className="account-orders-panel">
-            <Link href="/support" className="account-support-entry"><span className="account-support-entry-icon"><Headset size={20}/></span><span><strong>Customer care & support</strong><small>Ask a question, report an issue or follow your support requests.</small></span><ArrowUpRight size={17}/></Link>
-            <div className="account-section-heading">
-              <div>
-                <p className="eyebrow">YOUR PURCHASES</p>
-                <h2>Order history <span>({orders.length})</span></h2>
+        <div className="account-sections">
+          <details className="account-accordion">
+            <summary>
+              <span className="account-accordion-icon"><UserRound size={19} /></span>
+              <span className="account-accordion-copy"><strong>Account details</strong><small>${user.fullName || "CroppTech customer"} · ${user.email}</small></span>
+              <span className="account-accordion-hint">PROFILE & SETTINGS</span>
+            </summary>
+            <div className="account-accordion-content">
+              <div className="account-profile-details">
+                <p className="eyebrow">YOUR CUSTOMER PROFILE</p>
+                <h2>{user.fullName || "CroppTech customer"}</h2>
+                <p className="account-email">{user.email}</p>
+                <span className="account-member-label">CUSTOMER ACCOUNT</span>
               </div>
-              <Link href="/shop" className="account-shop-link">SHOP COLLECTION <ArrowUpRight size={14} /></Link>
+              <div className="account-profile-actions">
+                <CustomerThemeControl />
+                <AccountSignOutButton />
+              </div>
             </div>
+          </details>
 
-            {orders.length ? (
-              <div className="account-order-list">
-                {orders.map((order) => (
-                  <article className="account-order-card" key={order.id}>
-                    <div className="account-order-main">
-                      <div className="account-order-icon"><Package size={17} /></div>
-                      <div>
-                        <span className="account-order-date">{date(order.placedAt)}</span>
-                        <h3>{order.orderNumber}</h3>
-                        <p>{order._count.items} {order._count.items === 1 ? "item" : "items"} · {paymentStatusLabels[order.paymentStatus] || order.paymentStatus}</p>
+          <details className="account-accordion">
+            <summary>
+              <span className="account-accordion-icon"><Headset size={19} /></span>
+              <span className="account-accordion-copy"><strong>Customer care & support</strong><small>Ask a question, report an issue or follow your support requests.</small></span>
+              <span className="account-accordion-hint">HELP & ENQUIRIES</span>
+            </summary>
+            <div className="account-accordion-content account-support-content">
+              <p>Need help with an order, payment, delivery or product? Open your support space to create a request and follow the conversation with our team.</p>
+              <Link href="/support" className="account-support-entry"><span className="account-support-entry-icon"><Headset size={20}/></span><span><strong>Open customer care & support</strong><small>View your requests or send a new message to our team.</small></span><ArrowUpRight size={17}/></Link>
+            </div>
+          </details>
+
+          <details className="account-accordion">
+            <summary>
+              <span className="account-accordion-icon"><Package size={19} /></span>
+              <span className="account-accordion-copy"><strong>Order history</strong><small>${orders.length} ${orders.length === 1 ? "order" : "orders"} · View purchases, payment and delivery status.</small></span>
+              <span className="account-accordion-hint">YOUR PURCHASES</span>
+            </summary>
+            <div className="account-accordion-content">
+              <div className="account-section-heading">
+                <div>
+                  <p className="eyebrow">YOUR PURCHASES</p>
+                  <h2>Recent orders <span>({orders.length})</span></h2>
+                </div>
+                <Link href="/shop" className="account-shop-link">SHOP COLLECTION <ArrowUpRight size={14} /></Link>
+              </div>
+
+              {orders.length ? (
+                <div className="account-order-list">
+                  {orders.map((order) => (
+                    <article className="account-order-card" key={order.id}>
+                      <div className="account-order-main">
+                        <div className="account-order-icon"><Package size={17} /></div>
+                        <div>
+                          <span className="account-order-date">{date(order.placedAt)}</span>
+                          <h3>{order.orderNumber}</h3>
+                          <p>{order._count.items} {order._count.items === 1 ? "item" : "items"} · {paymentStatusLabels[order.paymentStatus] || order.paymentStatus}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="account-order-side">
-                      <strong>{money(order.total)}</strong>
-                      <span className={"account-order-status account-status-" + order.status.toLowerCase()}>{orderStatusLabels[order.status] || order.status}</span>
-                      <Link href={"/orders/" + encodeURIComponent(order.orderNumber)}>VIEW ORDER <ArrowUpRight size={13} /></Link>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="account-empty-orders">
-                <ShoppingBag size={25} />
-                <h3>No orders yet</h3>
-                <p>Your purchases will appear here after you place an order.</p>
-                <Link href="/shop" className="text-link">EXPLORE THE COLLECTION <ArrowUpRight size={15} /></Link>
-              </div>
-            )}
-            {orders.length === 20 && <p className="account-muted">Showing your 20 most recent orders.</p>}
-          </section>
+                      <div className="account-order-side">
+                        <strong>{money(order.total)}</strong>
+                        <span className={"account-order-status account-status-" + order.status.toLowerCase()}>{orderStatusLabels[order.status] || order.status}</span>
+                        <Link href={"/orders/" + encodeURIComponent(order.orderNumber)}>VIEW ORDER <ArrowUpRight size={13} /></Link>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <div className="account-empty-orders">
+                  <ShoppingBag size={25} />
+                  <h3>No orders yet</h3>
+                  <p>Your purchases will appear here after you place an order.</p>
+                  <Link href="/shop" className="text-link">EXPLORE THE COLLECTION <ArrowUpRight size={15} /></Link>
+                </div>
+              )}
+              {orders.length === 20 && <p className="account-muted">Showing your 20 most recent orders.</p>}
+            </div>
+          </details>
         </div>
       </div>
 
