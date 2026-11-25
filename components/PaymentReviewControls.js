@@ -23,14 +23,26 @@ export default function PaymentReviewControls({ submissionId, status }) {
     setError("");
     setFeedback("");
     try {
+      const fingerprint = JSON.stringify({ decision, note: note.trim() });
+      const storageKey = `cropptech-payment-review:${submissionId}`;
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem(storageKey) || "null"); } catch {}
+      let idempotencyKey = saved?.fingerprint === fingerprint ? saved.key : "";
+      if (!idempotencyKey) {
+        idempotencyKey = typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID().replaceAll("-", "")
+          : Array.from(crypto.getRandomValues(new Uint8Array(24)), (byte) => byte.toString(16).padStart(2, "0")).join("");
+        localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey }));
+      }
       const response = await fetch(`/api/admin/payment-submissions/${encodeURIComponent(submissionId)}/decision`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Idempotency-Key": idempotencyKey },
         body: JSON.stringify({ decision, note }),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "Could not save this payment review.");
       setFeedback(data.message || "Payment review saved.");
+      localStorage.removeItem(storageKey);
       router.refresh();
     } catch (requestError) {
       setError(requestError.message || "Could not save this payment review.");
