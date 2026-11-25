@@ -203,7 +203,7 @@ export default function AdminBulkProductImport() {
           <p className="eyebrow">STORE MANAGEMENT / CATALOGUE / BULK IMPORT</p>
           <Link href="/admin/products" className="admin-bulk-back"><ArrowLeft size={15}/> BACK TO PRODUCT CATALOGUE</Link>
           <h1>Bulk product <em>import.</em></h1>
-          <p>Select a batch of product photos, organise them into separate products, add each product's details, then create draft listings in one pass.</p>
+          <p>Select a batch of product photos, organise them into separate products, add each product&apos;s details, then create draft listings in one pass.</p>
         </div>
 
         <section className="admin-bulk-source">
