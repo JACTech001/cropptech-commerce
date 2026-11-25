@@ -419,6 +419,7 @@ model PaymentSubmission {
 
   @@unique([bankName, transactionReference])
   @@index([paymentId, submittedAt])
+  @@index([paymentId, submittedById])
   @@index([submittedById, submittedAt])
   @@index([status, submittedAt])
 }
@@ -458,7 +459,9 @@ model Refund {
   reviewedBy    User?          @relation("RefundReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
 
   @@index([paymentId, requestedAt])
+  @@index([paymentId, orderId])
   @@index([returnRequestId])
+  @@index([returnRequestId, orderId])
   @@index([status, requestedAt])
   @@index([reviewedById, reviewedAt])
 }
@@ -600,7 +603,8 @@ model ReturnItem {
   orderItem     OrderItem     @relation(fields: [orderItemId, orderId], references: [id, orderId], onDelete: Restrict)
 
   @@unique([returnRequestId, orderItemId])
-  @@index([orderItemId])
+  @@index([returnRequestId, orderId])
+  @@index([orderItemId, orderId])
 }
 
 model AdminAuditLog {
