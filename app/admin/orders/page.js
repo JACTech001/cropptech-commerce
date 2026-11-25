@@ -81,7 +81,7 @@ export default async function AdminOrdersPage() {
   });
 
   return (
-    <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]}>
+    <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]} isSuperAdmin={user.role === "SUPER_ADMIN"}>
       <main className="admin-page admin-route-page admin-orders-page">
         <div className="admin-wrap">
           <div className="admin-heading admin-orders-page-heading">
