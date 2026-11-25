@@ -132,6 +132,31 @@ enum SupportTicketCategory {
   OTHER
 }
 
+enum SupportIssueType {
+  GENERAL_ENQUIRY
+  WRONG_ITEM_RECEIVED
+  ITEM_MISSING_FROM_ORDER
+  DAMAGED_ITEM_RECEIVED
+  DEFECTIVE_ITEM
+  ORDER_NOT_RECEIVED
+  ORDER_STATUS_OR_TRACKING
+  PAYMENT_DEBITED_NOT_CONFIRMED
+  DUPLICATE_PAYMENT
+  PAYMENT_AMOUNT_DISPUTE
+  REFUND_NOT_RECEIVED
+  DELIVERY_DELAY
+  DELIVERY_ADDRESS_PROBLEM
+  DELIVERY_FEE_DISPUTE
+  RETURN_OR_EXCHANGE
+  PRODUCT_QUALITY
+  WRONG_SIZE_OR_FIT
+  PRODUCT_DESCRIPTION_MISMATCH
+  ACCOUNT_ACCESS
+  WEBSITE_OR_CHECKOUT_ERROR
+  STAFF_OR_SERVICE_COMPLAINT
+  OTHER
+}
+
 enum SupportTicketStatus {
   OPEN
   IN_PROGRESS
@@ -751,6 +776,7 @@ model CustomerSupportTicket {
   orderId      String?
   assignedToId String?
   category     SupportTicketCategory  @default(GENERAL)
+  issueType    SupportIssueType       @default(GENERAL_ENQUIRY)
   status       SupportTicketStatus    @default(OPEN)
   priority     SupportTicketPriority  @default(NORMAL)
   subject      String
