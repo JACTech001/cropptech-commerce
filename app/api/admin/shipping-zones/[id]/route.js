@@ -117,7 +117,7 @@ export async function PATCH(request, { params }) {
         },
         select: { id: true },
       });
-      if (duplicate && zone.isActive) throw new Error("DELIVERY_ZONE_EXISTS");
+      if (duplicate) throw new Error("DELIVERY_ZONE_EXISTS");
 
       const location = zone.locations[0];
       const rate = zone.rates[0];
