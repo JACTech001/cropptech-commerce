@@ -121,6 +121,37 @@ enum NotificationStatus {
   READ
 }
 
+enum SupportTicketCategory {
+  GENERAL
+  ORDER_ISSUE
+  PAYMENT
+  DELIVERY
+  RETURN_REFUND
+  PRODUCT_QUESTION
+  ACCOUNT
+  OTHER
+}
+
+enum SupportTicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_CUSTOMER
+  RESOLVED
+  CLOSED
+}
+
+enum SupportTicketPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum SupportMessageSender {
+  CUSTOMER
+  STAFF
+}
+
 model User {
   id           String   @id @default(cuid())
   authProvider String
@@ -147,6 +178,9 @@ model User {
   auditLogs             AdminAuditLog[]
   notifications         CustomerNotification[]
   adminNotifications    AdminNotification[]
+  supportTickets        CustomerSupportTicket[] @relation("SupportTicketCustomer")
+  assignedSupportTickets CustomerSupportTicket[] @relation("SupportTicketAssignee")
+  supportMessages       SupportTicketMessage[]
   idempotencyRecords    IdempotencyRecord[]
 
   @@unique([authProvider, authSubject])
@@ -302,6 +336,7 @@ model Order {
   reservations    StockReservation[]
   shipments       Shipment[]
   returnRequests  ReturnRequest[]
+  supportTickets CustomerSupportTicket[]
 
   @@index([customerAddressId, customerId])
   @@index([shippingRateId])
@@ -706,4 +741,48 @@ model IdempotencyRecord {
   @@unique([customerId, scope, key])
   @@index([customerId, createdAt])
   @@index([scope, createdAt])
+}
+
+
+model CustomerSupportTicket {
+  id           String                 @id @default(cuid())
+  ticketNumber String                 @unique
+  customerId   String
+  orderId      String?
+  assignedToId String?
+  category     SupportTicketCategory  @default(GENERAL)
+  status       SupportTicketStatus    @default(OPEN)
+  priority     SupportTicketPriority  @default(NORMAL)
+  subject      String
+  lastMessageAt DateTime              @default(now())
+  resolvedAt   DateTime?
+  closedAt     DateTime?
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+
+  customer  User                  @relation("SupportTicketCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  assignee  User?                 @relation("SupportTicketAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  order     Order?                @relation(fields: [orderId, customerId], references: [id, customerId], onDelete: Restrict)
+  messages  SupportTicketMessage[]
+
+  @@index([customerId, updatedAt])
+  @@index([status, priority, lastMessageAt])
+  @@index([assignedToId, status, lastMessageAt])
+  @@index([orderId, customerId])
+}
+
+model SupportTicketMessage {
+  id          String               @id @default(cuid())
+  ticketId    String
+  senderId    String
+  senderRole  SupportMessageSender
+  body        String               @db.Text
+  isInternal  Boolean              @default(false)
+  createdAt   DateTime             @default(now())
+
+  ticket  CustomerSupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  sender  User                  @relation(fields: [senderId], references: [id], onDelete: Restrict)
+
+  @@index([ticketId, createdAt])
+  @@index([senderId, createdAt])
 }
