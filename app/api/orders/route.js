@@ -171,6 +171,16 @@ export async function POST(request) {
         include: { items: true, payment: true },
       });
 
+      await tx.customerNotification.create({
+        data: {
+          userId: access.user.id,
+          channel: "IN_APP",
+          subject: "Order received",
+          message: "Your order " + orderNumber + " has been placed successfully. Complete your bank transfer and submit the payment details for verification.",
+          status: "QUEUED",
+        },
+      });
+
       await tx.stockReservation.createMany({
         data: order.items.map((item) => ({
           orderId: order.id,
