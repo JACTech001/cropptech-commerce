@@ -223,8 +223,8 @@ export default function AdminProductsManager() {
         </div>
 
         <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Product management sections">
-          <button type="button" className={activeView === "catalogue" ? "active" : ""} aria-pressed={activeView === "catalogue"} onClick={() => setActiveView("catalogue")}><Search size={15}/> PRODUCT CATALOGUE</button>
-          <button type="button" className={activeView === "editor" ? "active" : ""} aria-pressed={activeView === "editor"} onClick={() => setActiveView("editor")}><Plus size={15}/> ADD / EDIT PRODUCT</button>
+          <button type="button" className={activeView === "catalogue" ? "is-active" : ""} aria-pressed={activeView === "catalogue"} onClick={() => setActiveView("catalogue")}><Search size={15}/> PRODUCT CATALOGUE</button>
+          <button type="button" className={activeView === "editor" ? "is-active" : ""} aria-pressed={activeView === "editor"} onClick={() => setActiveView("editor")}><Plus size={15}/> ADD / EDIT PRODUCT</button>
         </nav>
 
         {activeView === "catalogue" && <>
