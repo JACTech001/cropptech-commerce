@@ -6,6 +6,7 @@ import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import AccountSignOutButton from "../../components/AccountSignOutButton";
 import CustomerNotificationBell from "../../components/CustomerNotificationBell";
+import CustomerThemeControl from "../../components/CustomerThemeControl";
 import { redirectAdminFromCustomerPages } from "../../lib/auth/customer-access";
 
 export const dynamic = "force-dynamic";
@@ -105,6 +106,7 @@ export default async function AccountPage() {
             <p className="account-email">{user.email}</p>
             <span className="account-member-label">CUSTOMER ACCOUNT</span>
             <AccountSignOutButton />
+            <CustomerThemeControl />
           </aside>
 
           <section className="account-orders-panel">
