@@ -18,6 +18,19 @@ export default function AdminThemeControl() {
       const saved = window.localStorage.getItem(KEY);
       if (["light", "dark", "system"].includes(saved)) setTheme(saved);
     } catch {}
+
+    const onThemeChange = (event) => setTheme(event.detail || "system");
+    const onStorage = (event) => {
+      if (event.key === KEY) {
+        setTheme(["light", "dark", "system"].includes(event.newValue) ? event.newValue : "system");
+      }
+    };
+    window.addEventListener("cropptech-admin-theme-change", onThemeChange);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("cropptech-admin-theme-change", onThemeChange);
+      window.removeEventListener("storage", onStorage);
+    };
   }, []);
 
   function choose(value) {
