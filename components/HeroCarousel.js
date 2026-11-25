@@ -37,6 +37,8 @@ export default function HeroCarousel({ homepageMedia = {} }) {
     "--hero-image-mobile": `url("${mobileImage}")`,
     "--hero-image-position": activeSlide.positionDesktop || homepageMedia.hero_main?.positionDesktop || "center 38%",
     "--hero-image-position-mobile": activeSlide.positionMobile || homepageMedia.hero_main?.positionMobile || "58% center",
+    "--hero-image-size-desktop": activeSlide.fitDesktop || "cover",
+    "--hero-image-size-mobile": activeSlide.fitMobile || "cover",
   };
 
   function goTo(index) {
