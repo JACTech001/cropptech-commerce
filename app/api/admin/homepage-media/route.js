@@ -70,6 +70,38 @@ export async function PUT(request) {
     };
   }
 
+  const rawSlides = Array.isArray(body.media.hero_slides) ? body.media.hero_slides.slice(0, 8) : [];
+  if (Array.isArray(body.media.hero_slides) && body.media.hero_slides.length > 8) return error("You can add up to 8 additional hero slides.");
+  const validPositions = ["left top", "center top", "right top", "left center", "center center", "right center", "left bottom", "center bottom", "right bottom", "58% center"];
+  const slides = [];
+  for (const item of rawSlides) {
+    if (!item || !item.url) continue;
+    if (typeof item.url !== "string" || !item.url.startsWith("https://res.cloudinary.com/") ||
+        typeof item.publicId !== "string" || !item.publicId.trim()) {
+      return error("Every additional hero slide must use a valid Cloudinary image.");
+    }
+    if (item.desktopUrl && (typeof item.desktopUrl !== "string" || !item.desktopUrl.startsWith("https://res.cloudinary.com/") ||
+        typeof item.desktopPublicId !== "string" || !item.desktopPublicId.trim())) {
+      return error("A desktop hero image must be a valid Cloudinary image.");
+    }
+    slides.push({
+      id: typeof item.id === "string" && item.id.trim() ? item.id.trim().slice(0, 80) : `hero-slide-${slides.length + 1}`,
+      url: item.url,
+      publicId: item.publicId.trim().slice(0, 250),
+      desktopUrl: item.desktopUrl || "",
+      desktopPublicId: item.desktopUrl ? item.desktopPublicId.trim().slice(0, 250) : "",
+      altText: typeof item.altText === "string" ? item.altText.trim().slice(0, 250) : "",
+      width: Number.isFinite(Number(item.width)) ? Math.max(0, Math.min(20000, Math.round(Number(item.width)))) : 0,
+      height: Number.isFinite(Number(item.height)) ? Math.max(0, Math.min(20000, Math.round(Number(item.height)))) : 0,
+      desktopWidth: Number.isFinite(Number(item.desktopWidth)) ? Math.max(0, Math.min(20000, Math.round(Number(item.desktopWidth)))) : 0,
+      desktopHeight: Number.isFinite(Number(item.desktopHeight)) ? Math.max(0, Math.min(20000, Math.round(Number(item.desktopHeight)))) : 0,
+      positionDesktop: validPositions.includes(item.positionDesktop) ? item.positionDesktop : "center center",
+      positionMobile: validPositions.includes(item.positionMobile) ? item.positionMobile : "58% center",
+      active: item.active !== false,
+    });
+  }
+  if (slides.length) media.hero_slides = slides;
+
   try {
     await prisma.storeSetting.upsert({
       where: { key: KEY },
