@@ -32,7 +32,8 @@ export async function GET() {
   const products = orderedRecords.map((product) => {
     const prices = product.variants.map((variant) => Number(variant.price));
     const colours = [...new Set(product.variants.map((variant) => variant.colour))];
-    const featured = configured ? selectedOrder.has(product.id) : product.isFeatured;
+    const hasStock = product.variants.some((variant) => variant.stockQuantity > 0);
+    const featured = configured ? selectedOrder.has(product.id) && hasStock : product.isFeatured;
     return {
       id: product.id,
       name: product.name,
