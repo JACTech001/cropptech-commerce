@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getCurrentAppUser } from "../../../lib/auth/user";
 import { redirectAdminFromCustomerPages } from "../../../lib/auth/customer-access";
 import CustomerNotifications from "../../../components/CustomerNotifications";
+import CustomerNotificationBell from "../../../components/CustomerNotificationBell";
 
 export const dynamic = "force-dynamic";
 
@@ -15,9 +16,9 @@ export default async function CustomerNotificationsPage() {
   return (
     <main className="account-page">
       <header className="shop-topbar">
-        <Link href="/account" className="shop-back">MY ACCOUNT</Link>
+        <Link href="/shop" className="shop-back">CONTINUE SHOPPING</Link>
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home"><Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo"/></Link>
-        <span className="account-top-label">NOTIFICATIONS</span>
+        <CustomerNotificationBell />
       </header>
       <div className="account-wrap"><CustomerNotifications/></div>
       <footer className="shop-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><span>BUSINESS MOVES WITH COMMERCE.</span><Link href="/contact">CONTACT</Link></footer>
