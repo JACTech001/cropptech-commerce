@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Check, Clock3, LoaderCircle, Plus, RefreshCw, RotateCcw, X } from "lucide-react";
+import { Check, LoaderCircle, Plus, RefreshCw } from "lucide-react";
 import styles from "./AdminReturnsManager.module.css";
 
 const money = (value) => new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 2 }).format(Number(value || 0));
