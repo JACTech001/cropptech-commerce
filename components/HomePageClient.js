@@ -64,6 +64,7 @@ export default function HomePage({ firstName }) {
   const [email, setEmail] = useState("");
   const [newsletterMessage, setNewsletterMessage] = useState("");
   const [products, setProducts] = useState([]);
+  const [featuredSelectionConfigured, setFeaturedSelectionConfigured] = useState(false);
   const [productsLoading, setProductsLoading] = useState(true);
   const [productsError, setProductsError] = useState("");
   const [homepageMedia, setHomepageMedia] = useState({});
@@ -80,6 +81,7 @@ export default function HomePage({ firstName }) {
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Products could not be loaded.");
         setProducts(Array.isArray(data.products) ? data.products : []);
+        setFeaturedSelectionConfigured(data.featuredSelectionConfigured === true);
       } catch (error) {
         if (error.name !== "AbortError") setProductsError("We could not load products right now. Please visit the shop to try again.");
       } finally {
@@ -114,6 +116,8 @@ export default function HomePage({ firstName }) {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [menuOpen]);
+
+  const homepageProducts = featuredSelectionConfigured ? products.filter((product) => product.featured).slice(0, 6) : products.slice(0, 6);
 
   const searchResults = searchQuery.trim()
     ? products.filter((product) => [product.name, product.category, product.audience, product.tone].some((value) => value.toLowerCase().includes(searchQuery.trim().toLowerCase())))
@@ -272,13 +276,13 @@ export default function HomePage({ firstName }) {
         </div>
       </section>
 
-      <section className="home-featured-section section-pad" id="featured">
+      {(!featuredSelectionConfigured || homepageProducts.length > 0 || productsLoading || productsError) && <section className="home-featured-section section-pad" id="featured">
         <div className="section-heading">
           <div><p className="eyebrow">SHOP THE EDIT</p><h2>Pieces to<br /><em>make yours.</em></h2></div>
           <p className="section-aside">Choose your size and add a favourite directly to your cart, without leaving the home page.</p>
         </div>
         <div className="home-featured-grid">
-          {productsLoading ? <p className="home-products-state">Loading products from the store…</p> : productsError ? <p className="home-products-state" role="status">{productsError}</p> : products.length === 0 ? <p className="home-products-state">Our products will appear here as soon as they are published in the store.</p> : products.slice(0, 6).map((product) => {
+          {productsLoading ? <p className="home-products-state">Loading products from the store…</p> : productsError ? <p className="home-products-state" role="status">{productsError}</p> : homepageProducts.length === 0 ? <p className="home-products-state">Our products will appear here as soon as they are published in the store.</p> : homepageProducts.map((product) => {
             const slug = product.slug;
             return <article className="home-featured-card" key={product.id}>
               <Link href={"/shop/" + slug} className="home-featured-image"><Image src={product.image} alt={product.name} fill sizes="(max-width: 800px) 100vw, 33vw" /><span>{product.tag}</span></Link>
@@ -293,7 +297,7 @@ export default function HomePage({ firstName }) {
           })}
         </div>
         <div className="home-featured-footer"><Link href="/shop" className="text-link">VIEW ALL COLLECTIONS <ArrowUpRight size={16} /></Link></div>
-      </section>
+      </section>}
 
       <section className="linen-moodboard section-pad">
         <div className="moodboard-heading">
