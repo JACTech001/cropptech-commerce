@@ -52,6 +52,10 @@ export async function PUT(request) {
       altText: typeof item.altText === "string" ? item.altText.trim().slice(0, 250) : "",
       width: Number.isFinite(Number(item.width)) ? Math.max(0, Math.min(20000, Math.round(Number(item.width)))) : 0,
       height: Number.isFinite(Number(item.height)) ? Math.max(0, Math.min(20000, Math.round(Number(item.height)))) : 0,
+      ...(key === "hero_main" ? {
+        positionDesktop: ["left top", "center top", "right top", "left center", "center center", "right center", "left bottom", "center bottom", "right bottom"].includes(item.positionDesktop) ? item.positionDesktop : "center center",
+        positionMobile: ["left top", "center top", "right top", "left center", "center center", "right center", "left bottom", "center bottom", "right bottom", "58% center"].includes(item.positionMobile) ? item.positionMobile : "58% center",
+      } : {}),
     };
   }
 
