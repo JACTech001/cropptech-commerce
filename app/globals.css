@@ -4133,13 +4133,7 @@ html[data-customer-theme="dark"] .mobile-bottom-nav-link.is-active{color:#ff6573
 /* Store Front Studio: image-fit controls and complete-image previews */
 .admin-home-media-preview { background:#e9e2d8; }
 .admin-home-media-preview img { object-position:center; }
-.admin-home-media-fit { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin:0 0 10px; }
-.admin-home-media-fit > span { width:100%; color:#777; font-size:9px; font-weight:800; letter-spacing:.09em; }
-.admin-home-media-fit button { min-height:29px; padding:0 9px; border:1px solid #dedede; border-radius:6px; background:#fff; color:#555; font-size:9px; font-weight:750; cursor:pointer; }
-.admin-home-media-fit button.is-active { border-color:#e00016; background:#fff1f2; color:#c60015; }
-.admin-home-media-fit button:focus-visible { outline:2px solid #e00016; outline-offset:2px; }
 @media(max-width:680px) {
-  .admin-home-media-fit button { flex:1; }
 }
 
 
