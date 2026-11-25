@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCurrentAppUser } from "../../../lib/auth/user";
 import { redirectAdminFromCustomerPages } from "../../../lib/auth/customer-access";
 import CustomerNotifications from "../../../components/CustomerNotifications";
+import CustomerPageHeader from "../../../components/CustomerPageHeader";
 
 export const dynamic = "force-dynamic";
 
