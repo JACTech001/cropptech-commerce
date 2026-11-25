@@ -5,16 +5,17 @@ import { ArrowLeft, ArrowUpRight, Minus, Plus, ShoppingBag, Trash2 } from "lucid
 import { CartLink, useCart } from "../../components/CartProvider";
 import { products } from "../../data/products";
 import { ProductPrice } from "../../components/CurrencyProvider";
+import PageSkeleton from "../../components/PageSkeleton";
 
 export default function CartPage() {
   const { items, changeQuantity, removeItem, toggleItem, changeSize, selectedItems, selectedCount, count, ready } = useCart();
   const selectedSubtotal = selectedItems.reduce((sum, item) => sum + ((Number(item.price) || products.find(product => product.id === item.id)?.price || 0) * item.quantity), 0);
-  return <main className="cart-page">
+  if (!ready) return <PageSkeleton variant="cart" />;\n  return <main className="cart-page">
     <header className="shop-topbar"><Link href="/shop" className="shop-back"><ArrowLeft size={16}/> CONTINUE SHOPPING</Link><Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home"><Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" /></Link><CartLink className="shop-cart-link" /></header>
     <section className="cart-content">
       <p className="eyebrow">CROPPTECH COMMERCE STORE / YOUR SELECTION</p><h1 className="cart-page-title"><ShoppingBag size={35} strokeWidth={1.7}/> Your <em>cart.</em></h1>
       <p className="cart-intro">Review your selected pieces and sizes before placing your order.</p>
-      {!ready ? <p>Loading your cart...</p> : items.length === 0 ? <div className="cart-empty"><h2>Your cart is empty.</h2><p>Explore the collection and add pieces you like.</p><Link href="/shop" className="product-enquire-link">EXPLORE THE COLLECTION <ArrowUpRight size={16}/></Link></div> :
+      {items.length === 0 ? <div className="cart-empty"><h2>Your cart is empty.</h2><p>Explore the collection and add pieces you like.</p><Link href="/shop" className="product-enquire-link">EXPLORE THE COLLECTION <ArrowUpRight size={16}/></Link></div> :
       <><div className="cart-list">{items.map(item => <article className={"cart-item" + (item.selected === false ? " cart-item-unselected" : "")} key={item.key}>
         <label className="cart-item-check" aria-label={"Include " + item.name + " in order"}><input type="checkbox" checked={item.selected !== false} onChange={() => toggleItem(item.key)}/><span></span></label>
         <Link href={"/shop/" + item.slug} className="cart-item-image"><Image src={item.image} alt={item.name} fill sizes="110px" style={{objectFit:"cover"}}/></Link>
