@@ -302,6 +302,7 @@ model Order {
   returnRequests  ReturnRequest[]
 
   @@index([customerAddressId])
+  @@index([customerAddressId, customerId])
   @@index([shippingRateId])
   @@unique([id, customerId])
   @@index([customerId, createdAt])
@@ -395,6 +396,7 @@ model Payment {
   @@index([status, createdAt])
   @@unique([id, orderId])
   @@unique([id, customerId])
+  @@index([orderId, customerId])
   @@index([bankAccountId])
 }
 
@@ -663,4 +665,5 @@ model PaymentReceipt {
   payment Payment @relation(fields: [paymentId, orderId], references: [id, orderId], onDelete: Restrict)
 
   @@index([issuedAt])
+  @@index([paymentId, orderId])
 }
