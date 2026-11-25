@@ -24,8 +24,24 @@ export async function POST(request, { params }) {
   if (!["APPROVED", "REJECTED", "NEEDS_CLARIFICATION"].includes(decision)) return error("Choose a valid payment decision.", 400);
   if (decision !== "APPROVED" && !note) return error("Add a note explaining this decision for the customer.", 400);
 
+  const idempotencyKey = request.headers.get("idempotency-key") || "";
+  if (!/^[A-Za-z0-9_-]{16,128}$/.test(idempotencyKey)) return error("Review session expired. Refresh the page and try again.", 400);
+  const scope = "ADMIN_PAYMENT_DECISION:" + submissionId;
+  const requestHash = createHash("sha256").update(stableStringify({ decision, note })).digest("hex");
+  const existingRequest = await prisma.idempotencyRecord.findUnique({
+    where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
+  });
+  if (existingRequest) {
+    if (existingRequest.requestHash !== requestHash) return error("This review key was already used with different details.", 409);
+    if (existingRequest.response) return Response.json(existingRequest.response, { headers: { "Cache-Control": "no-store", "Idempotency-Replayed": "true" } });
+    return error("This payment review is still being processed. Refresh the page and check its status.", 409);
+  }
+
   try {
     const result = await prisma.$transaction(async (tx) => {
+      await tx.idempotencyRecord.create({
+        data: { customerId: access.user.id, scope, key: idempotencyKey, requestHash },
+      });
       const submission = await tx.paymentSubmission.findUnique({
         where: { id: submissionId },
         include: { payment: { include: { order: { include: { customer: true, items: true } } } } },
@@ -136,11 +152,24 @@ export async function POST(request, { params }) {
         },
       });
 
-      return { orderNumber: submission.payment.order.orderNumber, decision };
+      const responsePayload = { message: "Payment review saved.", orderNumber: submission.payment.order.orderNumber, decision };
+      await tx.idempotencyRecord.update({
+        where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
+        data: { response: responsePayload },
+      });
+      return responsePayload;
     });
 
-    return Response.json({ message: "Payment review saved.", ...result }, { headers: { "Cache-Control": "no-store" } });
+    return Response.json(result, { headers: { "Cache-Control": "no-store" } });
   } catch (reviewError) {
+    if (reviewError?.code === "P2002") {
+      const replay = await prisma.idempotencyRecord.findUnique({
+        where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
+      });
+      if (replay?.requestHash === requestHash && replay.response) {
+        return Response.json(replay.response, { headers: { "Cache-Control": "no-store", "Idempotency-Replayed": "true" } });
+      }
+    }
     const known = {
       SUBMISSION_NOT_FOUND: [404, "Payment submission not found."],
       SUBMISSION_ALREADY_REVIEWED: [409, "This payment submission has already been reviewed."],
