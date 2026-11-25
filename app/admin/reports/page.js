@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { ChartColumn, CircleDollarSign, ClipboardList, PackageCheck, RotateCcw } from "lucide-react";
+import { CircleDollarSign, ClipboardList, PackageCheck, RotateCcw } from "lucide-react";
 import { getCurrentAppUser } from "../../../lib/auth/user";
 import { prisma } from "../../../lib/db";
 import AdminShell from "../../../components/AdminShell";
