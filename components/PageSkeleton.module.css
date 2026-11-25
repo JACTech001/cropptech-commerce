@@ -28,3 +28,8 @@
 @media(prefers-reduced-motion:reduce){.line::after,.lineShort::after,.linePrice::after,.title::after,.subtitle::after,.image::after,.avatar::after,.rowEnd::after{animation:none}}
 :global(html[data-customer-theme="dark"]) .page{--skeleton-base:#292929;--skeleton-shine:rgba(255,255,255,.08);--skeleton-border:#383838;--skeleton-card:#1d1d1d}
 :global(html[data-admin-theme="dark"]) .page{--skeleton-base:#292929;--skeleton-shine:rgba(255,255,255,.08);--skeleton-border:#383838;--skeleton-card:#1d1d1d}
+
+.productGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;width:100%}
+.productCard{min-width:0;border:1px solid var(--skeleton-border,#e8e8e8);background:var(--skeleton-card,#fff);border-radius:8px;overflow:hidden}
+@media(max-width:900px){.productGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}}
+@media(max-width:620px){.productGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
