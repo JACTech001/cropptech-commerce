@@ -70,7 +70,7 @@ export default function AdminTeamManager() {
       </section>
       <section className="admin-team-list-card">
         <div className="admin-team-section-heading"><div><p className="eyebrow">ACCOUNTABILITY</p><h2>Recent access changes</h2></div></div>
-        {logs.length ? <div className="admin-team-activity">{logs.map((log) => <article key={log.id}><div><strong>{log.action.replaceAll("_", " ")}</strong><small>{log.actor?.fullName || log.actor?.email || "System"} · {log.entityId || "Account"}</small></div><time>{new Date(log.createdAt).toLocaleString("en-NG", { dateStyle: "medium", timeStyle: "short" })}</time></article>)}</div> : <p className="admin-setting-status">No administrator access changes recorded yet.</p>}
+        {logs.length ? <div className="admin-team-activity">{logs.map((log) => <article key={log.id}><div><strong>{log.action.replaceAll("_", " ")}</strong><small>{log.actor?.fullName || log.actor?.email || "System"} · {log.metadata?.email || log.entityId || "Account"}</small></div><time>{new Date(log.createdAt).toLocaleString("en-NG", { dateStyle: "medium", timeStyle: "short" })}</time></article>)}</div> : <p className="admin-setting-status">No administrator access changes recorded yet.</p>}
       </section>
     </div>
   );
