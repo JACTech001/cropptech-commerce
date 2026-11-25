@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { v2 as cloudinary } from "cloudinary";
 import { Prisma } from "@prisma/client";
 import { requireAppRole } from "../../../../../lib/auth/user";
@@ -53,6 +54,23 @@ export async function POST(request, { params }) {
     : ["image/jpeg", "image/png", "image/webp"];
   if (!allowed.includes(mime)) return error("Receipt must be a PDF, JPG, PNG or WEBP file.", 400);
 
+  const idempotencyKey = request.headers.get("idempotency-key") || "";
+  if (!/^[A-Za-z0-9_-]{16,128}$/.test(idempotencyKey)) return error("Payment submission session expired. Refresh the page and try again.", 400);
+  const buffer = Buffer.from(await receipt.arrayBuffer());
+  const receiptHash = createHash("sha256").update(buffer).digest("hex");
+  const scope = "CUSTOMER_PAYMENT_SUBMISSION:" + orderNumber;
+  const requestHash = createHash("sha256").update(JSON.stringify({
+    accountNameUsed, amountRaw, bankName, transactionReference, customerNote, receiptHash,
+  })).digest("hex");
+  const existingRequest = await prisma.idempotencyRecord.findUnique({
+    where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
+  });
+  if (existingRequest) {
+    if (existingRequest.requestHash !== requestHash) return error("This payment submission key was already used with different details. Refresh the page and try again.", 409);
+    if (existingRequest.response) return Response.json(existingRequest.response, { status: 201, headers: { "Cache-Control": "no-store", "Idempotency-Replayed": "true" } });
+    return error("Your payment submission is still being processed. Please check the order before trying again.", 409);
+  }
+
   if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
     return error("Receipt upload is not configured yet. Please contact the store before submitting payment.", 503);
   }
@@ -74,7 +92,6 @@ export async function POST(request, { params }) {
 
   let uploaded;
   try {
-    const buffer = Buffer.from(await receipt.arrayBuffer());
     uploaded = await uploadReceipt(buffer, resourceType);
   } catch (uploadError) {
     console.error("Receipt upload failed:", uploadError);
@@ -83,7 +100,11 @@ export async function POST(request, { params }) {
 
   try {
     const amountTransferred = new Prisma.Decimal(amountRaw);
+    const responsePayload = { message: "Your payment details and receipt have been submitted. We will update your order after verification." };
     await prisma.$transaction(async (tx) => {
+      await tx.idempotencyRecord.create({
+        data: { customerId: access.user.id, scope, key: idempotencyKey, requestHash },
+      });
       const pending = await tx.paymentSubmission.findFirst({ where: { paymentId: order.payment.id, status: "PENDING" }, select: { id: true } });
       if (pending) throw new Error("PAYMENT_ALREADY_PENDING");
       await tx.paymentSubmission.create({
@@ -125,12 +146,24 @@ export async function POST(request, { params }) {
           status: "QUEUED",
         },
       });
+      await tx.idempotencyRecord.update({
+        where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
+        data: { response: responsePayload },
+      });
     }, { isolationLevel: "Serializable" });
-    return Response.json({ message: "Your payment details and receipt have been submitted. We will update your order after verification." }, { status: 201, headers: { "Cache-Control": "no-store" } });
+    return Response.json(responsePayload, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (submitError) {
     try {
       await cloudinary.uploader.destroy(uploaded.public_id, { resource_type: resourceType, type: "authenticated" });
     } catch {}
+    if (submitError?.code === "P2002") {
+      const replay = await prisma.idempotencyRecord.findUnique({
+        where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
+      });
+      if (replay?.requestHash === requestHash && replay.response) {
+        return Response.json(replay.response, { status: 201, headers: { "Cache-Control": "no-store", "Idempotency-Replayed": "true" } });
+      }
+    }
     if (submitError?.message === "PAYMENT_ALREADY_PENDING" || submitError?.code === "P2034") return error("A payment submission is already being processed for this order. Refresh the page and check its status.", 409);
     if (submitError?.code === "P2002") return error("This bank transaction reference has already been submitted. Check the reference and try again.", 409);
     console.error("Payment submission failed:", submitError);
