@@ -7,7 +7,6 @@ const footerLinks = [
   ["/about", "ABOUT"],
   ["/contact", "CONTACT"],
   ["/delivery-returns", "DELIVERY & RETURNS"],
-  ["/faq", "FAQS"],
   ["/privacy", "PRIVACY"],
   ["/terms", "TERMS"],
 ];
