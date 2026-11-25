@@ -198,7 +198,7 @@ export default function HomePage({ firstName, initialHomepageMedia = {} }) {
       )}
 
       <section className="hero">
-        <div className="hero-image" style={homepageMedia.hero_main?.url ? { backgroundImage: `url("${homepageMedia.hero_main.url}")` } : undefined} />
+        <div className="hero-image" style={homepageMedia.hero_main?.url ? { "--hero-image-desktop": `url("${homepageMedia.hero_main.desktopUrl || homepageMedia.hero_main.url}")`, "--hero-image-mobile": `url("${homepageMedia.hero_main.url}")` } : undefined} />
         <div className="hero-shade" />
         <div className="hero-content">
           <p className="eyebrow hero-eyebrow">CROPPTECH COMMERCE — THE LINEN SHIRT EDIT</p>

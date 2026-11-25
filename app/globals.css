@@ -68,7 +68,7 @@ button { color: inherit; }
 .mobile-menu-heading, .mobile-menu-divider, .mobile-menu-footer, .mobile-menu-backdrop, .mobile-menu-close { display: none; }
 
 .hero { height: min(690px, 69vw); min-height: 520px; position: relative; isolation: isolate; overflow: hidden; color: white; background: #777; }
-.hero-image { position: absolute; z-index: 0; inset: 0; background-image: url('https://stenstroms.com/pub_docs/files/ss26_men_linne-1-1.jpg'); background-size: cover; background-position: var(--hero-image-position, center 38%); background-repeat: no-repeat; transform: scale(1.01); }
+.hero-image { position: absolute; z-index: 0; inset: 0; background-image: var(--hero-image-desktop, url('https://stenstroms.com/pub_docs/files/ss26_men_linne-1-1.jpg')); background-size: cover; background-position: var(--hero-image-position, center 38%); background-repeat: no-repeat; transform: scale(1.01); }
 .hero-shade { position: absolute; z-index: 1; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(20,17,15,.68) 0%, rgba(20,17,15,.34) 48%, rgba(20,17,15,.08) 100%); }
 .hero-content { position: absolute; z-index: 2; left: 10.2%; top: 50%; transform: translateY(-47%); max-width: 540px; }
 .eyebrow { font-size: 9px; font-weight: 600; letter-spacing: 2px; }
@@ -176,7 +176,7 @@ h1, h2, h3, p { margin-top: 0; }
   .mobile-menu-footer { display: flex; flex-direction: column; gap: 13px; padding-top: 24px; color: var(--muted); font-size: 8px; letter-spacing: 1.1px; }
   .mobile-menu-footer a { min-height: auto; width: fit-content; border: 0; color: var(--red); font-size: 9px; }
   .hero { min-height: 610px; height: 78vh; max-height: 760px; }
-  .hero-image { background-position: var(--hero-image-position-mobile, 58% center); }
+  .hero-image { background-image: var(--hero-image-mobile, var(--hero-image-desktop, url('https://stenstroms.com/pub_docs/files/ss26_men_linne-1-1.jpg'))); background-position: var(--hero-image-position-mobile, 58% center); }
   .hero-shade { background: linear-gradient(90deg, rgba(20,17,15,.62), rgba(20,17,15,.12)); }
   .hero-content { left: 7%; right: 7%; }
   .hero h1 { font-size: clamp(54px, 14vw, 76px); letter-spacing: -3px; }
@@ -4149,3 +4149,29 @@ html[data-customer-theme="dark"] .mobile-bottom-nav-link.is-active{color:#ff6573
 .admin-home-media-position-controls label{display:grid;gap:6px;color:#4b5563;font-size:10px;font-weight:700}
 .admin-home-media-position-controls select{width:100%;min-height:36px;padding:0 9px;border:1px solid #d8dce2;border-radius:4px;background:#fff;color:#202124;font:inherit;font-size:11px}
 .admin-home-media-position-controls p{margin:0;color:#7b8490;font-size:9px;line-height:1.5}
+
+
+/* Store Front Studio: browser-based 16:9 hero adaptation tool */
+.admin-home-ai-tool{display:grid;gap:11px;margin-top:14px;padding:13px;border:1px solid #e5e7eb;border-radius:7px;background:#fafafa}
+.admin-home-ai-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;color:#30343a}
+.admin-home-ai-heading>div{display:grid;gap:4px}
+.admin-home-ai-heading strong{font-size:11px}
+.admin-home-ai-heading span{color:#7b8490;font-size:9px;line-height:1.5}
+.admin-home-ai-heading>svg{flex:none;color:#a17b4b}
+.admin-home-ai-mode{display:grid;gap:6px;color:#4b5563;font-size:10px;font-weight:700}
+.admin-home-ai-mode select{width:100%;min-height:36px;padding:0 9px;border:1px solid #d8dce2;border-radius:4px;background:#fff;color:#202124;font:inherit;font-size:10px}
+.admin-home-ai-button{width:100%;justify-content:center;min-height:37px}
+.admin-home-ai-previews{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.8fr);gap:9px;align-items:start}
+.admin-home-ai-previews>div{display:grid;gap:6px;min-width:0}
+.admin-home-ai-previews>div>span{color:#727b86;font-size:8px;font-weight:800;letter-spacing:.6px}
+.admin-home-ai-preview{position:relative;overflow:hidden;border-radius:5px;background:#e9e2d8}
+.admin-home-ai-preview.landscape{aspect-ratio:16/9}
+.admin-home-ai-preview.portrait{aspect-ratio:3/4}
+.admin-home-ai-preview img{object-fit:contain}
+.admin-home-ai-note{margin:0;color:#7b8490;font-size:9px;line-height:1.55}
+.admin-shell[data-theme="dark"] .admin-home-ai-tool{background:#151a22;border-color:#303844}
+.admin-shell[data-theme="dark"] .admin-home-ai-heading{color:#f0f2f5}
+.admin-shell[data-theme="dark"] .admin-home-ai-heading span,.admin-shell[data-theme="dark"] .admin-home-ai-note,.admin-shell[data-theme="dark"] .admin-home-ai-previews>div>span{color:#a6afbb}
+.admin-shell[data-theme="dark"] .admin-home-ai-mode{color:#c4cbd5}
+.admin-shell[data-theme="dark"] .admin-home-ai-mode select{background:#11161d;border-color:#3a4350;color:#edf0f4}
+@media(max-width:480px){.admin-home-ai-previews{grid-template-columns:minmax(0,1fr) minmax(0,.72fr)}}

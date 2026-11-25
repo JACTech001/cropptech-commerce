@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Check, ImagePlus, LoaderCircle, RotateCcw, Save, Trash2, Upload } from "lucide-react";
+import { Check, ImagePlus, LoaderCircle, RotateCcw, Save, Trash2, Upload, WandSparkles } from "lucide-react";
 import CloudinaryMediaLibraryPicker from "./CloudinaryMediaLibraryPicker";
 
 const SLOTS = [
@@ -27,6 +27,8 @@ export default function AdminHomepageMediaManager() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [uploadingKey, setUploadingKey] = useState("");
+  const [adaptingHero, setAdaptingHero] = useState(false);
+  const [adaptationMode, setAdaptationMode] = useState("blur");
   const fileRefs = useRef({});
 
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function AdminHomepageMediaManager() {
   }, []);
 
   function assignImage(key, asset) {
-    setMedia((current) => ({ ...current, [key]: { ...current[key], url: asset.secureUrl, publicId: asset.cloudinaryPublicId, altText: asset.altText || "", width: asset.width || 0, height: asset.height || 0 } }));
+    setMedia((current) => ({ ...current, [key]: { ...current[key], url: asset.secureUrl, publicId: asset.cloudinaryPublicId, altText: asset.altText || "", width: asset.width || 0, height: asset.height || 0, ...(key === "hero_main" ? { desktopUrl: "", desktopPublicId: "", desktopWidth: 0, desktopHeight: 0 } : {}) } }));
     setNotice("");
     setError("");
   }
@@ -79,6 +81,62 @@ export default function AdminHomepageMediaManager() {
       setUploadingKey("");
       if (fileRefs.current[key]) fileRefs.current[key].value = "";
     }
+  }
+
+  async function createHeroDesktopAdaptation() {
+    const source = media.hero_main;
+    if (!source?.url) return;
+    setAdaptingHero(true); setError(""); setNotice("");
+    try {
+      const image = await new Promise((resolve, reject) => {
+        const element = new window.Image();
+        element.crossOrigin = "anonymous";
+        element.onload = () => resolve(element);
+        element.onerror = () => reject(new Error("The source image could not be loaded for adaptation. Try reselecting it from the Cloudinary library."));
+        element.src = source.url;
+      });
+      const canvas = document.createElement("canvas");
+      canvas.width = 1600; canvas.height = 900;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("Your browser could not create the image workspace.");
+      const coverScale = Math.max(canvas.width / image.width, canvas.height / image.height);
+      const coverWidth = image.width * coverScale, coverHeight = image.height * coverScale;
+      const coverX = (canvas.width - coverWidth) / 2, coverY = (canvas.height - coverHeight) / 2;
+      if (adaptationMode === "blur") {
+        context.save(); context.filter = "blur(46px) brightness(0.78)";
+        context.drawImage(image, coverX - 60, coverY - 60, coverWidth + 120, coverHeight + 120);
+        context.restore();
+        context.fillStyle = "rgba(20, 17, 15, 0.10)";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+      } else {
+        const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+        if (adaptationMode === "warm") { gradient.addColorStop(0, "#d5c2ad"); gradient.addColorStop(1, "#f1e9df"); }
+        else if (adaptationMode === "dark") { gradient.addColorStop(0, "#34302d"); gradient.addColorStop(1, "#74695e"); }
+        else { gradient.addColorStop(0, "#eeeae4"); gradient.addColorStop(1, "#d9d4cc"); }
+        context.fillStyle = gradient; context.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      const containScale = Math.min(1450 / image.width, 860 / image.height);
+      const imageWidth = image.width * containScale, imageHeight = image.height * containScale;
+      const imageX = (canvas.width - imageWidth) / 2, imageY = (canvas.height - imageHeight) / 2;
+      context.save(); context.shadowColor = "rgba(0, 0, 0, 0.18)"; context.shadowBlur = 28; context.shadowOffsetY = 8;
+      context.drawImage(image, imageX, imageY, imageWidth, imageHeight); context.restore();
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.92));
+      if (!blob) throw new Error("The adapted image could not be exported. Please try again.");
+      const signatureResponse = await fetch("/api/admin/products/upload-signature", { method: "POST", cache: "no-store" });
+      const config = await signatureResponse.json();
+      if (!signatureResponse.ok) throw new Error(config.error || "Cloudinary upload is not available.");
+      const form = new FormData();
+      form.append("file", blob, "cropptech-hero-desktop.jpg");
+      form.append("api_key", config.apiKey); form.append("timestamp", String(config.timestamp));
+      form.append("folder", config.folder); form.append("allowed_formats", config.allowed_formats);
+      form.append("signature", config.signature);
+      const uploadResponse = await fetch("https://api.cloudinary.com/v1_1/" + config.cloudName + "/image/upload", { method: "POST", body: form });
+      const asset = await uploadResponse.json();
+      if (!uploadResponse.ok || !asset.secure_url || !asset.public_id) throw new Error(asset.error?.message || "Cloudinary could not upload the adapted desktop image.");
+      setMedia((current) => ({ ...current, hero_main: { ...current.hero_main, desktopUrl: asset.secure_url, desktopPublicId: asset.public_id, desktopWidth: asset.width || 1600, desktopHeight: asset.height || 900 } }));
+      setNotice("Desktop adaptation created and uploaded. Review both previews, then save changes to apply it to the storefront.");
+    } catch (cause) { setError(cause.message || "The desktop image could not be adapted."); }
+    finally { setAdaptingHero(false); }
   }
 
   async function saveChanges() {
@@ -141,9 +199,24 @@ export default function AdminHomepageMediaManager() {
                 <label>Mobile image position<select value={item.positionMobile || "58% center"} onChange={(event) => setMedia((current) => ({ ...current, hero_main: { ...current.hero_main, positionMobile: event.target.value } }))}><option value="left top">Top left</option><option value="center top">Top centre</option><option value="right top">Top right</option><option value="left center">Middle left</option><option value="center center">Centre</option><option value="right center">Middle right</option><option value="left bottom">Bottom left</option><option value="center bottom">Bottom centre</option><option value="right bottom">Bottom right</option><option value="58% center">Original mobile position</option></select></label>
                 <p>These controls move the visible area of the same image. They do not stretch it or add side backgrounds.</p>
               </div>}
-              {item?.url && <>
-                <div className="admin-home-media-current"><Check size={13}/> Custom image selected</div>
-              </>}
+              {slot.key === "hero_main" && item?.url && <div className="admin-home-ai-tool">
+                <div className="admin-home-ai-heading"><div><strong>Desktop image adaptation</strong><span>Create a landscape version without cropping the original portrait.</span></div><WandSparkles size={18}/></div>
+                <label className="admin-home-ai-mode">Background treatment
+                  <select value={adaptationMode} onChange={(event) => setAdaptationMode(event.target.value)} disabled={adaptingHero}>
+                    <option value="blur">Blurred extension of the photo</option><option value="warm">Warm linen gradient</option><option value="light">Soft neutral gradient</option><option value="dark">Deep neutral gradient</option>
+                  </select>
+                </label>
+                <button type="button" className="admin-primary-button admin-home-ai-button" onClick={createHeroDesktopAdaptation} disabled={adaptingHero || uploadingKey !== ""}>
+                  {adaptingHero ? <LoaderCircle size={15} className="admin-spin"/> : <WandSparkles size={15}/>}
+                  {adaptingHero ? "CREATING DESKTOP VERSION…" : item.desktopUrl ? "RECREATE DESKTOP VERSION" : "CREATE DESKTOP VERSION"}
+                </button>
+                {item.desktopUrl && <div className="admin-home-ai-previews">
+                  <div><span>DESKTOP · 16:9</span><div className="admin-home-ai-preview landscape"><Image src={item.desktopUrl} alt="Adapted landscape desktop hero preview" fill sizes="(max-width: 700px) 100vw, 40vw" unoptimized /></div></div>
+                  <div><span>MOBILE · ORIGINAL</span><div className="admin-home-ai-preview portrait"><Image src={item.url} alt="Original portrait mobile hero preview" fill sizes="(max-width: 700px) 100vw, 20vw" unoptimized /></div></div>
+                </div>}
+                <p className="admin-home-ai-note">The original photo remains unchanged for mobile. The desktop copy is composed in your browser and uploaded as a normal image; no AI service or AI transformation is used. Uploading and storing the extra image still uses your usual Cloudinary storage and delivery.</p>
+              </div>}
+              {item?.url && <><div className="admin-home-media-current"><Check size={13}/> Custom image selected</div></>}
               <div className="admin-home-media-card-actions">
                 <CloudinaryMediaLibraryPicker
                   remaining={1}

@@ -46,6 +46,11 @@ export async function PUT(request) {
         typeof item.publicId !== "string" || !item.publicId.trim()) {
       return error("Homepage images must be valid Cloudinary images.");
     }
+    if (key === "hero_main" && item.desktopUrl &&
+        (typeof item.desktopUrl !== "string" || !item.desktopUrl.startsWith("https://res.cloudinary.com/") ||
+         typeof item.desktopPublicId !== "string" || !item.desktopPublicId.trim())) {
+      return error("The desktop hero image must be a valid Cloudinary image.");
+    }
     media[key] = {
       url: item.url,
       publicId: item.publicId.trim().slice(0, 250),
@@ -55,6 +60,12 @@ export async function PUT(request) {
       ...(key === "hero_main" ? {
         positionDesktop: ["left top", "center top", "right top", "left center", "center center", "right center", "left bottom", "center bottom", "right bottom"].includes(item.positionDesktop) ? item.positionDesktop : "center center",
         positionMobile: ["left top", "center top", "right top", "left center", "center center", "right center", "left bottom", "center bottom", "right bottom", "58% center"].includes(item.positionMobile) ? item.positionMobile : "58% center",
+        ...(item.desktopUrl ? {
+          desktopUrl: item.desktopUrl,
+          desktopPublicId: item.desktopPublicId.trim().slice(0, 250),
+          desktopWidth: Number.isFinite(Number(item.desktopWidth)) ? Math.max(0, Math.min(20000, Math.round(Number(item.desktopWidth)))) : 1600,
+          desktopHeight: Number.isFinite(Number(item.desktopHeight)) ? Math.max(0, Math.min(20000, Math.round(Number(item.desktopHeight)))) : 900,
+        } : {}),
       } : {}),
     };
   }
