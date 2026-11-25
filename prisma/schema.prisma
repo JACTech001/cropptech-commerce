@@ -146,6 +146,7 @@ model User {
   reviewedRefunds       Refund[]               @relation("RefundReviewedBy")
   auditLogs             AdminAuditLog[]
   notifications         CustomerNotification[]
+  adminNotifications    AdminNotification[]
   idempotencyRecords    IdempotencyRecord[]
 
   @@unique([authProvider, authSubject])
@@ -654,6 +655,24 @@ model StoreSetting {
   updatedAt   DateTime @updatedAt
 }
 
+
+model AdminNotification {
+  id        String    @id @default(cuid())
+  userId    String
+  eventKey  String
+  category  String
+  title     String
+  message   String    @db.Text
+  href      String
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventKey])
+  @@index([userId, readAt, createdAt])
+  @@index([createdAt])
+}
 
 model PaymentReceipt {
   id            String   @id @default(cuid())
