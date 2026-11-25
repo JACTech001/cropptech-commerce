@@ -4185,3 +4185,6 @@ html[data-customer-theme="dark"] .mobile-bottom-nav-link.is-active{color:#ff6573
 .info-tiktok-link{margin-right:2px}
 .customer-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:18px}
 @media(min-width:761px){.mobile-bottom-nav{display:none!important}}
+
+/* Fixed TikTok follow shortcut, vertically centered on the viewport */
+.floating-tiktok-follow{position:fixed;z-index:120;right:18px;top:50%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;gap:9px;min-width:48px;min-height:48px;padding:12px 14px;border-radius:999px;background:#111;color:#fff;border:1px solid rgba(255,255,255,.16);box-shadow:0 8px 26px rgba(0,0,0,.22);text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}.floating-tiktok-follow svg{flex:none;filter:drop-shadow(2px 0 0 #FE2C55) drop-shadow(-2px 0 0 #25F4EE)}.floating-tiktok-follow span{font-size:9px;font-weight:800;letter-spacing:1px}.floating-tiktok-follow:hover{transform:translateY(-50%) scale(1.05);background:#202020;box-shadow:0 10px 30px rgba(0,0,0,.3)}@media(max-width:760px){.floating-tiktok-follow{right:10px;min-width:44px;min-height:44px;padding:11px;border-radius:50%}.floating-tiktok-follow span{display:none}}@media(prefers-reduced-motion:reduce){.floating-tiktok-follow{transition:none}}
