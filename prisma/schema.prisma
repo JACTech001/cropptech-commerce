@@ -171,6 +171,7 @@ model CustomerAddress {
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   orders Order[]
 
+  @@unique([id, userId])
   @@index([userId, isDefault])
   @@index([state, city])
 }
@@ -291,7 +292,7 @@ model Order {
   updatedAt         DateTime      @updatedAt
 
   customer        User                 @relation(fields: [customerId], references: [id], onDelete: Restrict)
-  customerAddress CustomerAddress?     @relation(fields: [customerAddressId], references: [id], onDelete: SetNull)
+  customerAddress CustomerAddress?     @relation(fields: [customerAddressId, customerId], references: [id, userId], onDelete: Restrict)
   shippingRate    ShippingRate?        @relation(fields: [shippingRateId], references: [id], onDelete: SetNull)
   items           OrderItem[]
   statusHistory   OrderStatusHistory[]
