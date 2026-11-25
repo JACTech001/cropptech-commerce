@@ -35,10 +35,8 @@ export default function HeroCarousel({ homepageMedia = {} }) {
   const imageStyle = {
     "--hero-image-desktop": `url("${desktopImage}")`,
     "--hero-image-mobile": `url("${mobileImage}")`,
-    "--hero-image-position": activeSlide.positionDesktop || homepageMedia.hero_main?.positionDesktop || "center 38%",
-    "--hero-image-position-mobile": activeSlide.positionMobile || homepageMedia.hero_main?.positionMobile || "58% center",
-    "--hero-image-size-desktop": activeSlide.fitDesktop || "cover",
-    "--hero-image-size-mobile": activeSlide.fitMobile || "cover",
+    "--hero-image-position": activeIndex === 0 ? (activeSlide.positionDesktop || "center 38%") : "center 38%",
+    "--hero-image-position-mobile": activeIndex === 0 ? (activeSlide.positionMobile || "58% center") : "58% center",
   };
 
   function goTo(index) {
