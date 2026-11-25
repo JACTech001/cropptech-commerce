@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronLeft, ChevronRight, Command, ImagePlus, LayoutDashboard, Package, Boxes, BarChart3, RotateCcw, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Bell, Command, ImagePlus, LayoutDashboard, Package, Boxes, BarChart3, RotateCcw, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X } from "lucide-react";
 import AdminNotificationBell from "./AdminNotificationBell";
 
 const sections = [
@@ -13,12 +13,13 @@ const sections = [
     { href: "/admin/orders", title: "Orders", icon: ShoppingBag },
     { href: "/admin/products", title: "Products", icon: Package },
     { href: "/admin/inventory", title: "Inventory", icon: Boxes },
-    { href: "/admin/reports", title: "Reports", icon: ChartColumn },
+    { href: "/admin/reports", title: "Reports", icon: BarChart3 },
     { href: "/admin/homepage-media", title: "Store Front Studio", icon: ImagePlus },
   ]},
   { label: "STORE OPERATIONS", items: [
     { href: "/admin/payments", title: "Payment reviews", icon: Bell },
     { href: "/admin/delivery", title: "Delivery", icon: Truck },
+    { href: "/admin/returns", title: "Returns & refunds", icon: RotateCcw },
     { href: "/admin/settings", title: "Settings", icon: Settings2 },
   ]},
 ];
