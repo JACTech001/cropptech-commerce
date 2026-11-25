@@ -19,13 +19,34 @@ export default function PaymentSubmissionForm({ orderNumber, amountDue }) {
     const formElement = event.currentTarget;
     try {
       const formData = new FormData(formElement);
+      const receiptFile = formData.get("receipt");
+      const fingerprint = JSON.stringify({
+        accountName: formData.get("accountName"),
+        amountTransferred: formData.get("amountTransferred"),
+        bankName: formData.get("bankName"),
+        transactionReference: formData.get("transactionReference"),
+        customerNote: formData.get("customerNote"),
+        receipt: receiptFile ? [receiptFile.name, receiptFile.size, receiptFile.lastModified, receiptFile.type] : null,
+      });
+      const storageKey = `cropptech-payment-submission:${orderNumber}`;
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem(storageKey) || "null"); } catch {}
+      let idempotencyKey = saved?.fingerprint === fingerprint ? saved.key : "";
+      if (!idempotencyKey) {
+        idempotencyKey = typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID().replaceAll("-", "")
+          : Array.from(crypto.getRandomValues(new Uint8Array(24)), (byte) => byte.toString(16).padStart(2, "0")).join("");
+        localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey }));
+      }
       const response = await fetch(`/api/orders/${encodeURIComponent(orderNumber)}/payment-submissions`, {
         method: "POST",
+        headers: { "Idempotency-Key": idempotencyKey },
         body: formData,
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "We could not submit your payment details.");
       setMessage(data.message || "Your payment submission has been received.");
+      localStorage.removeItem(storageKey);
       formElement.reset();
       router.refresh();
     } catch (submitError) {
