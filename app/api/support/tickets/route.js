@@ -5,6 +5,7 @@ import { prisma } from "../../../../lib/db";
 const reply = (body, status = 200) => Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
 const clean = (value, max) => typeof value === "string" ? value.trim().slice(0, max) : "";
 const categories = ["GENERAL", "ORDER_ISSUE", "PAYMENT", "DELIVERY", "RETURN_REFUND", "PRODUCT_QUESTION", "ACCOUNT", "OTHER"];
+const issueTypes = ["GENERAL_ENQUIRY","WRONG_ITEM_RECEIVED","ITEM_MISSING_FROM_ORDER","DAMAGED_ITEM_RECEIVED","DEFECTIVE_ITEM","ORDER_NOT_RECEIVED","ORDER_STATUS_OR_TRACKING","PAYMENT_DEBITED_NOT_CONFIRMED","DUPLICATE_PAYMENT","PAYMENT_AMOUNT_DISPUTE","REFUND_NOT_RECEIVED","DELIVERY_DELAY","DELIVERY_ADDRESS_PROBLEM","DELIVERY_FEE_DISPUTE","RETURN_OR_EXCHANGE","PRODUCT_QUALITY","WRONG_SIZE_OR_FIT","PRODUCT_DESCRIPTION_MISMATCH","ACCOUNT_ACCESS","WEBSITE_OR_CHECKOUT_ERROR","STAFF_OR_SERVICE_COMPLAINT","OTHER"];
 
 export async function GET() {
   const access = await requireAppRole(["CUSTOMER"]);
@@ -16,7 +17,7 @@ export async function GET() {
       take: 50,
       select: {
         id: true, ticketNumber: true, subject: true, category: true, status: true,
-        priority: true, createdAt: true, updatedAt: true, lastMessageAt: true,
+        issueType: true, priority: true, createdAt: true, updatedAt: true, lastMessageAt: true,
         order: { select: { orderNumber: true } },
         messages: { where: { isInternal: false }, orderBy: { createdAt: "desc" }, take: 1, select: { body: true, senderRole: true, createdAt: true } },
       },
@@ -35,6 +36,7 @@ export async function POST(request) {
   const subject = clean(body?.subject, 140);
   const message = clean(body?.message, 5000);
   const category = categories.includes(body?.category) ? body.category : "GENERAL";
+  const issueType = issueTypes.includes(body?.issueType) ? body.issueType : "GENERAL_ENQUIRY";
   const orderId = clean(body?.orderId, 80) || null;
   if (subject.length < 4 || message.length < 10) return reply({ error: "Enter a subject (at least 4 characters) and a message (at least 10 characters)." }, 400);
 
@@ -47,7 +49,7 @@ export async function POST(request) {
     const ticket = await prisma.$transaction(async (tx) => {
       const created = await tx.customerSupportTicket.create({
         data: {
-          ticketNumber, customerId: access.user.id, orderId, category, subject,
+          ticketNumber, customerId: access.user.id, orderId, category, issueType, subject,
           messages: { create: { senderId: access.user.id, senderRole: "CUSTOMER", body: message } },
         },
         select: { id: true, ticketNumber: true, subject: true, status: true, createdAt: true },
