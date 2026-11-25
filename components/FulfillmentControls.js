@@ -37,7 +37,7 @@ export default function FulfillmentControls({ orderNumber, status, shipment }) {
         idempotencyKey = typeof crypto.randomUUID === "function"
           ? crypto.randomUUID().replaceAll("-", "")
           : Array.from(crypto.getRandomValues(new Uint8Array(24)), (byte) => byte.toString(16).padStart(2, "0")).join("");
-        localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey }));
+        try { localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey })); } catch {}
       }
       const response = await fetch(`/api/admin/orders/${encodeURIComponent(orderNumber)}/status`, {
         method: "POST",
@@ -47,7 +47,7 @@ export default function FulfillmentControls({ orderNumber, status, shipment }) {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "Could not update this order.");
       setMessage(data.message || "Order updated.");
-      localStorage.removeItem(storageKey);
+      try { localStorage.removeItem(storageKey); } catch {}
       router.refresh();
     } catch (err) {
       setError(err.message || "Could not update this order.");
