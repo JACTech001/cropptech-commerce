@@ -7,6 +7,7 @@ import styles from "./AdminFeaturedProductsManager.module.css";
 
 export default function AdminFeaturedProductsManager() {
   const [products, setProducts] = useState([]);
+  const [activeView, setActiveView] = useState("selected");
   const [selectedIds, setSelectedIds] = useState([]);
   const [savedIds, setSavedIds] = useState([]);
   const [search, setSearch] = useState("");
@@ -109,11 +110,15 @@ export default function AdminFeaturedProductsManager() {
         </div>
       </div>
 
+      <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Featured products sections">
+        <button type="button" className={activeView === "selected" ? "active" : ""} aria-pressed={activeView === "selected"} onClick={() => setActiveView("selected")}>FEATURED SELECTION</button>
+        <button type="button" className={activeView === "catalogue" ? "active" : ""} aria-pressed={activeView === "catalogue"} onClick={() => setActiveView("catalogue")}><Search size={14}/> PRODUCT CATALOGUE</button>
+      </nav>
       {error && <p className={styles.error} role="alert">{error}</p>}
       {notice && <p className={styles.notice} role="status"><Check size={15} />{notice}</p>}
 
       <div className={styles.columns}>
-        <section className={styles.selectedPanel} aria-labelledby="selected-featured-heading">
+        <section className={styles.selectedPanel} hidden={activeView !== "selected"} aria-labelledby="selected-featured-heading">
           <div className={styles.panelHeading}>
             <div><p className={styles.eyebrow}>HOMEPAGE DISPLAY</p><h2 id="selected-featured-heading">Featured selection</h2></div>
             <span>{selectedIds.length}/6</span>
@@ -147,7 +152,7 @@ export default function AdminFeaturedProductsManager() {
           <p className={styles.footnote}>Removing a product here does not delete it, archive it or remove it from the Shop catalogue.</p>
         </section>
 
-        <section className={styles.cataloguePanel} aria-labelledby="catalogue-products-heading">
+        <section className={styles.cataloguePanel} hidden={activeView !== "catalogue"} aria-labelledby="catalogue-products-heading">
           <div className={styles.panelHeading}>
             <div><p className={styles.eyebrow}>PUBLISHED CATALOGUE</p><h2 id="catalogue-products-heading">Add products</h2></div>
             <span>{availableProducts.length} available</span>
