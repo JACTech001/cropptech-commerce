@@ -13,6 +13,7 @@ export async function PATCH(request, context) {
   const note = typeof body?.note === "string" ? body.note.trim().slice(0, 1000) : "";
   const externalReference = typeof body?.externalReference === "string" ? body.externalReference.trim().slice(0, 120) : "";
   if (!id || !["RETURN", "REFUND"].includes(type)) return fail("Choose a valid return or refund record.");
+  if (action === "REJECT" && !note) return fail("Add a note explaining why this request is being rejected.");
 
   try {
     const result = await prisma.$transaction(async (tx) => {
