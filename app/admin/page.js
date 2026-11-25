@@ -66,7 +66,7 @@ export default async function AdminPage() {
   const chartMax = Math.max(1, ...chartDays.map((day) => day.count));
 
   return (
-    <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]}>
+    <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]} isSuperAdmin={user.role === "SUPER_ADMIN"}>
       <main className="admin-page">
         <div className="admin-wrap">
           <div className="admin-heading">
