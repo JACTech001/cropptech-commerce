@@ -17,7 +17,6 @@ export default function FloatingTikTokFollow() {
       title="Follow CroppTech Commerce on TikTok"
     >
       <Music2 size={21} strokeWidth={2} />
-      <span>TIKTOK</span>
     </a>
   );
 }
