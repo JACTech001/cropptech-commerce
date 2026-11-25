@@ -1,8 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { getCurrentAppUser } from "../../../lib/auth/user";
 import AdminShell from "../../../components/AdminShell";
-import AdminStoreSettings from "../../../components/AdminStoreSettings";
-import AdminThemeControl from "../../../components/AdminThemeControl";
+import AdminSettingsWorkspace from "../../../components/AdminSettingsWorkspace";
 
 export const dynamic = "force-dynamic";
 
@@ -19,8 +18,7 @@ export default async function AdminSettingsPage() {
             <h1>Store <em>settings.</em></h1>
             <p>Configure the store&apos;s payment destination and shared administrative preferences.</p>
           </div>
-          <AdminStoreSettings />
-          <AdminThemeControl/>
+          <AdminSettingsWorkspace />
         </div>
       </main>
     </AdminShell>
