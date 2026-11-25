@@ -4411,6 +4411,11 @@ html[data-customer-theme="dark"] .mobile-bottom-nav-link.is-active{color:#ff6573
   flex:0 0 42px;
   color:var(--red);
   background:var(--cream);
+  transition:color .2s ease, background .2s ease;
+}
+.account-accordion[open] .account-accordion-icon {
+  color:#fff;
+  background:var(--red);
 }
 .account-accordion-copy { display:grid; gap:5px; min-width:0; flex:1; }
 .account-accordion-copy strong { color:var(--ink); font-size:13px; font-weight:700; }
