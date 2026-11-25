@@ -3,48 +3,64 @@ import { prisma } from "../../../lib/db";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const records = await prisma.product.findMany({
-    where: { status: "ACTIVE" },
-    orderBy: [{ isFeatured: "desc" }, { updatedAt: "desc" }],
-    include: {
-      variants: { where: { isActive: true }, orderBy: [{ colour: "asc" }, { size: "asc" }] },
-      images: { orderBy: { sortOrder: "asc" } },
-    },
+  const [records, featuredSetting] = await Promise.all([
+    prisma.product.findMany({
+      where: { status: "ACTIVE" },
+      orderBy: [{ isFeatured: "desc" }, { updatedAt: "desc" }],
+      include: {
+        variants: { where: { isActive: true }, orderBy: [{ colour: "asc" }, { size: "asc" }] },
+        images: { orderBy: { sortOrder: "asc" } },
+      },
+    }),
+    prisma.storeSetting.findUnique({ where: { key: "homepage_featured_products" } }),
+  ]);
+
+  const configured = Boolean(featuredSetting);
+  const selectedIds = Array.isArray(featuredSetting?.value?.productIds)
+    ? featuredSetting.value.productIds.filter((id) => typeof id === "string")
+    : [];
+  const selectedOrder = new Map(selectedIds.map((id, index) => [id, index]));
+  const sellableRecords = records.filter((product) => product.variants.length > 0 && product.images.length > 0);
+  const orderedRecords = configured
+    ? [...sellableRecords].sort((a, b) => {
+        const aIndex = selectedOrder.has(a.id) ? selectedOrder.get(a.id) : Number.MAX_SAFE_INTEGER;
+        const bIndex = selectedOrder.has(b.id) ? selectedOrder.get(b.id) : Number.MAX_SAFE_INTEGER;
+        return aIndex - bIndex || (a.isFeatured === b.isFeatured ? b.updatedAt - a.updatedAt : a.isFeatured ? -1 : 1);
+      })
+    : sellableRecords;
+
+  const products = orderedRecords.map((product) => {
+    const prices = product.variants.map((variant) => Number(variant.price));
+    const colours = [...new Set(product.variants.map((variant) => variant.colour))];
+    const featured = configured ? selectedOrder.has(product.id) : product.isFeatured;
+    return {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      description: product.description,
+      category: product.productType === "SETS" ? "Sets" : product.productType.charAt(0) + product.productType.slice(1).toLowerCase(),
+      audience: product.category === "MEN" ? "Men" : product.category === "WOMEN" ? "Women" : "Unisex",
+      tone: colours[0] || "Natural",
+      image: product.images[0].secureUrl,
+      images: product.images.map((image) => ({ id: image.id, url: image.secureUrl, altText: image.altText })),
+      tag: featured ? "FEATURED LINEN" : "LINEN COLLECTION",
+      featured,
+      price: Math.min(...prices),
+      availableSizes: [...new Set(product.variants.map((variant) => variant.size))],
+      colours,
+      variants: product.variants.map((variant) => ({
+        id: variant.id,
+        sku: variant.sku,
+        size: variant.size,
+        colour: variant.colour,
+        price: Number(variant.price),
+        stockQuantity: variant.stockQuantity,
+        isActive: variant.isActive,
+      })),
+    };
   });
 
-  const products = records
-    .filter((product) => product.variants.length > 0 && product.images.length > 0)
-    .map((product) => {
-      const prices = product.variants.map((variant) => Number(variant.price));
-      const colours = [...new Set(product.variants.map((variant) => variant.colour))];
-      return {
-        id: product.id,
-        name: product.name,
-        slug: product.slug,
-        description: product.description,
-        category: product.productType === "SETS" ? "Sets" : product.productType.charAt(0) + product.productType.slice(1).toLowerCase(),
-        audience: product.category === "MEN" ? "Men" : product.category === "WOMEN" ? "Women" : "Unisex",
-        tone: colours[0] || "Natural",
-        image: product.images[0].secureUrl,
-        images: product.images.map((image) => ({ id: image.id, url: image.secureUrl, altText: image.altText })),
-        tag: product.isFeatured ? "FEATURED LINEN" : "LINEN COLLECTION",
-        featured: product.isFeatured,
-        price: Math.min(...prices),
-        availableSizes: [...new Set(product.variants.map((variant) => variant.size))],
-        colours,
-        variants: product.variants.map((variant) => ({
-          id: variant.id,
-          sku: variant.sku,
-          size: variant.size,
-          colour: variant.colour,
-          price: Number(variant.price),
-          stockQuantity: variant.stockQuantity,
-          isActive: variant.isActive,
-        })),
-      };
-    });
-
-  return Response.json({ products }, {
+  return Response.json({ products, featuredSelectionConfigured: configured }, {
     headers: { "Cache-Control": "no-store" },
   });
 }
