@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowUpRight, Package, ShoppingBag, UserRound, Headset } from "lucide-react";
+import { ArrowUpRight, Truck, ShoppingBag, UserRound, Headset } from "lucide-react";
 import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import AccountSignOutButton from "../../components/AccountSignOutButton";
@@ -126,7 +126,7 @@ export default async function AccountPage() {
 
           <details className="account-accordion" name="customer-account-sections">
             <summary>
-              <span className="account-accordion-icon"><Package size={19} /></span>
+              <span className="account-accordion-icon"><Truck size={19} /></span>
               <span className="account-accordion-copy"><strong>Order history</strong><small>{orders.length} {orders.length === 1 ? "order" : "orders"} · View purchases, payment and delivery status.</small></span>
               <span className="account-accordion-hint">YOUR PURCHASES</span>
             </summary>
@@ -144,7 +144,7 @@ export default async function AccountPage() {
                   {orders.map((order) => (
                     <article className="account-order-card" key={order.id}>
                       <div className="account-order-main">
-                        <div className="account-order-icon"><Package size={17} /></div>
+                        <div className="account-order-icon"><Truck size={17} /></div>
                         <div>
                           <span className="account-order-date">{date(order.placedAt)}</span>
                           <h3>{order.orderNumber}</h3>
