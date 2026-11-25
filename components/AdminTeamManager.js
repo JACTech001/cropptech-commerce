@@ -71,9 +71,9 @@ export default function AdminTeamManager() {
   return (
     <div className="admin-team-workspace">
       <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Administrator management sections">
-        <button type="button" className={activeView === "admins" ? "active" : ""} aria-pressed={activeView === "admins"} onClick={() => setActiveView("admins")}>ADMINISTRATORS</button>
-        <button type="button" className={activeView === "add" ? "active" : ""} aria-pressed={activeView === "add"} onClick={() => setActiveView("add")}><UserPlus size={14}/> ADD ADMINISTRATOR</button>
-        <button type="button" className={activeView === "history" ? "active" : ""} aria-pressed={activeView === "history"} onClick={() => setActiveView("history")}>ACCESS HISTORY</button>
+        <button type="button" className={activeView === "admins" ? "is-active" : ""} aria-pressed={activeView === "admins"} onClick={() => setActiveView("admins")}>ADMINISTRATORS</button>
+        <button type="button" className={activeView === "add" ? "is-active" : ""} aria-pressed={activeView === "add"} onClick={() => setActiveView("add")}><UserPlus size={14}/> ADD ADMINISTRATOR</button>
+        <button type="button" className={activeView === "history" ? "is-active" : ""} aria-pressed={activeView === "history"} onClick={() => setActiveView("history")}>ACCESS HISTORY</button>
       </nav>
       <section className="admin-team-add-card" hidden={activeView !== "add"}>
         <div><p className="eyebrow">GRANT ADMIN ACCESS</p><h2>Add an administrator</h2><p>The person must already have a CroppTech customer account. They can create one first using the normal sign-up process.</p></div>
