@@ -459,7 +459,6 @@ model Refund {
   returnRequest ReturnRequest? @relation(fields: [returnRequestId, orderId], references: [id, orderId], onDelete: Restrict)
   reviewedBy    User?          @relation("RefundReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
 
-  @@unique([paymentId, orderId])
   @@index([paymentId, requestedAt])
   @@index([paymentId, orderId])
   @@index([returnRequestId])
@@ -664,6 +663,7 @@ model PaymentReceipt {
 
   payment Payment @relation(fields: [paymentId, orderId], references: [id, orderId], onDelete: Restrict)
 
+  @@unique([paymentId, orderId])
   @@index([issuedAt])
   @@index([paymentId, orderId])
 }
