@@ -4,6 +4,7 @@ import { ArrowUpRight, Package, ShoppingBag, UserRound } from "lucide-react";
 import { getCurrentAppUser } from "../../lib/auth/user";
 import { prisma } from "../../lib/db";
 import AccountSignOutButton from "../../components/AccountSignOutButton";
+import CustomerPageHeader from "../../components/CustomerPageHeader";
 import CustomerThemeControl from "../../components/CustomerThemeControl";
 import { redirectAdminFromCustomerPages } from "../../lib/auth/customer-access";
 
