@@ -2031,7 +2031,7 @@ h1, h2, h3, p { margin-top: 0; }
     min-width:0;
   }
   .header-actions .search-trigger { display:inline-flex; padding:4px; color:#222; }
-  .header-actions > :nth-child(3) { display:none !important; }
+  .header-actions > :nth-child(4) { display:none !important; }
   .header-actions .home-cart-link { width:23px; height:28px; color:#222; font-size:0; }
   .header-actions .home-cart-link::before { width:21px; height:21px; }
   .main-nav {
