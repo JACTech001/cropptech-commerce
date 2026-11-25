@@ -4358,3 +4358,7 @@ html[data-customer-theme="dark"] .mobile-bottom-nav-link.is-active{color:#ff6573
  .admin-support-ticket-meta { grid-column:2; grid-row:2; justify-items:start; display:flex; align-items:center; flex-wrap:wrap; }
  .admin-support-row > svg:last-child { grid-column:3; grid-row:1; }
 }
+
+
+.admin-support-issue-type { color:var(--red) !important; font-size:9px !important; font-weight:700; letter-spacing:.45px; text-transform:capitalize; }
+.customer-support-form label small { color:var(--muted); font-size:10px; font-weight:400; letter-spacing:0; line-height:1.5; }
