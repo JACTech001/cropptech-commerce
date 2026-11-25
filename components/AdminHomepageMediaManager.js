@@ -20,6 +20,7 @@ const SLOTS = [
 ];
 
 export default function AdminHomepageMediaManager() {
+  const [activeStudioView, setActiveStudioView] = useState("storefront");
   const [media, setMedia] = useState({});
   const [savedMedia, setSavedMedia] = useState({});
   const [loading, setLoading] = useState(true);
@@ -249,6 +250,18 @@ export default function AdminHomepageMediaManager() {
       {error && <p className="admin-home-media-message is-error" role="alert">{error}</p>}
       {notice && <p className="admin-home-media-message is-success" role="status"><Check size={15}/>{notice}</p>}
 
+      <nav className="admin-home-media-tabs" aria-label="Store Front Studio sections">
+        <button type="button" className={activeStudioView === "storefront" ? "is-active" : ""} aria-pressed={activeStudioView === "storefront"} onClick={() => setActiveStudioView("storefront")}>
+          <ImagePlus size={15}/> STOREFRONT STUDIO
+          <span>Homepage images</span>
+        </button>
+        <button type="button" className={activeStudioView === "hero" ? "is-active" : ""} aria-pressed={activeStudioView === "hero"} onClick={() => setActiveStudioView("hero")}>
+          <WandSparkles size={15}/> HERO SLIDE SETTINGS
+          <span>Slider and desktop adaptation</span>
+        </button>
+      </nav>
+
+      {activeStudioView === "hero" && <>
       <section className="admin-hero-slides">
         <div className="admin-hero-slides-heading">
           <div><strong>Hero image slider</strong><span>The current Main homepage hero remains Slide 1 with all its existing desktop and mobile settings. Add up to 8 more slides below.</span></div>
@@ -310,6 +323,9 @@ export default function AdminHomepageMediaManager() {
         )}
       </section>
 
+      </>}
+
+      {activeStudioView === "storefront" && <>
       <div className="admin-home-media-grid">
         {SLOTS.map((slot, index) => {
           const item = media[slot.key];
@@ -359,6 +375,7 @@ export default function AdminHomepageMediaManager() {
           );
         })}
       </div>
+      </>}
       <p className="admin-home-media-footnote">Images are stored in Cloudinary. Changes only appear on the customer storefront after you save them. This does not change product catalogue photos.</p>
     </section>
   );
