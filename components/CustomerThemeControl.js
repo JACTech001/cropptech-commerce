@@ -11,7 +11,7 @@ export default function CustomerThemeControl() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem(KEY);
-      if (["light", "dark", "system"].includes(saved)) setTheme(saved);
+      if (["light", "dark", "system"].includes(saved)) window.queueMicrotask(() => setTheme(saved));
     } catch {}
   }, []);
 
