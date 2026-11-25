@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, ShoppingBag } from "lucide-react";
 import { useCart } from "../../components/CartProvider";
+import PageSkeleton from "../../components/PageSkeleton";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -70,7 +71,7 @@ export default function CheckoutPage() {
     }
   }
 
-  if (!ready) return <main className="checkout-page"><p className="checkout-loading">Preparing your checkout…</p></main>;
+  if (!ready) return <PageSkeleton variant="checkout" />;
 
   return (
     <main className="checkout-page">
