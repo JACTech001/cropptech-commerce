@@ -32,7 +32,7 @@ export default function PaymentReviewControls({ submissionId, status }) {
         idempotencyKey = typeof crypto.randomUUID === "function"
           ? crypto.randomUUID().replaceAll("-", "")
           : Array.from(crypto.getRandomValues(new Uint8Array(24)), (byte) => byte.toString(16).padStart(2, "0")).join("");
-        localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey }));
+        try { localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey })); } catch {}
       }
       const response = await fetch(`/api/admin/payment-submissions/${encodeURIComponent(submissionId)}/decision`, {
         method: "POST",
@@ -42,7 +42,7 @@ export default function PaymentReviewControls({ submissionId, status }) {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "Could not save this payment review.");
       setFeedback(data.message || "Payment review saved.");
-      localStorage.removeItem(storageKey);
+      try { localStorage.removeItem(storageKey); } catch {}
       router.refresh();
     } catch (requestError) {
       setError(requestError.message || "Could not save this payment review.");
