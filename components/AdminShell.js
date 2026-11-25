@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Bell, ChevronLeft, ChevronRight, Command, ImagePlus, LayoutDashboard, Package, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Command, ImagePlus, LayoutDashboard, Package, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X } from "lucide-react";
+import AdminNotificationBell from "./AdminNotificationBell";
 
 const sections = [
   { items: [
@@ -109,7 +110,7 @@ export default function AdminShell({ children, email, adminName, isSuperAdmin = 
         <header className="admin-utility-bar">
           <button type="button" className="admin-mobile-menu" onClick={() => setMobileOpen(true)} aria-label="Open navigation"><Command size={18}/></button>
           <button type="button" className="admin-command-trigger" onClick={() => { setQuery(""); setCommandOpen(true); }}><Search size={16}/><span>Search admin pages and actions...</span><kbd>Ctrl K</kbd></button>
-          <div className="admin-utility-right"><span className="admin-environment"><i/> STORE ADMIN</span><span className="admin-utility-user">{adminName || "Admin"}</span></div>
+          <div className="admin-utility-right"><AdminNotificationBell/><span className="admin-environment"><i/> STORE ADMIN</span><span className="admin-utility-user">{adminName || "Admin"}</span></div>
         </header>
         <div className="admin-main-content">{children}</div>
       </div>
