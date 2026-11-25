@@ -4004,3 +4004,47 @@ h1, h2, h3, p { margin-top: 0; }
 .admin-shell[data-theme="dark"] .admin-page .admin-order-open-button { color:#ff7b86; }
 .admin-shell[data-theme="dark"] .admin-page .admin-orders-results-line,
 .admin-shell[data-theme="dark"] .admin-page .admin-team-activity article { border-color:#303844; }
+
+
+/* Delivery zone editing and status controls */
+.admin-delivery-list-heading > button {
+  display:inline-flex; align-items:center; gap:6px; min-height:32px;
+  padding:0 10px; border:1px solid #e2e5e9; background:#fff;
+  color:#59616a; cursor:pointer; font-size:8px; font-weight:700;
+}
+.admin-delivery-counts { display:flex; gap:7px; margin:-4px 0 10px; }
+.admin-delivery-counts span { padding:5px 8px; border-radius:20px; background:#f0f8f3; color:#267849; font-size:8px; font-weight:800; }
+.admin-delivery-counts span + span { background:#f2f3f5; color:#626a73; }
+.admin-delivery-zone-list article { flex-wrap:wrap; }
+.admin-delivery-zone-list article.is-inactive { opacity:.78; }
+.admin-delivery-zone-info { display:grid; gap:5px; min-width:0; flex:1; }
+.admin-delivery-zone-info .admin-team-status { width:max-content; }
+.admin-delivery-zone-actions { display:flex; gap:6px; margin-left:auto; }
+.admin-delivery-zone-actions button {
+  display:inline-flex; align-items:center; justify-content:center; gap:5px;
+  min-height:29px; padding:0 8px; border:1px solid #e2e5e9;
+  background:#fff; color:#59616a; cursor:pointer; font-size:8px; font-weight:800;
+}
+.admin-delivery-zone-actions button.deactivate { border-color:#f0c8cb; background:#fff7f7; color:#b4232c; }
+.admin-delivery-zone-actions button.reactivate { border-color:#c8e6d2; background:#f2fbf5; color:#267849; }
+.admin-delivery-zone-actions button:disabled { opacity:.5; cursor:wait; }
+.admin-delivery-edit-form {
+  display:grid; gap:12px; width:100%; margin-top:12px; padding:14px;
+  border:1px solid #e6e9ed; border-radius:7px; background:#fafbfc;
+}
+.admin-delivery-edit-heading { display:flex; align-items:center; justify-content:space-between; color:#30343a; font-size:11px; }
+.admin-delivery-edit-heading button { display:grid; place-items:center; width:28px; height:28px; border:0; background:transparent; cursor:pointer; }
+.admin-delivery-edit-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.admin-delivery-edit-form .checkout-field { margin:0; }
+.admin-delivery-edit-form .checkout-primary { width:100%; }
+.admin-shell[data-theme="dark"] .admin-delivery-list-heading > button,
+.admin-shell[data-theme="dark"] .admin-delivery-zone-actions button { background:#202630; border-color:#3a4350; color:#d4dae2; }
+.admin-shell[data-theme="dark"] .admin-delivery-zone-actions button.deactivate { background:#3b2026; border-color:#71323a; color:#ff8791; }
+.admin-shell[data-theme="dark"] .admin-delivery-zone-actions button.reactivate { background:#1e3528; border-color:#315b40; color:#8dd6a6; }
+.admin-shell[data-theme="dark"] .admin-delivery-edit-form { background:#151a22; border-color:#303844; }
+.admin-shell[data-theme="dark"] .admin-delivery-edit-heading { color:#f0f2f5; }
+@media(max-width:560px) {
+  .admin-delivery-zone-actions { width:100%; margin-left:45px; }
+  .admin-delivery-zone-actions button { flex:1; }
+  .admin-delivery-edit-fields { grid-template-columns:1fr; }
+}
