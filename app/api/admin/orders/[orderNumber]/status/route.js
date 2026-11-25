@@ -21,14 +21,15 @@ export async function POST(request, { params }) {
   let body;
   try { body = await request.json(); } catch { return fail("Invalid order update.", 400); }
 
+  const expectedStatus = typeof body.expectedStatus === "string" ? body.expectedStatus : "";
   const note = typeof body.note === "string" ? body.note.trim().slice(0, 1000) : "";
   const provider = typeof body.provider === "string" ? body.provider.trim().slice(0, 100) : "";
   const trackingNumber = typeof body.trackingNumber === "string" ? body.trackingNumber.trim().slice(0, 120) : "";
   const trackingUrl = typeof body.trackingUrl === "string" ? body.trackingUrl.trim().slice(0, 500) : "";
   const idempotencyKey = request.headers.get("idempotency-key") || "";
   if (!/^[A-Za-z0-9_-]{16,128}$/.test(idempotencyKey)) return fail("Update session expired. Refresh the page and try again.", 400);
-  const scope = "ADMIN_ORDER_STATUS:" + orderNumber;
-  const requestHash = createHash("sha256").update(JSON.stringify({ note, provider, trackingNumber, trackingUrl })).digest("hex");
+  const scope = "ADMIN_ORDER_STATUS:" + orderNumber + ":" + expectedStatus;
+  const requestHash = createHash("sha256").update(JSON.stringify({ expectedStatus, note, provider, trackingNumber, trackingUrl })).digest("hex");
   const existingRequest = await prisma.idempotencyRecord.findUnique({
     where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
   });
@@ -54,6 +55,7 @@ export async function POST(request, { params }) {
         include: { shipments: { orderBy: { createdAt: "desc" }, take: 1 } },
       });
       if (!order) throw new Error("ORDER_NOT_FOUND");
+      if (order.status !== expectedStatus) throw new Error("ORDER_STATUS_CHANGED");
       if (order.paymentStatus !== "PAID") throw new Error("PAYMENT_NOT_CONFIRMED");
 
       const nextStatus = transitions[order.status];
@@ -129,6 +131,7 @@ export async function POST(request, { params }) {
     }
     const known = {
       ORDER_NOT_FOUND: [404, "Order not found."],
+      ORDER_STATUS_CHANGED: [409, "The order status has changed. Refresh the order before making another update."],
       PAYMENT_NOT_CONFIRMED: [409, "Payment must be verified before fulfilment can begin."],
       INVALID_TRANSITION: [409, "This order cannot move to another fulfilment stage."],
       SHIPMENT_REQUIRED: [409, "A shipment record is required before marking this order delivered."],
