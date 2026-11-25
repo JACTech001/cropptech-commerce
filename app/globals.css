@@ -4080,3 +4080,51 @@ h1, h2, h3, p { margin-top: 0; }
 .admin-shell[data-theme="dark"] .admin-report-table td{color:#d0d6df}
 .admin-shell[data-theme="dark"] .admin-report-chart i{background:#252c36}
 @media(max-width:760px){.admin-report-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-report-panel{padding:14px}.admin-report-chart{gap:3px}.admin-report-chart small{font-size:7px}}
+
+
+/* Customer appearance preference and consistent account navigation */
+.customer-appearance{display:grid;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid #e7e9ec}
+.customer-appearance h3{margin:0;color:#202124;font-size:13px}
+.customer-appearance>div:first-child>p:last-child{margin:5px 0 0;color:#7c858f;font-size:10px}
+.customer-theme-options{display:flex;flex-wrap:wrap;gap:7px}
+.customer-theme-options button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:34px;padding:0 11px;border:1px solid #e1e5e9;border-radius:5px;background:#fff;color:#4c535c;font-size:10px;font-weight:700;cursor:pointer}
+.customer-theme-options button.selected{border-color:#e00016;background:#fff4f5;color:#c90014}
+html[data-customer-theme="dark"] body{background:#11161d;color:#e8eaed}
+html[data-customer-theme="dark"] .account-page,
+html[data-customer-theme="dark"] .checkout-page,
+html[data-customer-theme="dark"] .shop-page,
+html[data-customer-theme="dark"] .product-detail-page{background:#11161d;color:#e8eaed}
+html[data-customer-theme="dark"] .shop-topbar,
+html[data-customer-theme="dark"] .shop-footer{border-color:#303844;color:#cbd2dc}
+html[data-customer-theme="dark"] .shop-back,
+html[data-customer-theme="dark"] .shop-topbar a{color:#e8eaed}
+html[data-customer-theme="dark"] .account-profile-panel,
+html[data-customer-theme="dark"] .account-orders-panel,
+html[data-customer-theme="dark"] .account-order-card,
+html[data-customer-theme="dark"] .account-empty-orders,
+html[data-customer-theme="dark"] .checkout-form-section,
+html[data-customer-theme="dark"] .order-confirmation-card,
+html[data-customer-theme="dark"] .order-payment-panel,
+html[data-customer-theme="dark"] .order-line,
+html[data-customer-theme="dark"] .order-bank-details{background:#191e26;border-color:#303844;color:#e8eaed}
+html[data-customer-theme="dark"] .account-page h1,
+html[data-customer-theme="dark"] .account-page h2,
+html[data-customer-theme="dark"] .account-page h3,
+html[data-customer-theme="dark"] .checkout-page h1,
+html[data-customer-theme="dark"] .checkout-page h2,
+html[data-customer-theme="dark"] .checkout-page h3,
+html[data-customer-theme="dark"] .product-detail-page h1,
+html[data-customer-theme="dark"] .product-detail-page h2{color:#f2f4f7}
+html[data-customer-theme="dark"] .account-page p,
+html[data-customer-theme="dark"] .account-page span,
+html[data-customer-theme="dark"] .checkout-page p,
+html[data-customer-theme="dark"] .checkout-page span{color:#b7c0cc}
+html[data-customer-theme="dark"] .account-appearance,
+html[data-customer-theme="dark"] .customer-appearance{border-color:#303844}
+html[data-customer-theme="dark"] .customer-appearance h3{color:#f2f4f7}
+html[data-customer-theme="dark"] .customer-theme-options button,
+html[data-customer-theme="dark"] .customer-appearance button{background:#202630;border-color:#3a4350;color:#d4dae2}
+html[data-customer-theme="dark"] .customer-theme-options button.selected{background:#3b2026;border-color:#e00016;color:#ff8791}
+html[data-customer-theme="dark"] .mobile-bottom-nav{background:#191e26;border-color:#303844}
+html[data-customer-theme="dark"] .mobile-bottom-nav-link{color:#b7c0cc}
+html[data-customer-theme="dark"] .mobile-bottom-nav-link.is-active{color:#ff6573}
