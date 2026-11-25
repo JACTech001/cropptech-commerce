@@ -33,7 +33,8 @@ export async function POST(request) {
       if (!target) throw new Error("ACCOUNT_NOT_FOUND");
       if (target.role === "SUPER_ADMIN") throw new Error("SUPER_ADMIN_PROTECTED");
       if (target.role === "ADMIN") throw new Error("ALREADY_ADMIN");
-      const updated = await tx.user.update({ where: { id: target.id }, data: { role: "ADMIN", isActive: true } });
+      if (!target.isActive) throw new Error("ACCOUNT_INACTIVE");
+      const updated = await tx.user.update({ where: { id: target.id }, data: { role: "ADMIN" } });
       await tx.adminAuditLog.create({ data: { actorId: access.user.id, action: "ADMIN_ACCESS_GRANTED", entityType: "User", entityId: target.id, metadata: { email } } });
       return updated;
     }, { isolationLevel: "Serializable" });
@@ -42,6 +43,7 @@ export async function POST(request) {
     if (error.message === "ACCOUNT_NOT_FOUND") return fail("No account exists with that email. Ask the person to create a CroppTech account first.", 404);
     if (error.message === "SUPER_ADMIN_PROTECTED") return fail("A Super Admin account cannot be changed through this action.", 409);
     if (error.message === "ALREADY_ADMIN") return fail("This account already has administrator access.", 409);
+    if (error.message === "ACCOUNT_INACTIVE") return fail("This account is currently disabled. Reactivate the customer account through the appropriate support process before granting admin access.", 409);
     console.error("Grant admin access failed:", error);
     return fail("Could not grant administrator access. Please try again.", 500);
   }
