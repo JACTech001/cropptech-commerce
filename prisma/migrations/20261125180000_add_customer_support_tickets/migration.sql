@@ -62,8 +62,8 @@ ALTER TABLE "CustomerSupportTicket"
   FOREIGN KEY ("customerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT "CustomerSupportTicket_assignedToId_fkey"
   FOREIGN KEY ("assignedToId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT "CustomerSupportTicket_orderId_customerId_fkey"
-  FOREIGN KEY ("orderId", "customerId") REFERENCES "Order"("id", "customerId") ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT "CustomerSupportTicket_orderId_fkey"
+  FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE "SupportTicketMessage"
   ADD CONSTRAINT "SupportTicketMessage_ticketId_fkey"
