@@ -43,6 +43,25 @@ export async function PATCH(request, { params }) {
         if (!zone) throw new Error("ZONE_NOT_FOUND");
         if (zone.isActive === activate) throw new Error(activate ? "ZONE_ALREADY_ACTIVE" : "ZONE_ALREADY_INACTIVE");
 
+        if (activate) {
+          const location = await tx.shippingZoneLocation.findFirst({
+            where: { zoneId: id },
+            select: { state: true, city: true },
+          });
+          if (location?.city) {
+            const duplicate = await tx.shippingZoneLocation.findFirst({
+              where: {
+                zoneId: { not: id },
+                state: { equals: location.state, mode: "insensitive" },
+                city: { equals: location.city, mode: "insensitive" },
+                zone: { is: { isActive: true } },
+              },
+              select: { id: true },
+            });
+            if (duplicate) throw new Error("DELIVERY_ZONE_EXISTS");
+          }
+        }
+
         const updated = await tx.shippingZone.update({
           where: { id },
           data: { isActive: activate },
@@ -71,6 +90,7 @@ export async function PATCH(request, { params }) {
       if (error.message === "ZONE_NOT_FOUND") return fail("Delivery zone not found.", 404);
       if (error.message === "ZONE_ALREADY_ACTIVE") return fail("This delivery zone is already active.", 409);
       if (error.message === "ZONE_ALREADY_INACTIVE") return fail("This delivery zone is already inactive.", 409);
+      if (error.message === "DELIVERY_ZONE_EXISTS") return fail("Another active delivery zone already covers this state and city. Update that zone before reactivating this one.", 409);
       console.error("Delivery-zone status update failed:", error);
       return fail("Could not update this delivery zone. Please try again.", 500);
     }
