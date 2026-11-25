@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { CheckCircle2, LoaderCircle, MapPin, PlusCircle, Truck } from "lucide-react";
 
 export default function AdminDeliveryManager() {
@@ -10,7 +10,7 @@ export default function AdminDeliveryManager() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  async function loadZones() {
+  const loadZones = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch("/api/admin/shipping-zones", { cache: "no-store" });
@@ -19,9 +19,9 @@ export default function AdminDeliveryManager() {
       setZones(data.zones || []);
     } catch (err) { setError(err.message); }
     finally { setLoading(false); }
-  }
+  }, []);
 
-  useEffect(() => { loadZones(); }, []);
+  useEffect(() => { loadZones(); }, [loadZones]);
 
   async function addZone(event) {
     event.preventDefault();
