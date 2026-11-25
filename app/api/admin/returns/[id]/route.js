@@ -72,7 +72,7 @@ export async function PATCH(request, context) {
         },
       });
       if (next === "COMPLETED") {
-        const completed = await tx.refund.aggregate({ where: { paymentId: current.paymentId, status: "COMPLETED" }, _sum: { amount: true } });
+        const completed = await tx.refund.aggregate({ where: { paymentId: current.paymentId, status: "COMPLETED", id: { not: id } }, _sum: { amount: true } });
         const totalRefunded = Number(completed._sum.amount || 0) + Number(current.amount);
         const paymentStatus = totalRefunded >= Number(current.payment.amountPaid) ? "REFUNDED" : "PARTIALLY_REFUNDED";
         await tx.payment.update({ where: { id: current.paymentId }, data: { status: paymentStatus } });
