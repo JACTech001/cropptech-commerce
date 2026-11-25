@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { requireAppRole } from "../../../../../../lib/auth/user";
 import { prisma } from "../../../../../../lib/db";
 
@@ -24,6 +25,18 @@ export async function POST(request, { params }) {
   const provider = typeof body.provider === "string" ? body.provider.trim().slice(0, 100) : "";
   const trackingNumber = typeof body.trackingNumber === "string" ? body.trackingNumber.trim().slice(0, 120) : "";
   const trackingUrl = typeof body.trackingUrl === "string" ? body.trackingUrl.trim().slice(0, 500) : "";
+  const idempotencyKey = request.headers.get("idempotency-key") || "";
+  if (!/^[A-Za-z0-9_-]{16,128}$/.test(idempotencyKey)) return fail("Update session expired. Refresh the page and try again.", 400);
+  const scope = "ADMIN_ORDER_STATUS:" + orderNumber;
+  const requestHash = createHash("sha256").update(JSON.stringify({ note, provider, trackingNumber, trackingUrl })).digest("hex");
+  const existingRequest = await prisma.idempotencyRecord.findUnique({
+    where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
+  });
+  if (existingRequest) {
+    if (existingRequest.requestHash !== requestHash) return fail("This update key was already used with different details.", 409);
+    if (existingRequest.response) return Response.json(existingRequest.response, { headers: { "Cache-Control": "no-store", "Idempotency-Replayed": "true" } });
+    return fail("This order update is still being processed. Refresh and check the order status.", 409);
+  }
   if (trackingUrl) {
     try {
       const url = new URL(trackingUrl);
@@ -33,6 +46,9 @@ export async function POST(request, { params }) {
 
   try {
     const updated = await prisma.$transaction(async (tx) => {
+      await tx.idempotencyRecord.create({
+        data: { customerId: access.user.id, scope, key: idempotencyKey, requestHash },
+      });
       const order = await tx.order.findUnique({
         where: { orderNumber },
         include: { shipments: { orderBy: { createdAt: "desc" }, take: 1 } },
@@ -93,11 +109,24 @@ export async function POST(request, { params }) {
           status: "QUEUED",
         },
       });
-      return { orderNumber, status: nextStatus };
+      const responsePayload = { message: "Order status updated.", orderNumber, status: nextStatus };
+      await tx.idempotencyRecord.update({
+        where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
+        data: { response: responsePayload },
+      });
+      return responsePayload;
     }, { isolationLevel: "Serializable" });
 
-    return Response.json({ message: "Order status updated.", ...updated }, { headers: { "Cache-Control": "no-store" } });
+    return Response.json(updated, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
+    if (error?.code === "P2002" || error?.code === "P2034") {
+      const replay = await prisma.idempotencyRecord.findUnique({
+        where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } },
+      });
+      if (replay?.requestHash === requestHash && replay.response) {
+        return Response.json(replay.response, { headers: { "Cache-Control": "no-store", "Idempotency-Replayed": "true" } });
+      }
+    }
     const known = {
       ORDER_NOT_FOUND: [404, "Order not found."],
       PAYMENT_NOT_CONFIRMED: [409, "Payment must be verified before fulfilment can begin."],
