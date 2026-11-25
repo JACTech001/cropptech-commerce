@@ -5,6 +5,7 @@ import { UserPlus, ShieldCheck, ShieldOff, RefreshCw, LoaderCircle } from "lucid
 
 export default function AdminTeamManager() {
   const [admins, setAdmins] = useState([]);
+  const [activeView, setActiveView] = useState("admins");
   const [logs, setLogs] = useState([]);
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState("");
@@ -69,13 +70,18 @@ export default function AdminTeamManager() {
 
   return (
     <div className="admin-team-workspace">
-      <section className="admin-team-add-card">
+      <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Administrator management sections">
+        <button type="button" className={activeView === "admins" ? "active" : ""} aria-pressed={activeView === "admins"} onClick={() => setActiveView("admins")}>ADMINISTRATORS</button>
+        <button type="button" className={activeView === "add" ? "active" : ""} aria-pressed={activeView === "add"} onClick={() => setActiveView("add")}><UserPlus size={14}/> ADD ADMINISTRATOR</button>
+        <button type="button" className={activeView === "history" ? "active" : ""} aria-pressed={activeView === "history"} onClick={() => setActiveView("history")}>ACCESS HISTORY</button>
+      </nav>
+      <section className="admin-team-add-card" hidden={activeView !== "add"}>
         <div><p className="eyebrow">GRANT ADMIN ACCESS</p><h2>Add an administrator</h2><p>The person must already have a CroppTech customer account. They can create one first using the normal sign-up process.</p></div>
         <form onSubmit={addAdmin}><label className="checkout-field">EXISTING ACCOUNT EMAIL<input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="name@example.com"/></label><button className="admin-primary-button" type="submit" disabled={Boolean(busy)}>{busy === "add" ? <LoaderCircle size={15}/> : <UserPlus size={15}/>} GRANT ADMIN ACCESS</button></form>
       </section>
       {error && <p className="checkout-error" role="alert">{error}</p>}
       {message && <p className="checkout-success" role="status">{message}</p>}
-      <section className="admin-team-list-card">
+      <section className="admin-team-list-card" hidden={activeView !== "history"}>
         <div className="admin-team-section-heading"><div><p className="eyebrow">ACCESS CONTROL</p><h2>Administrators</h2></div><button type="button" onClick={load} disabled={loading}><RefreshCw size={14}/> REFRESH</button></div>
         {loading ? <p className="admin-setting-status">Loading administrator accounts…</p> : admins.length ? <div className="admin-team-table-wrap"><table className="admin-team-table"><thead><tr><th>ADMINISTRATOR</th><th>ROLE</th><th>STATUS</th><th>JOINED</th><th>ACTION</th></tr></thead><tbody>{admins.map((admin) => <tr key={admin.id}><td><strong>{admin.fullName || admin.email}</strong><small>{admin.email}</small></td><td><span className={"admin-team-role " + (admin.role === "SUPER_ADMIN" ? "super" : "")}>{admin.role === "SUPER_ADMIN" ? <ShieldCheck size={13}/> : null}{admin.role === "SUPER_ADMIN" ? "SUPER ADMIN" : "ADMIN"}</span></td><td><span className={"admin-team-status " + (admin.isActive ? "active" : "inactive")}>{admin.isActive ? "Active" : "Deactivated"}</span></td><td>{new Date(admin.createdAt).toLocaleDateString("en-NG", { dateStyle: "medium" })}</td><td>{admin.role === "ADMIN" ? <button type="button" className={admin.isActive ? "admin-team-deactivate" : "admin-team-reactivate"} onClick={() => setStatus(admin, !admin.isActive)} disabled={Boolean(busy)}>{busy === admin.id ? <LoaderCircle size={14}/> : admin.isActive ? <><ShieldOff size={14}/> DEACTIVATE</> : <><ShieldCheck size={14}/> REACTIVATE</>}</button> : <span className="admin-team-protected">Protected</span>}</td></tr>)}</tbody></table></div> : <p className="admin-setting-status">No administrator accounts found.</p>}
       </section>
