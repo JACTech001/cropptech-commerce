@@ -28,7 +28,9 @@ export default function AdminHomepageMediaManager() {
   const [notice, setNotice] = useState("");
   const [uploadingKey, setUploadingKey] = useState("");
   const [adaptingHero, setAdaptingHero] = useState(false);
+  const [adaptingSlideId, setAdaptingSlideId] = useState("");
   const [adaptationMode, setAdaptationMode] = useState("blur");
+  const [slideAdaptationModes, setSlideAdaptationModes] = useState({});
   const fileRefs = useRef({});
 
   useEffect(() => {
@@ -83,60 +85,77 @@ export default function AdminHomepageMediaManager() {
     }
   }
 
+  async function createDesktopAdaptation(sourceUrl, mode, filename) {
+    const image = await new Promise((resolve, reject) => {
+      const element = new window.Image();
+      element.crossOrigin = "anonymous";
+      element.onload = () => resolve(element);
+      element.onerror = () => reject(new Error("The source image could not be loaded for adaptation. Try reselecting it from the Cloudinary library."));
+      element.src = sourceUrl;
+    });
+    const canvas = document.createElement("canvas");
+    canvas.width = 1600; canvas.height = 900;
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Your browser could not create the image workspace.");
+    const coverScale = Math.max(canvas.width / image.width, canvas.height / image.height);
+    const coverWidth = image.width * coverScale, coverHeight = image.height * coverScale;
+    const coverX = (canvas.width - coverWidth) / 2, coverY = (canvas.height - coverHeight) / 2;
+    if (mode === "blur") {
+      context.save(); context.filter = "blur(46px) brightness(0.78)";
+      context.drawImage(image, coverX - 60, coverY - 60, coverWidth + 120, coverHeight + 120);
+      context.restore();
+      context.fillStyle = "rgba(20, 17, 15, 0.10)";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+    } else {
+      const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+      if (mode === "warm") { gradient.addColorStop(0, "#d5c2ad"); gradient.addColorStop(1, "#f1e9df"); }
+      else if (mode === "dark") { gradient.addColorStop(0, "#34302d"); gradient.addColorStop(1, "#74695e"); }
+      else { gradient.addColorStop(0, "#eeeae4"); gradient.addColorStop(1, "#d9d4cc"); }
+      context.fillStyle = gradient; context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    const containScale = Math.min(1450 / image.width, 860 / image.height);
+    const imageWidth = image.width * containScale, imageHeight = image.height * containScale;
+    const imageX = (canvas.width - imageWidth) / 2, imageY = (canvas.height - imageHeight) / 2;
+    context.save(); context.shadowColor = "rgba(0, 0, 0, 0.18)"; context.shadowBlur = 28; context.shadowOffsetY = 8;
+    context.drawImage(image, imageX, imageY, imageWidth, imageHeight); context.restore();
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.92));
+    if (!blob) throw new Error("The adapted image could not be exported. Please try again.");
+    const signatureResponse = await fetch("/api/admin/products/upload-signature", { method: "POST", cache: "no-store" });
+    const config = await signatureResponse.json();
+    if (!signatureResponse.ok) throw new Error(config.error || "Cloudinary upload is not available.");
+    const form = new FormData();
+    form.append("file", blob, filename);
+    form.append("api_key", config.apiKey); form.append("timestamp", String(config.timestamp));
+    form.append("folder", config.folder); form.append("allowed_formats", config.allowed_formats);
+    form.append("signature", config.signature);
+    const uploadResponse = await fetch("https://api.cloudinary.com/v1_1/" + config.cloudName + "/image/upload", { method: "POST", body: form });
+    const asset = await uploadResponse.json();
+    if (!uploadResponse.ok || !asset.secure_url || !asset.public_id) throw new Error(asset.error?.message || "Cloudinary could not upload the adapted desktop image.");
+    return { desktopUrl: asset.secure_url, desktopPublicId: asset.public_id, desktopWidth: asset.width || 1600, desktopHeight: asset.height || 900 };
+  }
+
   async function createHeroDesktopAdaptation() {
     const source = media.hero_main;
     if (!source?.url) return;
     setAdaptingHero(true); setError(""); setNotice("");
     try {
-      const image = await new Promise((resolve, reject) => {
-        const element = new window.Image();
-        element.crossOrigin = "anonymous";
-        element.onload = () => resolve(element);
-        element.onerror = () => reject(new Error("The source image could not be loaded for adaptation. Try reselecting it from the Cloudinary library."));
-        element.src = source.url;
-      });
-      const canvas = document.createElement("canvas");
-      canvas.width = 1600; canvas.height = 900;
-      const context = canvas.getContext("2d");
-      if (!context) throw new Error("Your browser could not create the image workspace.");
-      const coverScale = Math.max(canvas.width / image.width, canvas.height / image.height);
-      const coverWidth = image.width * coverScale, coverHeight = image.height * coverScale;
-      const coverX = (canvas.width - coverWidth) / 2, coverY = (canvas.height - coverHeight) / 2;
-      if (adaptationMode === "blur") {
-        context.save(); context.filter = "blur(46px) brightness(0.78)";
-        context.drawImage(image, coverX - 60, coverY - 60, coverWidth + 120, coverHeight + 120);
-        context.restore();
-        context.fillStyle = "rgba(20, 17, 15, 0.10)";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-      } else {
-        const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-        if (adaptationMode === "warm") { gradient.addColorStop(0, "#d5c2ad"); gradient.addColorStop(1, "#f1e9df"); }
-        else if (adaptationMode === "dark") { gradient.addColorStop(0, "#34302d"); gradient.addColorStop(1, "#74695e"); }
-        else { gradient.addColorStop(0, "#eeeae4"); gradient.addColorStop(1, "#d9d4cc"); }
-        context.fillStyle = gradient; context.fillRect(0, 0, canvas.width, canvas.height);
-      }
-      const containScale = Math.min(1450 / image.width, 860 / image.height);
-      const imageWidth = image.width * containScale, imageHeight = image.height * containScale;
-      const imageX = (canvas.width - imageWidth) / 2, imageY = (canvas.height - imageHeight) / 2;
-      context.save(); context.shadowColor = "rgba(0, 0, 0, 0.18)"; context.shadowBlur = 28; context.shadowOffsetY = 8;
-      context.drawImage(image, imageX, imageY, imageWidth, imageHeight); context.restore();
-      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.92));
-      if (!blob) throw new Error("The adapted image could not be exported. Please try again.");
-      const signatureResponse = await fetch("/api/admin/products/upload-signature", { method: "POST", cache: "no-store" });
-      const config = await signatureResponse.json();
-      if (!signatureResponse.ok) throw new Error(config.error || "Cloudinary upload is not available.");
-      const form = new FormData();
-      form.append("file", blob, "cropptech-hero-desktop.jpg");
-      form.append("api_key", config.apiKey); form.append("timestamp", String(config.timestamp));
-      form.append("folder", config.folder); form.append("allowed_formats", config.allowed_formats);
-      form.append("signature", config.signature);
-      const uploadResponse = await fetch("https://api.cloudinary.com/v1_1/" + config.cloudName + "/image/upload", { method: "POST", body: form });
-      const asset = await uploadResponse.json();
-      if (!uploadResponse.ok || !asset.secure_url || !asset.public_id) throw new Error(asset.error?.message || "Cloudinary could not upload the adapted desktop image.");
-      setMedia((current) => ({ ...current, hero_main: { ...current.hero_main, desktopUrl: asset.secure_url, desktopPublicId: asset.public_id, desktopWidth: asset.width || 1600, desktopHeight: asset.height || 900 } }));
+      const desktop = await createDesktopAdaptation(source.url, adaptationMode, "cropptech-hero-desktop.jpg");
+      setMedia((current) => ({ ...current, hero_main: { ...current.hero_main, ...desktop } }));
       setNotice("Desktop adaptation created and uploaded. Review both previews, then save changes to apply it to the storefront.");
     } catch (cause) { setError(cause.message || "The desktop image could not be adapted."); }
     finally { setAdaptingHero(false); }
+  }
+
+  async function createSlideDesktopAdaptation(index, slide) {
+    if (!slide?.url || !slide.id) return;
+    setAdaptingSlideId(slide.id); setError(""); setNotice("");
+    try {
+      const mode = slideAdaptationModes[slide.id] || "blur";
+      const desktop = await createDesktopAdaptation(slide.url, mode, `cropptech-hero-slide-${index + 2}-desktop.jpg`);
+      updateHeroSlide(index, desktop);
+      setNotice(`Desktop adaptation for slide ${index + 2} created and uploaded. Review both previews, then save changes.`);
+    } catch (cause) { setError(cause.message || "The slide desktop image could not be adapted."); }
+    finally { setAdaptingSlideId(""); }
   }
 
   async function saveChanges() {
@@ -262,7 +281,22 @@ export default function AdminHomepageMediaManager() {
                       {slide.desktopUrl ? <Image src={slide.desktopUrl} alt="Hero slide desktop image" fill sizes="(max-width: 700px) 45vw, 280px" unoptimized/> : slide.url ? <Image src={slide.url} alt="Hero slide desktop fallback" fill sizes="(max-width: 700px) 45vw, 280px" unoptimized/> : <div><ImagePlus size={22}/><small>Uses mobile image until selected</small></div>}
                     </div>
                     <CloudinaryMediaLibraryPicker remaining={1} onSelect={(assets) => selectHeroSlideImage(index, "desktop", assets[0])} onError={setError}/>
-                    {slide.desktopUrl && <button type="button" className="admin-outline-button" onClick={() => updateHeroSlide(index, { desktopUrl: "", desktopPublicId: "", desktopWidth: 0, desktopHeight: 0 })}>USE MOBILE IMAGE</button>}
+                    {slide.url && <div className="admin-home-ai-tool admin-hero-slide-adaptation">
+                      <div className="admin-home-ai-heading"><div><strong>Desktop image adaptation</strong><span>Create a 16:9 desktop version from this slide without changing its original mobile image.</span></div><WandSparkles size={18}/></div>
+                      <label className="admin-home-ai-mode">Background treatment
+                        <select value={slideAdaptationModes[slide.id] || "blur"} onChange={(event) => setSlideAdaptationModes((current) => ({ ...current, [slide.id]: event.target.value }))} disabled={adaptingSlideId === slide.id}>
+                          <option value="blur">Blurred extension of the photo</option><option value="warm">Warm linen gradient</option><option value="light">Soft neutral gradient</option><option value="dark">Deep neutral gradient</option>
+                        </select>
+                      </label>
+                      <button type="button" className="admin-primary-button admin-home-ai-button" onClick={() => createSlideDesktopAdaptation(index, slide)} disabled={adaptingSlideId !== "" || adaptingHero || uploadingKey !== ""}>
+                        {adaptingSlideId === slide.id ? <LoaderCircle size={15} className="admin-spin"/> : <WandSparkles size={15}/>}
+                        {adaptingSlideId === slide.id ? "CREATING DESKTOP VERSION…" : slide.desktopUrl ? "RECREATE DESKTOP VERSION" : "CREATE DESKTOP VERSION"}
+                      </button>
+                    </div>}
+                    {slide.desktopUrl && <><div className="admin-home-ai-previews">
+                      <div><span>DESKTOP · 16:9</span><div className="admin-home-ai-preview landscape"><Image src={slide.desktopUrl} alt={`Adapted desktop preview for slide ${index + 2}`} fill sizes="(max-width: 700px) 100vw, 40vw" unoptimized /></div></div>
+                      <div><span>MOBILE · ORIGINAL</span><div className="admin-home-ai-preview portrait"><Image src={slide.url} alt={`Original mobile preview for slide ${index + 2}`} fill sizes="(max-width: 700px) 100vw, 20vw" unoptimized /></div></div>
+                    </div><button type="button" className="admin-outline-button" onClick={() => updateHeroSlide(index, { desktopUrl: "", desktopPublicId: "", desktopWidth: 0, desktopHeight: 0 })}>USE MOBILE IMAGE INSTEAD</button></>}
                   </div>
                 </div>
                 <div className="admin-hero-slide-position">
