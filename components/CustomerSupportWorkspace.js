@@ -54,7 +54,7 @@ export default function CustomerSupportWorkspace({ initialTickets, orders }) {
         <label>SUBJECT<input required minLength={4} maxLength={140} value={subject} onChange={(event) => setSubject(event.target.value)} placeholder="What do you need help with?"/></label>
         <label>COMPLAINT / ENQUIRY TYPE<select required value={issueType} onChange={(event) => setIssueType(event.target.value)}>{issueTypes.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select><small>Select the closest match. Our team will use this to route and understand your request.</small></label>
         <div className="customer-support-form-grid">
-          <label>REQUEST TYPE<select value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+          <label>AREA OF SUPPORT<select value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
           <label>RELATED ORDER (OPTIONAL)<select value={orderId} onChange={(event) => setOrderId(event.target.value)}><option value="">Not order-related</option>{orders.map((order) => <option key={order.id} value={order.id}>{order.orderNumber}</option>)}</select></label>
         </div>
         <label>MESSAGE<textarea required minLength={10} maxLength={5000} rows={5} value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Describe the issue or question in detail..."/></label>
