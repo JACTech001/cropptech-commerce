@@ -28,7 +28,20 @@ export default function AdminNotificationBell() {
     }
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    let active = true;
+    fetch("/api/admin/notifications", { cache: "no-store" })
+      .then(async (response) => {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || "Could not load notifications.");
+        if (active) {
+          setNotifications(data.notifications || []);
+          setUnreadCount(data.unreadCount || 0);
+        }
+      })
+      .catch((cause) => { if (active) setError(cause.message || "Could not load notifications."); });
+    return () => { active = false; };
+  }, []);
 
   async function markRead(id) {
     try {
