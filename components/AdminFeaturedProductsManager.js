@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { ArrowDown, ArrowUp, Check, GripVertical, LoaderCircle, Save, Search, Star, X } from "lucide-react";
+import { ArrowDown, ArrowUp, Check, LoaderCircle, Save, Search, Star, X } from "lucide-react";
 import styles from "./AdminFeaturedProductsManager.module.css";
 
 export default function AdminFeaturedProductsManager() {
@@ -134,6 +134,16 @@ export default function AdminFeaturedProductsManager() {
               ))}
             </div>
           ) : <div className={styles.emptySelected}><Star size={22}/><strong>No featured products selected</strong><span>Add products from the catalogue to create your homepage edit.</span></div>}
+          <div className={styles.preview}>
+            <div className={styles.previewHeading}><strong>Homepage preview</strong><span>Product order as customers will see it</span></div>
+            {selectedProducts.length ? <div className={styles.previewGrid}>
+              {selectedProducts.map((product, index) => <article className={styles.previewCard} key={product.id}>
+                <div className={styles.previewImage}>{product.image && <Image src={product.image} alt="" fill sizes="(max-width: 700px) 30vw, 140px" unoptimized />}<span>{index + 1}</span></div>
+                <strong>{product.name}</strong>
+                <small>{product.price == null ? "Price unavailable" : "₦" + product.price.toLocaleString("en-NG")}</small>
+              </article>)}
+            </div> : <p className={styles.previewEmpty}>Your homepage product section will stay hidden until you select at least one product.</p>}
+          </div>
           <p className={styles.footnote}>Removing a product here does not delete it, archive it or remove it from the Shop catalogue.</p>
         </section>
 
