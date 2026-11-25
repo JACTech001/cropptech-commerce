@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronLeft, ChevronRight, Command, ImagePlus, LayoutDashboard, Package, Boxes, ChartColumn, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Command, ImagePlus, LayoutDashboard, Package, Boxes, BarChart3, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X } from "lucide-react";
 import AdminNotificationBell from "./AdminNotificationBell";
 
 const sections = [
