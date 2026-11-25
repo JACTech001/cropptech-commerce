@@ -211,6 +211,8 @@ export default function AdminHomepageMediaManager() {
       : { desktopUrl: asset.secureUrl, desktopPublicId: asset.cloudinaryPublicId, desktopWidth: asset.width || 0, desktopHeight: asset.height || 0 });
   }
 
+  const hasIncompleteHeroSlides = heroSlides.some((slide) => !slide.url);
+  const assignedSlotCount = SLOTS.filter((slot) => media[slot.key]?.url).length;
   const hasChanges = JSON.stringify(media) !== JSON.stringify(savedMedia);
 
   if (loading) return <div className="admin-home-media-loading"><LoaderCircle size={18} /> Loading Store Front Studio…</div>;
@@ -218,10 +220,10 @@ export default function AdminHomepageMediaManager() {
   return (
     <section className="admin-home-media">
       <div className="admin-home-media-toolbar">
-        <div><strong>{Object.keys(media).length} of {SLOTS.length} image positions assigned</strong><span>Unassigned positions continue using the current website image.</span></div>
+        <div><strong>{assignedSlotCount} of {SLOTS.length} image positions assigned</strong><span>Unassigned positions continue using the current website image.</span></div>
         <div className="admin-home-media-actions">
           <button type="button" className="admin-outline-button" onClick={resetChanges} disabled={!hasChanges || saving}><RotateCcw size={14}/> DISCARD</button>
-          <button type="button" className="admin-primary-button" onClick={saveChanges} disabled={!hasChanges || saving}>{saving ? <LoaderCircle size={15} className="admin-spin"/> : <Save size={15}/>} SAVE CHANGES</button>
+          <button type="button" className="admin-primary-button" onClick={saveChanges} disabled={!hasChanges || saving || hasIncompleteHeroSlides}>{saving ? <LoaderCircle size={15} className="admin-spin"/> : <Save size={15}/>} SAVE CHANGES</button>
         </div>
       </div>
 
@@ -260,6 +262,7 @@ export default function AdminHomepageMediaManager() {
                       {slide.desktopUrl ? <Image src={slide.desktopUrl} alt="Hero slide desktop image" fill sizes="(max-width: 700px) 45vw, 280px" unoptimized/> : slide.url ? <Image src={slide.url} alt="Hero slide desktop fallback" fill sizes="(max-width: 700px) 45vw, 280px" unoptimized/> : <div><ImagePlus size={22}/><small>Uses mobile image until selected</small></div>}
                     </div>
                     <CloudinaryMediaLibraryPicker remaining={1} onSelect={(assets) => selectHeroSlideImage(index, "desktop", assets[0])} onError={setError}/>
+                    {slide.desktopUrl && <button type="button" className="admin-outline-button" onClick={() => updateHeroSlide(index, { desktopUrl: "", desktopPublicId: "", desktopWidth: 0, desktopHeight: 0 })}>USE MOBILE IMAGE</button>}
                   </div>
                 </div>
                 <div className="admin-hero-slide-position">
