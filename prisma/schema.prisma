@@ -296,11 +296,12 @@ model Order {
   items           OrderItem[]
   statusHistory   OrderStatusHistory[]
   payment         Payment?
-  receipt         PaymentReceipt?
   reservations    StockReservation[]
   shipments       Shipment[]
   returnRequests  ReturnRequest[]
 
+  @@index([customerAddressId])
+  @@index([shippingRateId])
   @@index([customerId, createdAt])
   @@index([status, createdAt])
   @@index([paymentStatus, createdAt])
@@ -388,6 +389,7 @@ model Payment {
   receipt     PaymentReceipt?
 
   @@index([status, createdAt])
+  @@unique([id, orderId])
   @@index([bankAccountId])
 }
 
@@ -412,6 +414,7 @@ model PaymentSubmission {
 
   @@unique([bankName, transactionReference])
   @@index([paymentId, submittedAt])
+  @@index([submittedById, submittedAt])
   @@index([status, submittedAt])
 }
 
@@ -451,6 +454,7 @@ model Refund {
   @@index([paymentId, requestedAt])
   @@index([returnRequestId])
   @@index([status, requestedAt])
+  @@index([reviewedById, reviewedAt])
 }
 
 model InventoryTransaction {
@@ -467,6 +471,7 @@ model InventoryTransaction {
   adjustedBy User?          @relation("InventoryAdjustedBy", fields: [adjustedById], references: [id], onDelete: SetNull)
 
   @@index([variantId, createdAt])
+  @@index([adjustedById, createdAt])
   @@index([type, createdAt])
 }
 
@@ -487,6 +492,7 @@ model StockReservation {
 
   @@index([orderId, status])
   @@index([variantId, status, expiresAt])
+  @@index([createdById, createdAt])
 }
 
 model ShippingZone {
@@ -572,6 +578,7 @@ model ReturnRequest {
 
   @@index([orderId, requestedAt])
   @@index([status, requestedAt])
+  @@index([reviewedById, reviewedAt])
 }
 
 model ReturnItem {
@@ -585,6 +592,7 @@ model ReturnItem {
   orderItem     OrderItem     @relation(fields: [orderItemId], references: [id], onDelete: Restrict)
 
   @@unique([returnRequestId, orderItemId])
+  @@index([orderItemId])
 }
 
 model AdminAuditLog {
@@ -640,8 +648,7 @@ model PaymentReceipt {
   issuedAt      DateTime @default(now())
   createdAt     DateTime @default(now())
 
-  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Restrict)
-  order   Order   @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  payment Payment @relation(fields: [paymentId, orderId], references: [id, orderId], onDelete: Restrict)
 
   @@index([issuedAt])
 }
