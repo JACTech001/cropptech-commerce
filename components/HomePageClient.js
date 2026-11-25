@@ -57,7 +57,7 @@ const categories = [
   }
 ];
 
-export default function HomePage({ firstName }) {
+export default function HomePage({ firstName, initialHomepageMedia = {} }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -67,7 +67,7 @@ export default function HomePage({ firstName }) {
   const [featuredSelectionConfigured, setFeaturedSelectionConfigured] = useState(false);
   const [productsLoading, setProductsLoading] = useState(true);
   const [productsError, setProductsError] = useState("");
-  const [homepageMedia, setHomepageMedia] = useState({});
+  const [homepageMedia] = useState(initialHomepageMedia);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -92,14 +92,6 @@ export default function HomePage({ firstName }) {
     return () => controller.abort();
   }, []);
 
-  useEffect(() => {
-    let active = true;
-    fetch("/api/homepage-media", { cache: "no-store" })
-      .then((response) => response.json())
-      .then((data) => { if (active) setHomepageMedia(data.media || {}); })
-      .catch(() => {});
-    return () => { active = false; };
-  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
