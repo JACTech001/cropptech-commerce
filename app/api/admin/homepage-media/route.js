@@ -72,7 +72,6 @@ export async function PUT(request) {
 
   const rawSlides = Array.isArray(body.media.hero_slides) ? body.media.hero_slides.slice(0, 8) : [];
   if (Array.isArray(body.media.hero_slides) && body.media.hero_slides.length > 8) return error("You can add up to 8 additional hero slides.");
-  const validPositions = ["left top", "center top", "right top", "left center", "center center", "right center", "left bottom", "center bottom", "right bottom", "58% center"];
   const slides = [];
   for (const item of rawSlides) {
     if (!item || !item.url) continue;
