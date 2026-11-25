@@ -5,6 +5,7 @@ import { CheckCircle2, LoaderCircle, MapPin, Pencil, PlusCircle, RefreshCw, Shie
 
 export default function AdminDeliveryManager() {
   const [zones, setZones] = useState([]);
+  const [activeView, setActiveView] = useState("zones");
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
@@ -119,6 +120,7 @@ export default function AdminDeliveryManager() {
   }
 
   function beginEdit(zone) {
+    setActiveView("zones");
     setError("");
     setMessage("");
     setEditing({
@@ -140,8 +142,12 @@ export default function AdminDeliveryManager() {
       </div>
       {error && <p className="checkout-error" role="alert">{error}</p>}
       {message && <p className="checkout-success" role="status"><CheckCircle2 size={15}/>{message}</p>}
+      <nav className="admin-home-media-tabs admin-workspace-tabs" aria-label="Delivery management sections">
+        <button type="button" className={activeView === "zones" ? "active" : ""} aria-pressed={activeView === "zones"} onClick={() => setActiveView("zones")}><MapPin size={15}/> DELIVERY ZONES</button>
+        <button type="button" className={activeView === "add" ? "active" : ""} aria-pressed={activeView === "add"} onClick={() => setActiveView("add")}><PlusCircle size={15}/> ADD DELIVERY AREA</button>
+      </nav>
       <div className="admin-delivery-grid">
-        <form className="admin-delivery-card" onSubmit={addZone}>
+        <form className="admin-delivery-card" hidden={activeView !== "add"} onSubmit={addZone}>
           <p className="eyebrow">ADD DELIVERY AREA</p>
           <label className="checkout-field">ZONE NAME<input name="name" required maxLength={100} placeholder="e.g. Lagos Mainland"/></label>
           <label className="checkout-field">STATE<input name="state" required maxLength={100} placeholder="e.g. Lagos"/></label>
@@ -154,7 +160,7 @@ export default function AdminDeliveryManager() {
           <button className="checkout-primary" type="submit" disabled={Boolean(busy)}>{busy === "add" ? <LoaderCircle size={15}/> : <PlusCircle size={15}/>} ADD DELIVERY AREA</button>
           <p className="admin-setting-hint">A city can have one active delivery rate. The configured fee is used by the checkout calculation.</p>
         </form>
-        <section className="admin-delivery-card admin-delivery-zone-card">
+        <section className="admin-delivery-card admin-delivery-zone-card" hidden={activeView !== "zones"}>
           <div className="admin-delivery-list-heading">
             <div><p className="eyebrow">DELIVERY COVERAGE</p><h2>Delivery zones</h2></div>
             <button type="button" onClick={loadZones} disabled={loading}><RefreshCw size={14}/> REFRESH</button>
