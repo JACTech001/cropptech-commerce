@@ -1,5 +1,5 @@
-import { requireAppRole } from "../../../../lib/auth/user";
-import { prisma } from "../../../../lib/db";
+import { requireAppRole } from "../../../../../lib/auth/user";
+import { prisma } from "../../../../../lib/db";
 
 const reply = (body, status = 200) => Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
 
