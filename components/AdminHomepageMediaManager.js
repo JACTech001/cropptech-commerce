@@ -214,7 +214,7 @@ export default function AdminHomepageMediaManager() {
                   <div><span>DESKTOP · 16:9</span><div className="admin-home-ai-preview landscape"><Image src={item.desktopUrl} alt="Adapted landscape desktop hero preview" fill sizes="(max-width: 700px) 100vw, 40vw" unoptimized /></div></div>
                   <div><span>MOBILE · ORIGINAL</span><div className="admin-home-ai-preview portrait"><Image src={item.url} alt="Original portrait mobile hero preview" fill sizes="(max-width: 700px) 100vw, 20vw" unoptimized /></div></div>
                 </div>}
-                <p className="admin-home-ai-note">The original photo remains unchanged for mobile. The desktop copy is composed in your browser and uploaded as a normal image; no AI service or AI transformation is used. Uploading and storing the extra image still uses your usual Cloudinary storage and delivery.</p>
+                <p className="admin-home-ai-note">Upload a clear, high-resolution image, then create and review its desktop version here; your original image remains available for mobile.</p>
               </div>}
               {item?.url && <><div className="admin-home-media-current"><Check size={13}/> Custom image selected</div></>}
               <div className="admin-home-media-card-actions">
