@@ -27,14 +27,27 @@ export default function FulfillmentControls({ orderNumber, status, shipment }) {
     if (busy) return;
     setBusy(true); setError(""); setMessage("");
     try {
+      const payload = { provider, trackingNumber, trackingUrl, note };
+      const fingerprint = JSON.stringify(payload);
+      const storageKey = `cropptech-order-status:${orderNumber}`;
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem(storageKey) || "null"); } catch {}
+      let idempotencyKey = saved?.fingerprint === fingerprint ? saved.key : "";
+      if (!idempotencyKey) {
+        idempotencyKey = typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID().replaceAll("-", "")
+          : Array.from(crypto.getRandomValues(new Uint8Array(24)), (byte) => byte.toString(16).padStart(2, "0")).join("");
+        localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey }));
+      }
       const response = await fetch(`/api/admin/orders/${encodeURIComponent(orderNumber)}/status`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ provider, trackingNumber, trackingUrl, note }),
+        headers: { "Content-Type": "application/json", "Idempotency-Key": idempotencyKey },
+        body: JSON.stringify(payload),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "Could not update this order.");
       setMessage(data.message || "Order updated.");
+      localStorage.removeItem(storageKey);
       router.refresh();
     } catch (err) {
       setError(err.message || "Could not update this order.");
