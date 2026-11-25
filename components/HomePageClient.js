@@ -202,7 +202,7 @@ export default function HomePage({ firstName, initialHomepageMedia = {} }) {
         <div className="hero-shade" />
         <div className="hero-content">
           <p className="eyebrow hero-eyebrow">CROPPTECH COMMERCE — THE LINEN SHIRT EDIT</p>
-          <h1>The linen shirt<br /><em>starts here.</em></h1>
+          <h1>The linen fashion<br /><em>starts here.</em></h1>
           <p className="hero-copy">
             Discover breathable linen wear for men and women. Explore relaxed shirts, considered sets and effortless pieces made for everyday living.
           </p>
