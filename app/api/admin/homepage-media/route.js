@@ -97,6 +97,8 @@ export async function PUT(request) {
       desktopHeight: Number.isFinite(Number(item.desktopHeight)) ? Math.max(0, Math.min(20000, Math.round(Number(item.desktopHeight)))) : 0,
       positionDesktop: validPositions.includes(item.positionDesktop) ? item.positionDesktop : "center center",
       positionMobile: validPositions.includes(item.positionMobile) ? item.positionMobile : "58% center",
+      fitDesktop: ["cover", "contain"].includes(item.fitDesktop) ? item.fitDesktop : "cover",
+      fitMobile: ["cover", "contain"].includes(item.fitMobile) ? item.fitMobile : "cover",
       active: item.active !== false,
     });
   }
