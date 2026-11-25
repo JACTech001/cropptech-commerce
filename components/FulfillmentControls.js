@@ -27,9 +27,9 @@ export default function FulfillmentControls({ orderNumber, status, shipment }) {
     if (busy) return;
     setBusy(true); setError(""); setMessage("");
     try {
-      const payload = { provider, trackingNumber, trackingUrl, note };
+      const payload = { expectedStatus: status, provider, trackingNumber, trackingUrl, note };
       const fingerprint = JSON.stringify(payload);
-      const storageKey = `cropptech-order-status:${orderNumber}`;
+      const storageKey = `cropptech-order-status:${orderNumber}:${status}`;
       let saved = null;
       try { saved = JSON.parse(localStorage.getItem(storageKey) || "null"); } catch {}
       let idempotencyKey = saved?.fingerprint === fingerprint ? saved.key : "";
