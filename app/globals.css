@@ -3826,3 +3826,36 @@ h1, h2, h3, p { margin-top: 0; }
   .payment-review-card .admin-review-actions { display:grid; grid-template-columns:1fr; }
   .payment-review-card .admin-review-actions button { width:100%; min-height:41px; }
 }
+
+
+/* Colour pass — payment review surfaces and TikTok-inspired mobile navigation */
+.payment-review-metric:nth-child(2) .payment-review-metric-icon { background:#e9fbf9; color:#087f78; }
+.payment-review-metric:nth-child(3) .payment-review-metric-icon { background:#fff0f3; color:#d51f4d; }
+.payment-review-metric:nth-child(4) .payment-review-metric-icon { background:#f2efff; color:#6650a4; }
+.payment-review-card-top { background:linear-gradient(105deg,#fff8f8 0%,#fbfcfd 58%,#f1fbfa 100%); }
+.payment-review-avatar { background:linear-gradient(135deg,#e6fbf9,#fff0f3); color:#252525; }
+.payment-review-amount { padding:10px 14px; border:1px solid #d9f3f0; border-radius:8px; background:#f3fcfb; }
+.payment-review-amount > span { color:#087f78; }
+.payment-review-card .admin-payment-review { background:linear-gradient(110deg,#fff7f8,#f5fbfb); }
+.payment-review-card .admin-payment-review .checkout-field { color:#a51e3d; }
+.payment-review-card .admin-review-actions button:nth-child(2) { background:#effafa; border-color:#bdece7; color:#087f78; }
+.payment-review-card .admin-review-actions button:last-child { background:#fff1f3; border-color:#f3c6d0; color:#b4143c; }
+.payment-review-empty > span { background:#e9fbf9; color:#087f78; }
+@media (max-width:760px) {
+  .mobile-bottom-nav {
+    border-top:1px solid rgba(255,255,255,.12);
+    background:#101114;
+    box-shadow:0 -8px 28px rgba(0,0,0,.2);
+  }
+  .mobile-bottom-nav-link { color:#b8bbc1; }
+  .mobile-bottom-nav-link:hover { color:#fff; }
+  .mobile-bottom-nav-link.is-active { color:#fff; }
+  .mobile-bottom-nav-link.is-active .mobile-bottom-nav-icon {
+    color:#25F4EE;
+    filter:drop-shadow(2px 0 0 rgba(254,44,85,.9));
+  }
+  .mobile-bottom-nav-link.is-active .mobile-bottom-nav-icon::after { background:#25F4EE; box-shadow:2px 0 0 #FE2C55; }
+  .mobile-bottom-nav-link[href*="tiktok.com"] { color:#fff; }
+  .mobile-bottom-nav-link[href*="tiktok.com"] .mobile-bottom-nav-icon { filter:drop-shadow(2px 0 0 #FE2C55) drop-shadow(-2px 0 0 #25F4EE); }
+  .mobile-bottom-nav-link[href*="tiktok.com"] > span:last-child { color:#fff; }
+}
