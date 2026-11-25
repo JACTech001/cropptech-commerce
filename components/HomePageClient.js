@@ -8,6 +8,7 @@ import {
   ArrowUpRight,
   Menu,
   Search,
+  Headset,
   X,
   Music2,
 } from "lucide-react";
@@ -164,6 +165,9 @@ export default function HomePage({ firstName, initialHomepageMedia = {} }) {
         </nav>
 
         <div className="header-actions">
+          <Link href="/support" className="icon-button support-header-link" aria-label="Customer support" title="Customer support">
+            <Headset size={19} strokeWidth={1.7} />
+          </Link>
           <button type="button" className="icon-button search-trigger" aria-label="Search linen products" aria-expanded={searchOpen} onClick={() => { setSearchOpen((open) => !open); setMenuOpen(false); }}>
             <Search size={19} strokeWidth={1.6} />
           </button>
