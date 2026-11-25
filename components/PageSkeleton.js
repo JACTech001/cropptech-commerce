@@ -39,3 +39,15 @@ export default function PageSkeleton({ variant = "page", title = true }) {
     </main>
   );
 }
+
+export function ProductGridSkeleton({ count = 8 }) {
+  return (
+    <div className={styles.productGrid} aria-busy="true" aria-label="Loading products">
+      {Array.from({ length: count }, (_, index) => <article className={styles.productCard} key={index}>
+        <div className={styles.image} />
+        <div className={styles.cardBody}><span className={styles.line} /><span className={styles.lineShort} /><span className={styles.linePrice} /></div>
+      </article>)}
+      <span className={styles.srOnly} role="status">Loading products…</span>
+    </div>
+  );
+}
