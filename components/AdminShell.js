@@ -31,7 +31,9 @@ export default function AdminShell({ children, email, adminName, isSuperAdmin = 
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem("cropptech-admin-theme");
-      if (["light", "dark", "system"].includes(saved)) setTheme(saved);
+      if (["light", "dark", "system"].includes(saved)) {
+        window.queueMicrotask(() => setTheme(saved));
+      }
     } catch {}
     const onThemeChange = (event) => setTheme(event.detail || "system");
     const onStorage = (event) => {
