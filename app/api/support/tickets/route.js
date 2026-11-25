@@ -18,7 +18,6 @@ export async function GET() {
         id: true, ticketNumber: true, subject: true, category: true, status: true,
         priority: true, createdAt: true, updatedAt: true, lastMessageAt: true,
         order: { select: { orderNumber: true } },
-        _count: { select: { messages: true } },
         messages: { where: { isInternal: false }, orderBy: { createdAt: "desc" }, take: 1, select: { body: true, senderRole: true, createdAt: true } },
       },
     });
