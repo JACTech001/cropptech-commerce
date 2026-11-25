@@ -24,7 +24,7 @@ export async function GET(request) {
       orderBy: [{ lastMessageAt: "desc" }],
       take: 100,
       select: {
-        id: true, ticketNumber: true, subject: true, category: true, status: true, priority: true,
+        id: true, ticketNumber: true, subject: true, category: true, issueType: true, status: true, priority: true,
         createdAt: true, lastMessageAt: true,
         customer: { select: { fullName: true, email: true } },
         assignee: { select: { fullName: true, email: true } },
