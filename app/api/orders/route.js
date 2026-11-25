@@ -1,4 +1,4 @@
-import { randomBytes } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { decryptBankAccountNumber } from "../../../lib/security/bank-account-encryption";
 import { requireAppRole } from "../../../lib/auth/user";
@@ -47,12 +47,24 @@ export async function POST(request) {
     normalizedItems.push({ slug, size, colour, quantity });
   }
 
+  const idempotencyKey = request.headers.get("idempotency-key") || "";
+  if (!/^[A-Za-z0-9_-]{16,128}$/.test(idempotencyKey)) return jsonError("Checkout session expired. Refresh checkout and try again.", 400);
+  const requestHash = createHash("sha256").update(JSON.stringify({ recipientName, recipientPhone, state, city, locality, deliveryAddress, deliveryLandmark, customerNote, items: normalizedItems })).digest("hex");
+  const scope = "CUSTOMER_ORDER_CREATE";
+  const existingRequest = await prisma.idempotencyRecord.findUnique({ where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } } });
+  if (existingRequest) {
+    if (existingRequest.requestHash !== requestHash) return jsonError("This checkout key was already used with different order details. Please refresh checkout and submit the updated order again.", 409);
+    if (existingRequest.response) return Response.json(existingRequest.response, { status: 201, headers: { "Cache-Control": "no-store", "Idempotency-Replayed": "true" } });
+    return jsonError("Your order is still being processed. Please wait a moment and check your orders before retrying.", 409);
+  }
+
   if (!process.env.BANK_ACCOUNT_ENCRYPTION_KEY) {
     return jsonError("Online order placement is temporarily unavailable while payment settings are being configured. Please try again later.", 503);
   }
 
   try {
     const result = await prisma.$transaction(async (tx) => {
+      await tx.idempotencyRecord.create({ data: { customerId: access.user.id, scope, key: idempotencyKey, requestHash } });
       const matchingLocations = await tx.shippingZoneLocation.findMany({
         where: {
           state: { equals: state, mode: "insensitive" },
@@ -179,26 +191,20 @@ export async function POST(request) {
         })),
       });
 
-      return { order, accountNumber };
+      const responsePayload = { order: { orderNumber: order.orderNumber, status: order.status, paymentStatus: order.paymentStatus, subtotal: order.subtotal.toString(), shippingFee: order.shippingFee.toString(), total: order.total.toString(), currency: order.currency, items: order.items.map((item) => ({ name: item.productName, size: item.size, colour: item.colour, quantity: item.quantity, lineTotal: item.lineTotal.toString() })) } };
+      await tx.idempotencyRecord.update({ where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } }, data: { response: responsePayload } });
+      return { responsePayload };
     });
 
-    return Response.json({
-      order: {
-        orderNumber: result.order.orderNumber,
-        status: result.order.status,
-        paymentStatus: result.order.paymentStatus,
-        subtotal: result.order.subtotal.toString(),
-        shippingFee: result.order.shippingFee.toString(),
-        total: result.order.total.toString(),
-        currency: result.order.currency,
-        items: result.order.items.map((item) => ({
-          name: item.productName, size: item.size, colour: item.colour,
-          quantity: item.quantity, lineTotal: item.lineTotal.toString(),
-        })),
-      },
-
-    }, { status: 201, headers: { "Cache-Control": "no-store" } });
+    return Response.json(result.responsePayload, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
+    if (error?.code === "P2002") {
+      const replay = await prisma.idempotencyRecord.findUnique({ where: { customerId_scope_key: { customerId: access.user.id, scope, key: idempotencyKey } } });
+      if (replay) {
+        if (replay.requestHash !== requestHash) return jsonError("This checkout key was already used with different order details. Please refresh checkout and submit the updated order again.", 409);
+        if (replay.response) return Response.json(replay.response, { status: 201, headers: { "Cache-Control": "no-store", "Idempotency-Replayed": "true" } });
+      }
+    }
     const known = {
       DELIVERY_NOT_CONFIGURED: [409, "Delivery is not yet configured for this location. Please contact the store before placing your order."],
       DELIVERY_RATE_AMBIGUOUS: [409, "The delivery rate for this location needs store review. Please contact the store."],
