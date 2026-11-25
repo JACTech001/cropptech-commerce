@@ -34,23 +34,34 @@ export default function CheckoutPage() {
     setError("");
 
     try {
+      const payload = {
+        ...form,
+        country: "Nigeria",
+        items: lines.map((item) => ({
+          slug: item.slug,
+          size: item.size,
+          colour: item.colour,
+          quantity: item.quantity,
+        })),
+      };
+      const fingerprint = JSON.stringify(payload);
+      const storageKey = "cropptech-checkout-idempotency";
+      let savedAttempt = null;
+      try { savedAttempt = JSON.parse(localStorage.getItem(storageKey) || "null"); } catch {}
+      const idempotencyKey = savedAttempt?.fingerprint === fingerprint && savedAttempt?.key
+        ? savedAttempt.key
+        : (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID().replaceAll("-", "") : Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join(""));
+      localStorage.setItem(storageKey, JSON.stringify({ fingerprint, key: idempotencyKey }));
+
       const response = await fetch("/api/orders", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          country: "Nigeria",
-          items: lines.map((item) => ({
-            slug: item.slug,
-            size: item.size,
-            colour: item.colour,
-            quantity: item.quantity,
-          })),
-        }),
+        headers: { "Content-Type": "application/json", "Idempotency-Key": idempotencyKey },
+        body: JSON.stringify(payload),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "We could not place your order. Please try again.");
 
+      localStorage.removeItem("cropptech-checkout-idempotency");
       clearSelectedItems();
       router.push("/orders/" + encodeURIComponent(data.order.orderNumber));
     } catch (requestError) {
