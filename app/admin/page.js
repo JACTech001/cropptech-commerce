@@ -40,7 +40,6 @@ export default async function AdminPage() {
         include: {
           submissions: {
             orderBy: { submittedAt: "desc" },
-            include: { submittedBy: { select: { email: true, fullName: true } } },
           },
         },
       },
