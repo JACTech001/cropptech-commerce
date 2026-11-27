@@ -29,7 +29,7 @@ export async function GET(request) {
           { ticketNumber: { contains: q, mode: "insensitive" } },
           { subject: { contains: q, mode: "insensitive" } },
           { customer: { email: { contains: q, mode: "insensitive" } } },
-          { customer: { fullName: { contains: q, mode: "insensitive" } },
+          { customer: { fullName: { contains: q, mode: "insensitive" } } },
         ] } : {}),
       },
       orderBy: [{ lastMessageAt: "desc" }],
