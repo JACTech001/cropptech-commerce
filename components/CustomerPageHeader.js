@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import CustomerNotificationBell from "./CustomerNotificationBell";
+import { CartLink } from "./CartProvider";
 
 export default function CustomerPageHeader({ backHref = "/shop", backLabel = "CONTINUE SHOPPING" }) {
   return (
@@ -9,7 +10,10 @@ export default function CustomerPageHeader({ backHref = "/shop", backLabel = "CO
       <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
         <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo"/>
       </Link>
-      <div className="customer-header-actions"><CustomerNotificationBell/></div>
+      <div className="customer-header-actions">
+        <span className="customer-header-notifications"><CustomerNotificationBell/></span>
+        <CartLink className="customer-header-cart"/>
+      </div>
     </header>
   );
 }
