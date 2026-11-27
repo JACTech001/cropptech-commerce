@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowUpRight, Check, Info } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, Info, UserRound } from "lucide-react";
 import StorePageShell from "../../../components/StorePageShell";
 import ProductAddButton from "../../../components/ProductAddButton";
 import ProductGallery from "../../../components/ProductGallery";
@@ -58,7 +58,11 @@ export default async function ProductDetailPage({ params }) {
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" />
         </Link>
-        <div className="shop-header-actions"><span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span><CurrencySelector /><CartLink className="shop-cart-link" /></div>
+        <div className="shop-header-actions">
+          <Link href="/account" className="shop-back shop-account-link" aria-label="My account" title="My account"><UserRound size={19} strokeWidth={1.7} /></Link>
+          <CurrencySelector />
+          <CartLink className="shop-cart-link" />
+        </div>
       </header>
 
       <div className="product-detail-wrap">
