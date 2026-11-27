@@ -14,7 +14,7 @@ export default function AdminSupportInbox() {
   const [loading,setLoading] = useState(true);
   useEffect(() => {
     let active=true;
-    const timer=setTimeout(async()=>{try{setLoading(true);const params=new URLSearchParams();if(status!=="ALL")params.set("status",status);if(query.trim())params.set("q",query.trim());const response=await fetch("/api/admin/support/tickets?"+params.toString(),{cache:"no-store"});const data=await response.json();if(!response.ok)throw new Error(data.error||"Support inbox unavailable.");if(active){setTickets(data.tickets||[]);setCounts(data.counts||{});setError("");}}catch(err){if(active)setError(err.message);}finally{if(active)setLoading(false);}},180);
+    const timer=setTimeout(async()=>{try{setLoading(true);const params=new URLSearchParams();if(status!=="ALL")params.set("status",status);if(query.trim())params.set("q",query.trim());const response=await fetch("/api/admin/support/tickets?"+params.toString(),{cache:"no-store"});const responseText=await response.text();let data={};if(responseText){try{data=JSON.parse(responseText);}catch{throw new Error("The support inbox returned an invalid response (HTTP "+response.status+"). Please check the admin support API.");}}if(!response.ok)throw new Error(data.error||"Support inbox unavailable (HTTP "+response.status+").");if(active){setTickets(data.tickets||[]);setCounts(data.counts||{});setError("");}}catch(err){if(active)setError(err.message);}finally{if(active)setLoading(false);}},180);
     return()=>{active=false;clearTimeout(timer);};
   },[status,query]);
   return <section className="admin-support-inbox">
