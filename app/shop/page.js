@@ -68,7 +68,7 @@ export default function ShopPage() {
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" />
         </Link>
-        <div className="shop-header-actions"><span className="shop-top-note">BUSINESS MOVES WITH COMMERCE.</span><CurrencySelector /><CartLink className="shop-cart-link" /></div>
+        <div className="shop-header-actions"><CurrencySelector /><CartLink className="shop-cart-link" /></div>
       </header>
       <section className="shop-hero">
         <div>
@@ -115,7 +115,7 @@ export default function ShopPage() {
         <p className="catalogue-disclaimer">Choose a size for each piece. Every piece in this collection is selected as linen wear. Product details and availability are being completed.</p>
       </section>
       <section className="shop-bottom-cta"><p className="eyebrow">A MORE CONSIDERED WARDROBE</p><h2>Good style starts<br /><em>with the essentials.</em></h2><Link href="/" className="text-link">BACK TO HOME <ArrowUpRight size={16} /></Link></section>
-      <footer className="shop-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><span>BUSINESS MOVES WITH COMMERCE.</span><Link href="/contact">CONTACT</Link></footer>
+      <footer className="shop-footer"><span>© {new Date().getFullYear()} CROPPTECH COMMERCE STORE</span><Link href="/contact">CONTACT</Link></footer>
     </main>
   );
 }
