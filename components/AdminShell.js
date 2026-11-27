@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ChevronLeft, ChevronRight, Bell, Command, ImagePlus, LayoutDashboard, Package, Boxes, BarChart3, RotateCcw, Search, Settings2, ShoppingBag, Truck, UserRound, Users, X, Star, Headset } from "lucide-react";
 import AdminNotificationBell from "./AdminNotificationBell";
+import AccountSignOutButton from "./AccountSignOutButton";
 
 const sections = [
   { items: [
@@ -112,6 +113,7 @@ export default function AdminShell({ children, email, adminName, isSuperAdmin = 
         <div className="admin-sidebar-bottom">
           <div className="admin-role-chip"><span className="admin-role-dot"/><span>{isSuperAdmin ? "SUPER ADMIN ACCESS" : "ADMIN ACCESS"}</span></div>
           <span className="admin-sidebar-email" title={email}>{email}</span>
+          <AccountSignOutButton />
           <button type="button" className="admin-collapse-button" onClick={() => setCollapsed((value) => !value)} aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}>{collapsed ? <ChevronRight size={16}/> : <><ChevronLeft size={16}/><span>Collapse sidebar</span></>}</button>
         </div>
       </aside>
