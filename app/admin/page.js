@@ -86,20 +86,19 @@ export default async function AdminPage() {
                 <div><ShieldCheck size={20}/><span>PAYMENTS AWAITING REVIEW</span><strong>{pendingCount}</strong></div>
                 <div><ClipboardList size={20}/><span>PAID ORDERS</span><strong>{paidCount}</strong></div>
                 <div><span className="admin-overview-icon" aria-hidden="true">✓</span><span>IN FULFILMENT</span><strong>{fulfilmentCount}</strong></div>
-                </div>
-                <div className="admin-overview-insights-spacer" />
-                <section className="admin-insights-grid" aria-label="Store activity and items needing attention">
-                <div className="admin-insight-panel admin-trend-panel">
-                <div className="admin-panel-heading"><div><p className="eyebrow">ORDER ACTIVITY</p><h2>Last 7 days</h2></div><span className="admin-panel-meta">Orders received</span></div>
-                <div className="admin-trend-chart" role="img" aria-label={chartDays.map((day) => day.label + ": " + day.count + " orders").join(", ")}>
-                {chartDays.map((day, index) => <div className="admin-trend-column" key={day.label + index}><strong>{day.count || ""}</strong><div className="admin-trend-track"><i style={{ height: ((day.count / chartMax) * 100) + "%" }}/></div><span>{day.label}</span></div>)}
-                </div>
-                <p className="admin-panel-footnote">Daily order count from the latest 60 orders loaded for this dashboard.</p>
-                </div>
-                <div className="admin-insight-panel admin-attention-panel" id="payments">
-                <div className="admin-panel-heading"><div><p className="eyebrow">ACTION QUEUE</p><h2>Needs attention</h2></div><span className="admin-attention-count">{pendingCount}</span></div>
-                {attentionItems.length ? <div className="admin-attention-list">{attentionItems.map(({ order, submission }) => <a className="admin-attention-item" href={"#payment-" + submission.id} key={submission.id}><span className="admin-attention-mark">!</span><span><b>{order.orderNumber}</b><small>{order.customer.fullName || order.customer.email} · transfer submitted</small></span><span className="admin-attention-action">Review →</span></a>)}</div> : <div className="admin-attention-empty"><span>✓</span><p>No pending payment reviews</p><small>New customer transfer submissions will appear here.</small></div>}
-                </div>
+                </div
+              ),
+            },
+            {
+              id: "activity",
+              label: "ORDER ACTIVITY",
+              content: (
+                <section className="admin-insight-panel admin-trend-panel">
+                  <div className="admin-panel-heading"><div><p className="eyebrow">ORDER ACTIVITY</p><h2>Last 7 days</h2></div><span className="admin-panel-meta">Orders received</span></div>
+                  <div className="admin-trend-chart" role="img" aria-label={chartDays.map((day) => day.label + ": " + day.count + " orders").join(", ")}>
+                    {chartDays.map((day, index) => <div className="admin-trend-column" key={day.label + index}><strong>{day.count || ""}</strong><div className="admin-trend-track"><i style={{ height: ((day.count / chartMax) * 100) + "%" }}/></div><span>{day.label}</span></div>)}
+                  </div>
+                  <p className="admin-panel-footnote">Daily order count from the latest 60 orders loaded for this dashboard.</p>
                 </section>
               ),
             },
@@ -107,26 +106,16 @@ export default async function AdminPage() {
               id: "attention",
               label: "NEEDS ATTENTION",
               content: (
-                <section className="admin-insights-grid" aria-label="Store activity and items needing attention">
-                <div className="admin-insight-panel admin-trend-panel">
-                <div className="admin-panel-heading"><div><p className="eyebrow">ORDER ACTIVITY</p><h2>Last 7 days</h2></div><span className="admin-panel-meta">Orders received</span></div>
-                <div className="admin-trend-chart" role="img" aria-label={chartDays.map((day) => day.label + ": " + day.count + " orders").join(", ")}>
-                {chartDays.map((day, index) => <div className="admin-trend-column" key={day.label + index}><strong>{day.count || ""}</strong><div className="admin-trend-track"><i style={{ height: ((day.count / chartMax) * 100) + "%" }}/></div><span>{day.label}</span></div>)}
-                </div>
-                <p className="admin-panel-footnote">Daily order count from the latest 60 orders loaded for this dashboard.</p>
-                </div>
-                <div className="admin-insight-panel admin-attention-panel" id="payments">
-                <div className="admin-panel-heading"><div><p className="eyebrow">ACTION QUEUE</p><h2>Needs attention</h2></div><span className="admin-attention-count">{pendingCount}</span></div>
-                {attentionItems.length ? <div className="admin-attention-list">{attentionItems.map(({ order, submission }) => <a className="admin-attention-item" href={"#payment-" + submission.id} key={submission.id}><span className="admin-attention-mark">!</span><span><b>{order.orderNumber}</b><small>{order.customer.fullName || order.customer.email} · transfer submitted</small></span><span className="admin-attention-action">Review →</span></a>)}</div> : <div className="admin-attention-empty"><span>✓</span><p>No pending payment reviews</p><small>New customer transfer submissions will appear here.</small></div>}
-                </div>
+                <section className="admin-insight-panel admin-attention-panel" id="payments">
+                  <div className="admin-panel-heading"><div><p className="eyebrow">ACTION QUEUE</p><h2>Needs attention</h2></div><span className="admin-attention-count">{pendingCount}</span></div>
+                  {attentionItems.length ? <div className="admin-attention-list">{attentionItems.map(({ order, submission }) => <a className="admin-attention-item" href={"/admin/payments"} key={submission.id}><span className="admin-attention-mark">!</span><span><b>{order.orderNumber}</b><small>{order.customer.fullName || order.customer.email} · transfer submitted</small></span><span className="admin-attention-action">Review →</span></a>)}</div> : <div className="admin-attention-empty"><span>✓</span><p>No pending payment reviews</p><small>New customer transfer submissions will appear here.</small></div>}
                 </section>
               ),
             },
             {
               id: "orders",
               label: "RECENT ORDERS",
-              content: (
-                <section className="admin-orders-section" id="orders">
+              <section className="admin-orders-section" id="orders">
                 <div className="admin-section-heading"><div><p className="eyebrow">ORDER OPERATIONS</p><h2>Recent orders <span>({orders.length})</span></h2></div><Link className="admin-receipt-link" href="/admin/orders">VIEW ALL ORDERS →</Link></div>
                 {!orders.length ? <section className="admin-empty"><h2>No orders yet</h2><p>Customer orders will appear here after the catalogue, shipping zones and payment account are configured.</p></section> :
                 <div className="admin-order-list">
@@ -181,6 +170,7 @@ export default async function AdminPage() {
                 }
                 </section>
               ),
+            }
             },
           ]} />
 
