@@ -4451,3 +4451,14 @@ html[data-customer-theme="dark"] .mobile-bottom-nav-link.is-active{color:#ff6573
 @media(prefers-reduced-motion:reduce) {
   .account-accordion > summary { transition:none; }
 }
+
+
+/* Customer support header actions: show both on desktop, cart only on mobile */
+.customer-header-actions { display:flex; align-items:center; justify-content:flex-end; gap:10px; }
+.customer-header-cart { position:relative; display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border:1px solid var(--line); color:var(--ink); }
+.customer-header-cart svg { width:19px; height:19px; }
+.customer-header-cart .home-cart-count { position:absolute; top:-5px; right:-5px; display:grid; place-items:center; min-width:16px; height:16px; padding:0 3px; border-radius:50%; background:var(--red); color:#fff; font-size:8px; line-height:1; }
+@media(max-width:640px) {
+  .customer-header-notifications { display:none; }
+  .customer-header-actions { gap:0; }
+}
