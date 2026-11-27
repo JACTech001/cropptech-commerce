@@ -29,7 +29,7 @@ export async function GET(request) {
           { ticketNumber: { contains: q, mode: "insensitive" } },
           { subject: { contains: q, mode: "insensitive" } },
           { customer: { email: { contains: q, mode: "insensitive" } } },
-          { customer: { fullName: { contains: q, mode: "insensitive" } } },
+          { customer: { fullName: { contains: q, mode: "insensitive" } },
         ] } : {}),
       },
       orderBy: [{ lastMessageAt: "desc" }],
@@ -55,7 +55,12 @@ export async function GET(request) {
       counts: Object.fromEntries(counts.map((item) => [item.status, item._count._all])),
     });
   } catch (error) {
-    console.error("Admin support inbox could not be loaded:", error);
+    // Log plain text rather than the Error object. This avoids triggering
+    // Next.js dev-overlay inspection errors and exposes the original failure.
+    const details = error instanceof Error
+      ? `${error.name}: ${error.message}\n${error.stack || ""}`
+      : String(error);
+    console.error("Admin support inbox could not be loaded:\n" + details);
     return reply(
       { error: "The support inbox could not be loaded. Check the server logs for the underlying error." },
       500
