@@ -3,7 +3,7 @@
 import { startTransition, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowUpRight, Search, SlidersHorizontal } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Search, SlidersHorizontal, UserRound } from "lucide-react";
 import ProductAddButton from "../../components/ProductAddButton";
 import { CartLink } from "../../components/CartProvider";
 import { productSlug } from "../../data/products";
@@ -68,7 +68,11 @@ export default function ShopPage() {
         <Link href="/" className="brand-lockup shop-brand-wordmark" aria-label="CROPPTECH COMMERCE home">
           <Image src="/brand/cropplogotextcommerce-transparent.png" alt="CroppTech Commerce" width={210} height={60} priority className="brand-text-logo" />
         </Link>
-        <div className="shop-header-actions"><CurrencySelector /><CartLink className="shop-cart-link" /></div>
+        <div className="shop-header-actions">
+          <Link href="/account" className="shop-back shop-account-link" aria-label="My account" title="My account"><UserRound size={19} strokeWidth={1.7} /></Link>
+          <CurrencySelector />
+          <CartLink className="shop-cart-link" />
+        </div>
       </header>
       <section className="shop-hero">
         <div>
