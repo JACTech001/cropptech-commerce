@@ -3,6 +3,7 @@ import { CircleDollarSign, ClipboardList, PackageCheck, RotateCcw } from "lucide
 import { getCurrentAppUser } from "../../../lib/auth/user";
 import { prisma } from "../../../lib/db";
 import AdminShell from "../../../components/AdminShell";
+import AdminSectionTabs from "../../../components/AdminSectionTabs";
 
 export const dynamic = "force-dynamic";
 
@@ -51,21 +52,29 @@ export default async function AdminReportsPage() {
     <AdminShell email={user.email} adminName={user.fullName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email.split("@")[0]} isSuperAdmin={user.role === "SUPER_ADMIN"}>
       <main className="admin-page admin-route-page"><div className="admin-wrap">
         <div className="admin-heading"><p className="eyebrow">STORE MANAGEMENT / BUSINESS INSIGHTS</p><h1>Business <em>reports.</em></h1><p>Sales, order and product performance for the last 30 days. Revenue includes verified payments only.</p></div>
-        <section className="admin-report-metrics">
-          <article><CircleDollarSign size={19}/><span>VERIFIED REVENUE</span><strong>{money(revenue)}</strong><small>{paid.length} paid order(s)</small></article>
-          <article><ClipboardList size={19}/><span>ORDERS RECEIVED</span><strong>{orders.length}</strong><small>Last 30 days · latest 500</small></article>
-          <article><PackageCheck size={19}/><span>UNITS SOLD</span><strong>{units}</strong><small>From verified orders</small></article>
-          <article><RotateCcw size={19}/><span>RETURNS / REFUNDS TO REVIEW</span><strong>{pendingReturns + pendingRefunds}</strong><small>{pendingReturns} returns · {pendingRefunds} refunds</small></article>
-        </section>
-        <section className="admin-report-panel">
-          <div className="admin-report-heading"><div><p className="eyebrow">ORDER TREND</p><h2>Last 14 days</h2></div><span>Average paid order: {money(average)}</span></div>
-          <div className="admin-report-chart">{days.map((day) => <div key={day.label}><strong>{day.orders || ""}</strong><i><b style={{ height: (day.orders / maxOrders * 100) + "%" }}/></i><small>{day.label}</small></div>)}</div>
-          <p className="admin-report-footnote">Bars show orders received per day. Revenue totals above include verified payments only.</p>
-        </section>
-        <section className="admin-report-panel">
-          <div className="admin-report-heading"><div><p className="eyebrow">PRODUCT PERFORMANCE</p><h2>Top products by verified sales</h2></div><span>{topProducts.length} product(s)</span></div>
-          {topProducts.length ? <div className="admin-report-table-wrap"><table className="admin-report-table"><thead><tr><th>PRODUCT</th><th>UNITS SOLD</th><th>ITEM REVENUE</th></tr></thead><tbody>{topProducts.map((item) => <tr key={item.name}><td>{item.name}</td><td>{item.quantity}</td><td>{money(item.revenue)}</td></tr>)}</tbody></table></div> : <p className="admin-setting-status">No verified product sales were recorded in this period.</p>}
-        </section>
+        <AdminSectionTabs sections={[
+          { id: "summary", label: "PERFORMANCE SUMMARY", content: (
+            <section className="admin-report-metrics">
+            <article><CircleDollarSign size={19}/><span>VERIFIED REVENUE</span><strong>{money(revenue)}</strong><small>{paid.length} paid order(s)</small></article>
+            <article><ClipboardList size={19}/><span>ORDERS RECEIVED</span><strong>{orders.length}</strong><small>Last 30 days · latest 500</small></article>
+            <article><PackageCheck size={19}/><span>UNITS SOLD</span><strong>{units}</strong><small>From verified orders</small></article>
+            <article><RotateCcw size={19}/><span>RETURNS / REFUNDS TO REVIEW</span><strong>{pendingReturns + pendingRefunds}</strong><small>{pendingReturns} returns · {pendingRefunds} refunds</small></article>
+            </section>
+          ) },
+          { id: "sales", label: "SALES & ORDER TRENDS", content: (
+            <section className="admin-report-panel">
+            <div className="admin-report-heading"><div><p className="eyebrow">ORDER TREND</p><h2>Last 14 days</h2></div><span>Average paid order: {money(average)}</span></div>
+            <div className="admin-report-chart">{days.map((day) => <div key={day.label}><strong>{day.orders || ""}</strong><i><b style={{ height: (day.orders / maxOrders * 100) + "%" }}/></i><small>{day.label}</small></div>)}</div>
+            <p className="admin-report-footnote">Bars show orders received per day. Revenue totals above include verified payments only.</p>
+            </section>
+          ) },
+          { id: "products", label: "PRODUCT PERFORMANCE", content: (
+            <section className="admin-report-panel">
+            <div className="admin-report-heading"><div><p className="eyebrow">PRODUCT PERFORMANCE</p><h2>Top products by verified sales</h2></div><span>{topProducts.length} product(s)</span></div>
+            {topProducts.length ? <div className="admin-report-table-wrap"><table className="admin-report-table"><thead><tr><th>PRODUCT</th><th>UNITS SOLD</th><th>ITEM REVENUE</th></tr></thead><tbody>{topProducts.map((item) => <tr key={item.name}><td>{item.name}</td><td>{item.quantity}</td><td>{money(item.revenue)}</td></tr>)}</tbody></table></div> : <p className="admin-setting-status">No verified product sales were recorded in this period.</p>}
+            </section>
+          ) },
+        ]} />
       </div></main>
     </AdminShell>
   );
